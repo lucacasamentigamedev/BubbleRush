@@ -1,0 +1,16 @@
+{
+    "name": "GGJ2025_LevelManager",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c2cdb5ffd365dad4bb180619100cd2e2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
