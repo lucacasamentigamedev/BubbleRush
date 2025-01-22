@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8fa3aee39e6d2744b4dc561ac5a5193, type: 3}
   m_Name: Level_02
   m_EditorClassIdentifier: 
-  unlock_Lvl: 5
-  grid_Size: {x: 0, y: 0}
+  data:
+    is_Timer_Activate: 0
+    unlock_Lvl: 5
+    grid_Size: {x: 0, y: 0}
+    bubbles: []
