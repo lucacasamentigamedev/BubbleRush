@@ -1,18 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class RockBubble : MonoBehaviour
+public class RockBubble : Bubble
 {
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        bubbleType = EBubbleType.Rock;
+        base.Awake();
     }
 }

@@ -2,7 +2,8 @@
     "name": "GGJ2025_Pluriball",
     "rootNamespace": "",
     "references": [
-        "GUID:c2cdb5ffd365dad4bb180619100cd2e2"
+        "GUID:c2cdb5ffd365dad4bb180619100cd2e2",
+        "GUID:49c22652fc94c9745bfbe819dfb9c1d7"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
