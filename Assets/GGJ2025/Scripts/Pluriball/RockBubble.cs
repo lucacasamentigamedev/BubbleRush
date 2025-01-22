@@ -1,8 +1,7 @@
 public class RockBubble : Bubble
 {
-    void Awake()
-    {
+    override protected void InternalOnAwake() {
         bubbleType = EBubbleType.Rock;
-        base.Awake();
+        base.InternalOnAwake();
     }
 }

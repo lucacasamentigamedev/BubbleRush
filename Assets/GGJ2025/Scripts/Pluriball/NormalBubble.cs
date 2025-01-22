@@ -1,8 +1,8 @@
 public class NormalBubble : Bubble
 {
-    void Awake()
+    override protected void InternalOnAwake()
     {
         bubbleType = EBubbleType.Normal;
-        base.Awake();
+        base.InternalOnAwake();
     }
 }

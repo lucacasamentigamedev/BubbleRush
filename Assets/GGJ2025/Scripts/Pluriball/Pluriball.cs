@@ -10,7 +10,7 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private PoolData normalBubbles;
     [SerializeField]
-    private BoxCollider2D collider;
+    private BoxCollider2D _collider;
     
     private Bubble[] bubbles;
     private int remainingBubbles;
@@ -19,8 +19,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     private void Start()
     {
         
-        width = collider.size.x * transform.localScale.x;   //da calcolare
-        height = collider.size.y * transform.localScale.y;
+        width = _collider.size.x * transform.localScale.x;   //da calcolare
+        height = _collider.size.y * transform.localScale.y;
 
         remainingBubbles = rows * columns;
         bubbles = new Bubble[remainingBubbles];
@@ -56,8 +56,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         height = bubbles[0].GetSize().y * rows;
 
         Vector3 newScale = transform.localScale;
-        newScale.x = width / collider.bounds.size.x;
-        newScale.y = height / collider.bounds.size.y;
+        newScale.x = width / _collider.bounds.size.x;
+        newScale.y = height / _collider.bounds.size.y;
         newScale.z = 1;
 
         transform.localScale = newScale;
@@ -68,8 +68,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         Bubble b = GetBubbleFromVector(point);
         if (b == null) return;
         b.OnDestroy?.Invoke();
-       
-        
+        b.OnDestroy -= OnBubbleDestroy;
+
         /*TODOD check if has clicked a real cell
              what cell based on position
             then check on what type of weapon player has
@@ -80,15 +80,17 @@ public class Pluriball : MonoBehaviour ,IClickable
     private Bubble GetBubbleFromVector(Vector2 point)
     {
         Vector2 origin = transform.position;
-        return bubbles[GetIndexBubble(point, origin, width, bubbles.Length)];
+        int index = GetIndexBubble(point, origin, new Vector2(width, height));
+        Debug.Log("Prendo la bolla a indice " + index);
+        return bubbles[index];
     }
 
     //Al momento assumo che sia un quadrato perfetto, quindi un 2x2 3x3 ecc
-    private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, float pluriballDimension, int sphereNumbers)
+    private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
         Debug.Log("Mouse clicca a " + point);
-        int spheresInRow = columns;
-        float cellDimension = pluriballDimension / spheresInRow;
+        float cellDimensionX = pluriballDimension.x / columns;
+        float cellDimensionY = pluriballDimension.y / rows;
 
         Debug.Log("Origine della paintball " + pluriballOrigin);
 
@@ -97,17 +99,17 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         Debug.Log("xRelative " + xRelative + "; yRelative " + yRelative);
 
-        int column = Mathf.FloorToInt(xRelative / cellDimension);
-        int row = Mathf.FloorToInt(yRelative / cellDimension);
+        int column = Mathf.FloorToInt(xRelative / cellDimensionX);
+        int row = Mathf.FloorToInt(yRelative / cellDimensionY);
 
         Debug.Log("column " + column + "; row " + row);
-        if (column < 0 || column >= spheresInRow || row < 0 || row >= spheresInRow)
+        if (column < 0 || column >= columns || row < 0 || row >= rows)
         {
             Debug.LogError("Il punto è fuori dal quadrato!");
             return -1; // Indice non valido
         }
 
-        int index = (row * spheresInRow) + column;
+        int index = (row * columns) + column;
         return index;
     }
 

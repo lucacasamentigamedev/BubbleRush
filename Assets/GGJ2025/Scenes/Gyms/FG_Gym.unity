@@ -272,7 +272,7 @@ MonoBehaviour:
   rows: 5
   columns: 4
   normalBubbles: {fileID: 11400000, guid: 79b3f96ce5fc01b419332da21f28fee3, type: 2}
-  collider: {fileID: 952186401}
+  _collider: {fileID: 952186401}
 --- !u!61 &952186401
 BoxCollider2D:
   m_ObjectHideFlags: 0

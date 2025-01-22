@@ -22,14 +22,20 @@ public class Bubble : MonoBehaviour
     #endregion
 
     #region MonoBehaviour
-    protected void Awake()
+    private void Awake()
+    {
+        InternalOnAwake();
+    }
+
+    #endregion
+
+    protected virtual void InternalOnAwake()
     {
         isAlive = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
         OnDestroy += InternalOnDestroy;
         spriteRenderer.sprite = unpoppedSprite;
     }
-    #endregion
 
     #region Public Members
     public Action OnDestroy;
@@ -49,9 +55,9 @@ public class Bubble : MonoBehaviour
         spriteRenderer.sprite = poppedSprite;
         isAlive = false;
     }
+
     protected virtual void InternalOnHit(EWeaponType weapon)
     {
         if (!isAlive) return;
     }
-
 }
