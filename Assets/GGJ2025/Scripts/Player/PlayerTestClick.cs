@@ -10,8 +10,8 @@ public class PlayerTestClick : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    void Update()       //bindare a un evento
     {
         //Vector3 screenPoint = InputManager.Player_Mouse_Position;
         //screenPoint.z = 10;
@@ -21,8 +21,7 @@ public class PlayerTestClick : MonoBehaviour
         {
             Vector3 screenPoint = InputManager.Player_Mouse_Position;
             screenPoint.z = 10;
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Debug.Log(mousePosition);
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());            
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
             if (hit.collider != null)
             {
