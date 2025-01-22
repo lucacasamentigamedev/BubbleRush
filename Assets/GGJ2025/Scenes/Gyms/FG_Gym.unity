@@ -269,8 +269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbe015bda246404eaf044de62d5c5c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 3
-  columns: 3
+  rows: 5
+  columns: 4
   normalBubbles: {fileID: 11400000, guid: 79b3f96ce5fc01b419332da21f28fee3, type: 2}
   collider: {fileID: 952186401}
 --- !u!61 &952186401

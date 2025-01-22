@@ -46,7 +46,9 @@ public class Pluriball : MonoBehaviour ,IClickable
 
                 bubble.gameObject.SetActive(true);
                 bubble.OnDestroy += OnBubbleDestroy;
-                bubbles[row * rows + col] = bubble;
+                int index = row * columns + col;
+                Debug.Log("Adesso metto indice " + index);
+                bubbles[index] = bubble;
             }
         }
         //resize
