@@ -1160,10 +1160,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2107797446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3fe40519c04fa640a12df519abc7ba6, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b7fd52bece1128449c454ddc1e7f69d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 3
+  velocity: 1
 --- !u!212 &2107797448
 SpriteRenderer:
   m_ObjectHideFlags: 0
