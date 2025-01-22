@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class LevelManager : MonoBehaviour
     private LevelEntryStruct currentEntryData;
     #endregion
 
+    public Action OnStart;
+
     #region Properties
     public uint Level { 
         get 
@@ -20,8 +23,10 @@ public class LevelManager : MonoBehaviour
         } 
         set 
         { 
-            currentLevel = value; 
+            currentLevel = value;
+            Debug.Log(currentLevel);
             currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
+            StartGame();
         } 
     }
 
@@ -52,6 +57,13 @@ public class LevelManager : MonoBehaviour
     void OnDestroy()
     {
         SaveSystem.SaveFile(currentLevel);
+    }
+    #endregion
+
+    #region PubblicMethods
+    public void StartGame()
+    {
+        OnStart?.Invoke();
     }
     #endregion
 }
