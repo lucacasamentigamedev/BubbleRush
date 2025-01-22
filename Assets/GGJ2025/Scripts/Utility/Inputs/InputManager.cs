@@ -6,7 +6,7 @@ public static class InputManager
     static InputManager()
     {
         input = new Inputs();
-        input.Player.Disable();
+        input.Player.Enable();
     }
 
     public static Inputs.PlayerActions Player { get { return input.Player; } }
