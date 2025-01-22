@@ -33,7 +33,6 @@ public class Bubble : MonoBehaviour
     {
         isAlive = true;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        OnDestroy += InternalOnDestroy;
         spriteRenderer.sprite = unpoppedSprite;
     }
 
@@ -48,16 +47,42 @@ public class Bubble : MonoBehaviour
     }
     #endregion
 
-    
+    public void ResetBubble(int life) {
+        currentClickRemains = life;
+    }
 
     private void InternalOnDestroy()
     {
+        Debug.Log("Esplodo");
         spriteRenderer.sprite = poppedSprite;
         isAlive = false;
+        OnDestroy?.Invoke();
     }
 
-    protected virtual void InternalOnHit(EWeaponType weapon)
-    {
-        if (!isAlive) return;
+    public virtual void InternalOnHit(int damage, EWeaponType weaponType) {
+        if (!isAlive) {
+            Debug.Log("Sono morta, bona");
+            return;
+        }
+        if (requiredWeapon.Length == 0) {
+            Debug.Log("tutto mi può colpire sono tipo Dende");
+            TakeDamage(damage);
+            return;
+        }
+        foreach (EWeaponType weapon in requiredWeapon) {
+            if (weapon == weaponType) {
+                TakeDamage(damage);
+                return;
+            }
+        }
+        Debug.Log("Non hai l'arma adatta per me");
+    }
+
+    private void TakeDamage(int damage) {
+        currentClickRemains -= damage;
+        if (currentClickRemains <= 0) {
+            InternalOnDestroy();
+        }
+        Debug.Log("Sono anora viva con vita " + currentClickRemains);
     }
 }

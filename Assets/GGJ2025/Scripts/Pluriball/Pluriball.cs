@@ -40,6 +40,9 @@ public class Pluriball : MonoBehaviour ,IClickable
             for (int col = 0; col < columns; col++)
             {
                 Bubble bubble = Pooler.Instance.GetPooledObject(normalBubbles).GetComponent<Bubble>();
+                //TODO: qua va cambiato abbiamo hardcodato 3 dopo metteremo life vero e il padre blister lo costruirà adeguatamente
+                bubble.ResetBubble(3);
+
                 bubble.transform.position = origin + new Vector2(bubble.GetSize().x * col, -(bubble.GetSize().y * row));
 
                 bubble.transform.position += new Vector3(bubble.GetSize().x *0.5f, -(bubble.GetSize().y *0.5f),0);
@@ -47,7 +50,6 @@ public class Pluriball : MonoBehaviour ,IClickable
                 bubble.gameObject.SetActive(true);
                 bubble.OnDestroy += OnBubbleDestroy;
                 int index = row * columns + col;
-                Debug.Log("Adesso metto indice " + index);
                 bubbles[index] = bubble;
             }
         }
@@ -67,8 +69,9 @@ public class Pluriball : MonoBehaviour ,IClickable
     {
         Bubble b = GetBubbleFromVector(point);
         if (b == null) return;
-        b.OnDestroy?.Invoke();
-        b.OnDestroy -= OnBubbleDestroy;
+
+        //TODO: sto harcodando un pollice e uno schiaffo ma vanno presi dall'aram giusta
+        b.InternalOnHit(1, EWeaponType.Finger);
 
         /*TODOD check if has clicked a real cell
              what cell based on position
@@ -81,31 +84,25 @@ public class Pluriball : MonoBehaviour ,IClickable
     {
         Vector2 origin = transform.position;
         int index = GetIndexBubble(point, origin, new Vector2(width, height));
-        Debug.Log("Prendo la bolla a indice " + index);
         return bubbles[index];
     }
 
     //Al momento assumo che sia un quadrato perfetto, quindi un 2x2 3x3 ecc
     private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
-        Debug.Log("Mouse clicca a " + point);
         float cellDimensionX = pluriballDimension.x / columns;
         float cellDimensionY = pluriballDimension.y / rows;
 
-        Debug.Log("Origine della paintball " + pluriballOrigin);
 
         float xRelative = point.x - pluriballOrigin.x;
         float yRelative = Math.Abs(point.y - pluriballOrigin.y);
 
-        Debug.Log("xRelative " + xRelative + "; yRelative " + yRelative);
 
         int column = Mathf.FloorToInt(xRelative / cellDimensionX);
         int row = Mathf.FloorToInt(yRelative / cellDimensionY);
 
-        Debug.Log("column " + column + "; row " + row);
         if (column < 0 || column >= columns || row < 0 || row >= rows)
         {
-            Debug.LogError("Il punto è fuori dal quadrato!");
             return -1; // Indice non valido
         }
 
