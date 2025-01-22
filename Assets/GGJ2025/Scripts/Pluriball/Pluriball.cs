@@ -1,12 +1,14 @@
+using log4net.Util;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Pluriball : MonoBehaviour ,IClickable
-{
-    [SerializeField] 
-    private int rows;
-    [SerializeField]
-    private int columns;
+{ 
+//    [SerializeField] 
+//    private int rows;
+//    [SerializeField]
+//    private int columns;
     [SerializeField]
     private PoolData normalBubbles;
     [SerializeField]
@@ -15,24 +17,33 @@ public class Pluriball : MonoBehaviour ,IClickable
     private Bubble[] bubbles;
     private int remainingBubbles;
     private float width, height;
-
+    private int rows, columns;
+    private LevelManager levelManager;
+    private Vector3 colliderOriginalSize;
     private void Start()
     {
-        
+        levelManager = LevelManager.Get();
+        levelManager.OnStart += OnStart;
+        colliderOriginalSize = _collider.bounds.size;
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;
+    }
 
+    public void OnStart()
+    {
+        columns = (int)levelManager.ActiveEntryData.grid_Size.x;
+        rows = (int)levelManager.ActiveEntryData.grid_Size.y;
         remainingBubbles = rows * columns;
         bubbles = new Bubble[remainingBubbles];
-        Pooler.Instance.AddToPool(normalBubbles); 
-
+        Pooler.Instance.AddToPool(normalBubbles);
+        Debug.Log("columns: " + columns + " rows: " + rows + " remainingBubbles " + remainingBubbles);
         Generate(rows, columns);
 
     }
 
     public void Generate(int rows, int columns /*pattern??*/)
     {
-        Array.Clear(bubbles, 0, bubbles.Length);
+        Debug.Log("columns: " + columns + " rows: " + rows);
         Vector2 origin = transform.position;
 
         for (int row = 0; row < rows; row++)
@@ -53,16 +64,19 @@ public class Pluriball : MonoBehaviour ,IClickable
                 bubbles[index] = bubble;
             }
         }
+
+
         //resize
         width = bubbles[0].GetSize().x * columns;       //+ offset 
         height = bubbles[0].GetSize().y * rows;
-
+        Debug.Log($"width: {width} height {height}");
         Vector3 newScale = transform.localScale;
         newScale.x = width / _collider.bounds.size.x;
         newScale.y = height / _collider.bounds.size.y;
         newScale.z = 1;
+        Debug.Log($"New Scale: {newScale}");
 
-        transform.localScale = newScale;
+        transform.localScale = new Vector3(width, height, 1);
     }
 
     public void OnClick(Vector2 point, float radius)
@@ -110,13 +124,20 @@ public class Pluriball : MonoBehaviour ,IClickable
         return index;
     }
 
-
-
     public void OnBubbleDestroy()
     {
         remainingBubbles--;
-        if (remainingBubbles <= 0) {
-            Debug.Log("Hai vinto il livello");
+        Debug.Log(remainingBubbles);
+        if (remainingBubbles <= 0) {           
+            transform.localScale = Vector3.one;
+            foreach (Bubble bubble in bubbles)
+            {
+                bubble.ResetBubble(1);
+                bubble.OnDestroy -= OnBubbleDestroy;
+                bubble.gameObject.SetActive(false);
+            }
+            Array.Clear(bubbles, 0, bubbles.Length);
+            levelManager.Level += 1;
             //TODO make things
         } else {
             

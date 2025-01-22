@@ -15,5 +15,5 @@ MonoBehaviour:
   data:
     is_Timer_Activate: 0
     unlock_Lvl: 5
-    grid_Size: {x: 0, y: 0}
+    grid_Size: {x: 3, y: 3}
     bubbles: []

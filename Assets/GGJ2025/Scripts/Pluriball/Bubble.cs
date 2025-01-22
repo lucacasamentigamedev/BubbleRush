@@ -12,13 +12,14 @@ public class Bubble : MonoBehaviour
     protected Sprite poppedSprite;
     [SerializeField] 
     protected EWeaponType[] requiredWeapon;
+    [SerializeField]
+    protected SpriteRenderer spriteRenderer;
     #endregion
 
     #region Protected Members
     protected EBubbleType bubbleType;
     protected bool isAlive;
     protected int currentClickRemains;
-    protected SpriteRenderer spriteRenderer;
     #endregion
 
     #region MonoBehaviour
@@ -32,7 +33,6 @@ public class Bubble : MonoBehaviour
     protected virtual void InternalOnAwake()
     {
         isAlive = true;
-        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = unpoppedSprite;
     }
 
@@ -48,6 +48,7 @@ public class Bubble : MonoBehaviour
     #endregion
 
     public void ResetBubble(int life) {
+        InternalOnAwake ();
         currentClickRemains = life;
     }
 

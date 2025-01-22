@@ -101,3 +101,4 @@ MonoBehaviour:
   unpoppedSprite: {fileID: 21300000, guid: 8ea98e789c08c4249960095085d5581d, type: 3}
   poppedSprite: {fileID: 21300000, guid: 5ecc855784e73d44ab8bd643b1e79a6b, type: 3}
   requiredWeapon: 
+  spriteRenderer: {fileID: 6008940093979654422}
