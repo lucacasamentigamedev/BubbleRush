@@ -54,6 +54,7 @@ public class Bubble : MonoBehaviour
     private void InternalOnDestroy()
     {
         Debug.Log("Esplodo");
+        AudioManager.PlayOneShotSound("Test");
         spriteRenderer.sprite = poppedSprite;
         isAlive = false;
         OnDestroy?.Invoke();
