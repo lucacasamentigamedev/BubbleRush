@@ -94,10 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3538681049381805832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 699fac3f60785d045982b17430d8c2ad, type: 3}
+  m_Script: {fileID: 11500000, guid: bdd6fa16f35d8534a84f6187840a5652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickRangeToPop: {x: 1, y: 1}
+  clickRangeToPop: {x: 0, y: 0}
   unpoppedSprite: {fileID: 21300000, guid: 8ea98e789c08c4249960095085d5581d, type: 3}
   poppedSprite: {fileID: 21300000, guid: 5ecc855784e73d44ab8bd643b1e79a6b, type: 3}
   requiredWeapon: 
