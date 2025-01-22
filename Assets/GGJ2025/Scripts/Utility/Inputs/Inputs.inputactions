@@ -12,7 +12,7 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Position",
@@ -27,6 +27,24 @@
                     "name": "TogglePause",
                     "type": "Button",
                     "id": "35988c7b-1e2f-4f01-b732-0e676c120b38",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeWeaponForward",
+                    "type": "Button",
+                    "id": "efea59a8-a21b-48e9-a4fd-90e87c4d4a2c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeWeaponBackward",
+                    "type": "Button",
+                    "id": "22348ca1-5801-4067-8ca9-3cec2f406318",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -75,6 +93,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "TogglePause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c7aa2f0-96c4-4687-a4ff-88dafc035814",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeWeaponForward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "625f5794-0293-4239-84e6-9bcaab55f4dc",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeWeaponBackward",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

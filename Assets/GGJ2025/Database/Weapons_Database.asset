@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12fb5d651521f494eb20b44d423c13b3, type: 3}
+  m_Name: Weapons_Database
+  m_EditorClassIdentifier: 
+  entries:
+  - {fileID: 11400000, guid: dbc5bd6fcb629ed4492a4f92b8690c13, type: 2}
+  - {fileID: 11400000, guid: 4fc8f97fbd71c3744b3039a98bffae52, type: 2}
+  - {fileID: 11400000, guid: 949e593883720c848bf65f193d1f3e32, type: 2}
+  - {fileID: 11400000, guid: 95ba9ba583491234cbca1591591427fd, type: 2}
+  - {fileID: 11400000, guid: 9e114215800aa5646947f7b785c51781, type: 2}
+  - {fileID: 11400000, guid: a7522e973a8ce914c917dea9a4eb969f, type: 2}
+  - {fileID: 11400000, guid: 80b1fbd4fe165924e8881bf26c73a3a2, type: 2}
+  - {fileID: 11400000, guid: 152b7da900a76bb48935b9c5e3e054b0, type: 2}

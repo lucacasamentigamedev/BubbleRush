@@ -1,0 +1,79 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using static Codice.Client.Common.Connection.AskCredentialsToUser;
+
+public class Player : MonoBehaviour
+{
+    private Weapon[] avaiableWeapons;
+    private int currentIndexWeapon = 0;
+    private Weapon currentWeapon;
+    [SerializeField]
+    private WeaponsDatabase weaponDatabase;
+
+    private void Awake() {
+        //prepare first weapon
+        avaiableWeapons = new Weapon[(int)EWeaponType.LAST];
+        for (int i = 0; i < avaiableWeapons.Length; i++) {
+            avaiableWeapons[i] = new Weapon();
+            avaiableWeapons[i].prepareWeapon(weaponDatabase.GetWeaponData((EWeaponType)i));
+        }
+        InputManager.Player.Interact.performed += onInteract;
+        InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
+        InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
+        LevelManager.Get().OnStart += onLevelManagerStart;
+        currentWeapon = avaiableWeapons[0];
+    }
+
+    private void onLevelManagerStart() {
+        Debug.Log("onLevelManagerStart");
+        uint level = LevelManager.Get().Level;
+
+        //DATOGLIERE
+        level = 50;
+
+        foreach (Weapon weapon in avaiableWeapons) {
+            if(weapon.weaponData.levelToUnlock <= level) {
+                weapon.weaponData.isUnlocked = true;
+                Debug.Log("Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
+            }
+        }
+    }
+
+    private void onChangeWeaponBackward(InputAction.CallbackContext context) {
+        ChangeWeapon(-1);
+    }
+
+    private void onChangeWeaponForward(InputAction.CallbackContext context) {
+        ChangeWeapon(1);
+    }
+
+    private void ChangeWeapon(int forward) {
+        currentIndexWeapon += forward;
+
+        if (currentIndexWeapon > avaiableWeapons.Length -1)
+            currentIndexWeapon = 0;
+        else if(currentIndexWeapon < 0)
+            currentIndexWeapon = avaiableWeapons.Length -1;
+
+        if (avaiableWeapons[currentIndexWeapon].weaponData != null && avaiableWeapons[currentIndexWeapon].weaponData.isUnlocked) {
+            currentWeapon = avaiableWeapons[currentIndexWeapon];
+            Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());
+            return;
+        }
+        ChangeWeapon(forward);
+    }
+
+    void onInteract(InputAction.CallbackContext cc) {
+            Vector3 screenPoint = InputManager.Player_Mouse_Position;
+            screenPoint.z = 10;
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+            if (hit.collider != null) {
+                IClickable clickable = hit.collider.GetComponent<IClickable>();
+                if (clickable != null) {
+                    clickable.OnClick(mousePosition, 1);
+                }
+            }
+    }
+}

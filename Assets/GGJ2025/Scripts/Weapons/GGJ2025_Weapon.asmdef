@@ -1,3 +1,16 @@
 {
-	"name": "GGJ2025_Weapon"
+    "name": "GGJ2025_Weapon",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c2cdb5ffd365dad4bb180619100cd2e2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
