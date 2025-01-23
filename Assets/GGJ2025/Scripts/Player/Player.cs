@@ -1,15 +1,19 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Codice.Client.Common.Connection.AskCredentialsToUser;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    #region weapon
     private Weapon[] avaiableWeapons;
     private int currentIndexWeapon = 0;
     private Weapon currentWeapon;
     [SerializeField]
     private WeaponsDatabase weaponDatabase;
+    [SerializeField]
+    private RectTransform currentWeaponRectElem;
+    private Image currentWeaponImage;
+    #endregion
 
     private void Awake() {
         //prepare first weapon
@@ -26,6 +30,16 @@ public class Player : MonoBehaviour
 
         LevelManager.Get().OnStart += onLevelManagerStart;
         currentWeapon = avaiableWeapons[0];
+        currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
+    }
+
+    private void Update() {
+        MoveWeaponWithMouse();
+    }
+
+    private void MoveWeaponWithMouse() {
+        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        currentWeaponRectElem.position = mousePosition;
     }
 
     private void onChangeWeaponWheel(InputAction.CallbackContext context) {
@@ -53,15 +67,14 @@ public class Player : MonoBehaviour
 
     private void ChangeWeapon(int forward) {
         currentIndexWeapon += forward;
-
         if (currentIndexWeapon > avaiableWeapons.Length -1)
             currentIndexWeapon = 0;
         else if(currentIndexWeapon < 0)
             currentIndexWeapon = avaiableWeapons.Length -1;
-
         if (avaiableWeapons[currentIndexWeapon].weaponData != null && avaiableWeapons[currentIndexWeapon].weaponData.isUnlocked) {
             currentWeapon = avaiableWeapons[currentIndexWeapon];
             Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());
+            currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
             return;
         }
         ChangeWeapon(forward);
