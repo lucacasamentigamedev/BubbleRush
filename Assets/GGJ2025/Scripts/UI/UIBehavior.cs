@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +14,10 @@ public class UIBehavior : MonoBehaviour {
     private Button quitButton;
     [SerializeField]
     private Button closeButton;
+    [SerializeField]
+    private Button backToMainMenuButtonEnd;
+    [SerializeField]
+    private Button retryLevelButton;
     #endregion
 
     #region Menu references
@@ -41,7 +46,9 @@ public class UIBehavior : MonoBehaviour {
         playButton.onClick.AddListener(OnPlayButtonClick);
         backToMainMenuButton.onClick.AddListener(OnBackToMainMenuButtonClick);
         quitButton.onClick.AddListener(OnQuitButtonClick);
-        closeButton.onClick.AddListener(OnCloseButtonClick);
+        //recycle other function callback for this two
+        backToMainMenuButtonEnd.onClick.AddListener(OnBackToMainMenuButtonClick);
+        retryLevelButton.onClick.AddListener(OnRetryLevel);
     }
 
     private void Start()
@@ -73,6 +80,13 @@ public class UIBehavior : MonoBehaviour {
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         canGoInPause = true;
+    }
+
+    private void OnRetryLevel() {
+        Debug.Log("UIBehavior - onPlayButtonClick");
+        AudioManager.PlayOneShotSound("MenuConfirm");
+        endMenu.SetActive(false);
+        gameplayMenu.SetActive(true);
     }
 
     private void OnBackToMainMenuButtonClick() {
@@ -107,6 +121,14 @@ public class UIBehavior : MonoBehaviour {
         } else {
             ClosePauseMenu();
         }
+    }
+
+    public void OpenEndLevelMenu() {
+        Debug.Log("UIBehavior - openPauseMenu");
+        InputManager.Player.Disable();
+        InputManager.Menu.Enable();
+        endMenu.SetActive(true);
+        gameplayMenu.SetActive(false);
     }
 
     private void OpenPauseMenu() {
