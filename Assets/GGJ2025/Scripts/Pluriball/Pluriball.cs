@@ -11,7 +11,9 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private PoolData alreadyPoppedBubbles;
     [SerializeField]
-    private PoolData rockPoppedBubbles;
+    private PoolData rockBubbles;
+    [SerializeField]
+    private PoolData bombBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
     [SerializeField]
@@ -38,7 +40,8 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         Pooler.Instance.AddToPool(normalBubbles);
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
-        Pooler.Instance.AddToPool(rockPoppedBubbles);
+        Pooler.Instance.AddToPool(rockBubbles);
+        Pooler.Instance.AddToPool(bombBubbles);
         
         //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. Sì, si potrebbe usare un array serializzato
         //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
@@ -46,7 +49,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         {
             { EBubbleType.Normal, normalBubbles },
             { EBubbleType.AlredyPopped, alreadyPoppedBubbles },
-            { EBubbleType.Rock, rockPoppedBubbles }
+            { EBubbleType.Rock, rockBubbles },
+            { EBubbleType.Bomb, bombBubbles }
         };
 
     }
@@ -79,7 +83,12 @@ public class Pluriball : MonoBehaviour ,IClickable
                 int index = row * columns + col;
                 bubbles[index].transform.position = origin + new Vector2(bubbles[index].GetSize().x * col, -(bubbles[index].GetSize().y * row));
 
-                bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);       
+                bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);
+
+                if (bubbles[index].BubbleType == EBubbleType.Bomb)
+                {
+                    ((BombBubble)bubbles[index]).OnExplode += ReduceGlobalTime;
+                }
 
                 if (bubbles[index].IsAlive)
                     bubbles[index].OnDestroy += OnBubbleDestroy;
@@ -99,6 +108,11 @@ public class Pluriball : MonoBehaviour ,IClickable
         Debug.Log($"New Scale: {newScale}");
 
         transform.localScale = new Vector3(width, height, 1);
+    }
+
+    private void ReduceGlobalTime(float arg)
+    {
+        timer.ReduceTimer(arg);
     }
 
     public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)

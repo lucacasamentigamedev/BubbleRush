@@ -52,7 +52,6 @@ public class UITimer : MonoBehaviour
     {
         if (currentTime <= 0)
         {
-            Debug.Log("Hai Perso");
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                     new FMODParameter("WIN_LOSE", 1.0f)
             });
@@ -69,9 +68,7 @@ public class UITimer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isActive) return;
-
-        Debug.Log($"MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
+        if (!isActive) return;        
         ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
     }
