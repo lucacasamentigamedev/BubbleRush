@@ -256,8 +256,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1175854129}
   - component: {fileID: 1175854128}
+  - component: {fileID: 1175854130}
   m_Layer: 0
-  m_Name: Test
+  m_Name: TestAudio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,13 +271,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175854127}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2c462055656ccc4aa6f4a6673e00d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundName: Test
-  interval: 2
+  soundName: BubblePop
+  interval: 1
 --- !u!4 &1175854129
 Transform:
   m_ObjectHideFlags: 0
@@ -292,6 +293,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1175854130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175854127}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1939212944
+      Data2: 1243870138
+      Data3: -2008602460
+      Data4: -2050387371
+    Path: event:/ACTION/BUBBLE/BUBBLE_POP
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: BUBBLE_POP_TYPE
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1339141803
 GameObject:
   m_ObjectHideFlags: 0

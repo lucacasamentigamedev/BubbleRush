@@ -654,17 +654,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3beda810743398a4e8ee720752c460a6, type: 3}
---- !u!114 &438105983 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6077693681869617637, guid: f97602afe7cae744aabd459a284d4bb5, type: 3}
-  m_PrefabInstance: {fileID: 115991723}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c45565a9025caa1419f8f47f08bcfbd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &457915640
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,6 +951,7 @@ GameObject:
   - component: {fileID: 699257062}
   - component: {fileID: 699257061}
   - component: {fileID: 699257060}
+  - component: {fileID: 699257063}
   m_Layer: 5
   m_Name: BackToMenu
   m_TagString: Untagged
@@ -1071,6 +1061,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 699257058}
   m_CullTransparentMesh: 1
+--- !u!114 &699257063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699257058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8702520741989323073}
+          m_TargetAssemblyTypeName: UIBehavior, Assembly-CSharp
+          m_MethodName: OnButtonFocus
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &761268548
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,6 +1450,7 @@ GameObject:
   - component: {fileID: 1686313722}
   - component: {fileID: 1686313721}
   - component: {fileID: 1686313720}
+  - component: {fileID: 1686313723}
   m_Layer: 5
   m_Name: Close
   m_TagString: Untagged
@@ -1536,6 +1560,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686313718}
   m_CullTransparentMesh: 1
+--- !u!114 &1686313723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686313718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8702520741989323073}
+          m_TargetAssemblyTypeName: UIBehavior, Assembly-CSharp
+          m_MethodName: OnButtonFocus
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &1896185738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,6 +1680,7 @@ GameObject:
   - component: {fileID: 1950570482}
   - component: {fileID: 1950570481}
   - component: {fileID: 1950570480}
+  - component: {fileID: 1950570483}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -1732,6 +1790,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950570478}
   m_CullTransparentMesh: 1
+--- !u!114 &1950570483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950570478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8702520741989323073}
+          m_TargetAssemblyTypeName: UIBehavior, Assembly-CSharp
+          m_MethodName: OnButtonFocus
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &2107797446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,19 +2067,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5910802084045327349}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 438105983}
-        m_TargetAssemblyTypeName: LevelManager, GGJ2025_LevelManager
-        m_MethodName: StartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &4159333282503470971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2001,6 +2080,7 @@ GameObject:
   - component: {fileID: 1680921292285644391}
   - component: {fileID: 5910802084045327349}
   - component: {fileID: 3152562220002321416}
+  - component: {fileID: 8758309891955914812}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -2368,6 +2448,39 @@ RectTransform:
   m_AnchoredPosition: {x: -95, y: 44}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8758309891955914812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4159333282503470971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8702520741989323073}
+          m_TargetAssemblyTypeName: UIBehavior, Assembly-CSharp
+          m_MethodName: OnButtonFocus
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &8944132855757003593
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,7 +58,19 @@ public class Bubble : MonoBehaviour
     private void InternalOnDestroy()
     {
         Debug.Log("Esplodo");
-        AudioManager.PlayOneShotSound("Test");
+        //AudioManager.PlayOneShotSound("Test");
+        switch(BubbleType) {
+            case EBubbleType.Normal:
+                AudioManager.PlayOneShotSound("BubblePop", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_POP_TYPE", 0.0f)
+                });
+                break;
+            case EBubbleType.Rock:
+                AudioManager.PlayOneShotSound("BubblePop", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_POP_TYPE", 1.0f)
+                });
+                break;
+        }
         spriteRenderer.sprite = poppedSprite;
         isAlive = false;
         OnDestroy?.Invoke();
@@ -67,6 +79,9 @@ public class Bubble : MonoBehaviour
     public virtual void InternalOnHit(int damage, EWeaponType weaponType) {
         if (!isAlive) {
             Debug.Log("Sono morta, bona");
+            AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 0.0f)
+            });
             return;
         }
         if (requiredWeapon.Length == 0) {

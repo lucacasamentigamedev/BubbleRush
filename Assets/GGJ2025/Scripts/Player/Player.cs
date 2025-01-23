@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
         else if(currentIndexWeapon < 0)
             currentIndexWeapon = avaiableWeapons.Length -1;
         if (avaiableWeapons[currentIndexWeapon].weaponData != null && avaiableWeapons[currentIndexWeapon].weaponData.isUnlocked) {
+            AudioManager.PlayOneShotSound("BubbleToolChange");
             currentWeapon = avaiableWeapons[currentIndexWeapon];
             Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());
             currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
@@ -92,15 +93,27 @@ public class Player : MonoBehaviour
     }
 
     void onInteract(InputAction.CallbackContext cc) {
-            Vector3 screenPoint = InputManager.Player_Mouse_Position;
-            screenPoint.z = 10;
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            if (hit.collider != null) {
-                IClickable clickable = hit.collider.GetComponent<IClickable>();
-                if (clickable != null) {
-                    clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
-                }
+        switch (currentWeapon.weaponData.weaponType) {
+            case EWeaponType.Chisel:
+                AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 1.0f)
+                });
+                break;
+            case EWeaponType.ToyHammer:
+                AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 2.0f)
+                });
+                break;
+        }
+        Vector3 screenPoint = InputManager.Player_Mouse_Position;
+        screenPoint.z = 10;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+        if (hit.collider != null) {
+            IClickable clickable = hit.collider.GetComponent<IClickable>();
+            if (clickable != null) {
+                clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
+        }
     }
 }
