@@ -16,6 +16,9 @@ public class Bubble : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     #endregion
 
+    public bool IsAlive { get { return isAlive; } }
+    public EBubbleType BubbleType { get { return bubbleType; } }
+
     #region Protected Members
     protected EBubbleType bubbleType;
     protected bool isAlive;

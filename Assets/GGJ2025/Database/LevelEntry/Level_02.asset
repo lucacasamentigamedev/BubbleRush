@@ -14,6 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 0
-    unlock_Lvl: 5
-    grid_Size: {x: 3, y: 3}
-    bubbles: []
+    unlock_Lvl: 25
+    grid_Size: {x: 4, y: 4}
+    bubbles:
+    - type: 0
+      min_Spawn: 8
+      max_Spawn: 8
+      min_Pop: 1
+      max_Pop: 3
+    - type: 3
+      min_Spawn: 8
+      max_Spawn: 8
+      min_Pop: 0
+      max_Pop: 0
