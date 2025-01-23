@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class Player : MonoBehaviour
 
         //hide fingerone
         currentWeaponRectElem.gameObject.SetActive(false);
+
+
+
+        //prova rumena!!!!!!!!!!!!!!
+        currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
     }
 
     private void Update() {
@@ -56,7 +62,8 @@ public class Player : MonoBehaviour
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
         currentWeaponRectElem.gameObject.SetActive(false);
         currentWeaponRectElem.gameObject.SetActive(true);
-        Cursor.visible = false;
+        //TODO: poi rimettere a false
+        //Cursor.visible = false;
 
         uint level = LevelManager.Get().Level;
         Debug.Log("onLevelManagerStart sono al livello" + level);
@@ -105,6 +112,10 @@ public class Player : MonoBehaviour
                 });
                 break;
         }
+
+        StartCoroutine(ChangeSpriteWithDelay());
+        //currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
+
         Vector3 screenPoint = InputManager.Player_Mouse_Position;
         screenPoint.z = 10;
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -115,5 +126,12 @@ public class Player : MonoBehaviour
                 clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
         }
+    }
+
+
+    private IEnumerator ChangeSpriteWithDelay() {
+        currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
+        yield return new WaitForSeconds(0.15f);
+        currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
     }
 }

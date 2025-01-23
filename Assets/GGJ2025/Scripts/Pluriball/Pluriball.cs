@@ -178,6 +178,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles--;
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
+            //probably 20 sarà cambiato poi
+            timer.InitTimer(20, true);
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                     new FMODParameter("WIN_LOSE", 0.0f)
             });
