@@ -35,10 +35,6 @@ public class Player : MonoBehaviour
     private void onLevelManagerStart() {
         Debug.Log("onLevelManagerStart");
         uint level = LevelManager.Get().Level;
-
-        //DATOGLIERE
-        level = 50;
-
         foreach (Weapon weapon in avaiableWeapons) {
             if(weapon.weaponData.levelToUnlock <= level) {
                 weapon.weaponData.isUnlocked = true;
