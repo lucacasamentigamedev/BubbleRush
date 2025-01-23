@@ -205,31 +205,29 @@ public class Pluriball : MonoBehaviour ,IClickable
         Bubble[] bubbles = new Bubble[size];
 
         BubbleToCreate[] typesToCreate = levelStruct.bubbles;
-        uint[] counterTypeBubbles = new uint[typesToCreate.Length];        
+        uint[] counterTypeBubbles = new uint[typesToCreate.Length];
 
-        //Creo la mappa di bolle, tenendo conto del numero massimo di tipo di bolla inseribile nel livello
-        int i = 0;
-        while (i < size) 
+        do
         {
-            int randomVar = UnityEngine.Random.Range(0, typesToCreate.Length);
-
-            BubbleToCreate bubbleChose = typesToCreate[randomVar];
-                    
-            if (counterTypeBubbles[randomVar] == bubbleChose.max_Spawn)
+            //Creo la mappa di bolle, tenendo conto del numero massimo di tipo di bolla inseribile nel livello
+            int i = 0;
+            while (i < size)
             {
-                //Raggiunto il numero  di bolle di quel tipo massimo, si riprova 
-                continue;
+                int randomVar = UnityEngine.Random.Range(0, typesToCreate.Length);
+
+                BubbleToCreate bubbleChose = typesToCreate[randomVar];
+
+                if (counterTypeBubbles[randomVar] == bubbleChose.max_Spawn)
+                {
+                    //Raggiunto il numero  di bolle di quel tipo massimo, si riprova 
+                    continue;
+                }
+                counterTypeBubbles[randomVar]++;
+                bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleChose.type]).GetComponent<Bubble>();
+                bubbles[i].gameObject.SetActive(true);
+                i++;
             }
-            counterTypeBubbles[randomVar]++;
-            bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleChose.type]).GetComponent<Bubble>();
-            bubbles[i].gameObject.SetActive(true);
-            i++;         
-
-        }
-
-        //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
-        if (!CheckGenerationCorrectness(bubbles, typesToCreate))
-            ProceduralGeneration(levelStruct, poolDatas);
+        } while (!CheckGenerationCorrectness(bubbles, typesToCreate));  //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
 
         return bubbles;
     }
@@ -246,7 +244,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         
         foreach (BubbleToCreate bubble  in bubblesToCreate)
         {
-            if (!bubbleNumbersType.ContainsKey(bubble.type) || bubbleNumbersType[bubble.type] < bubble.min_Spawn)
+            if (bubble.max_Spawn>0 && (!bubbleNumbersType.ContainsKey(bubble.type) || bubbleNumbersType[bubble.type] < bubble.min_Spawn))
                 return false;
         }
         return true;
