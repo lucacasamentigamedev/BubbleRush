@@ -3,9 +3,5 @@ public enum EWeaponType {
     Chisel,
     ToyHammer,
     WireCutter,
-    Rocket,
-    GravityGun,
-    DoubleSword,
-    GoldenHammer,
     LAST
 }

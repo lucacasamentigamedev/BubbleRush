@@ -33,10 +33,10 @@ public class Player : MonoBehaviour
     }
 
     private void onLevelManagerStart() {
-        Debug.Log("onLevelManagerStart");
         uint level = LevelManager.Get().Level;
+        Debug.Log("onLevelManagerStart sono al livello" + level);
         foreach (Weapon weapon in avaiableWeapons) {
-            if(weapon.weaponData.levelToUnlock <= level) {
+            if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.isUnlocked) {
                 weapon.weaponData.isUnlocked = true;
                 Debug.Log("Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
             }
