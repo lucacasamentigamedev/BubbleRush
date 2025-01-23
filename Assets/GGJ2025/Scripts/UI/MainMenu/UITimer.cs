@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public class UITimer : MonoBehaviour
@@ -20,16 +20,13 @@ public class UITimer : MonoBehaviour
 
     public void InitTimer(float maxTime, bool isActive)
     {
-        gameObject.SetActive(true);
-        defaultBarSizeDelta = bar.sizeDelta;
+        gameObject.SetActive(isActive); 
+        this.isActive = isActive;
+        bar.sizeDelta = defaultBarSizeDelta;
         currentTime = maxTime;
         timeToCheck = Time.time;
-        Debug.Log($"MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
+        Debug.Log($"INIT → MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
 
-        if (!isActive)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     public float GetTimerPercent()
@@ -62,13 +59,15 @@ public class UITimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        defaultBarSizeDelta = bar.sizeDelta;
         InitTimer(maxTime, false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isActive) return;        
+        if (!isActive) return;
+
         ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
     }
