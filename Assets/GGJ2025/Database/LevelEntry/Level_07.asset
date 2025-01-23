@@ -10,20 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8fa3aee39e6d2744b4dc561ac5a5193, type: 3}
-  m_Name: Level_02
+  m_Name: Level_07
   m_EditorClassIdentifier: 
   data:
-    is_Timer_Activate: 0
-    unlock_Lvl: 2
-    grid_Size: {x: 4, y: 4}
+    is_Timer_Activate: 1
+    unlock_Lvl: 15
+    grid_Size: {x: 12, y: 6}
     bubbles:
     - type: 0
-      min_Spawn: 8
-      max_Spawn: 8
-      min_Pop: 1
+      min_Spawn: 58
+      max_Spawn: 58
+      min_Pop: 2
       max_Pop: 3
+    - type: 1
+      min_Spawn: 5
+      max_Spawn: 5
+      min_Pop: 2
+      max_Pop: 3
+    - type: 2
+      min_Spawn: 1
+      max_Spawn: 1
+      min_Pop: 1
+      max_Pop: 1
     - type: 3
       min_Spawn: 8
       max_Spawn: 8
-      min_Pop: 0
-      max_Pop: 0
+      min_Pop: 1
+      max_Pop: 1
