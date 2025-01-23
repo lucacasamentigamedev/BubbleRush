@@ -159,7 +159,10 @@ public class Pluriball : MonoBehaviour ,IClickable
     {
         remainingBubbles--;
         Debug.Log(remainingBubbles);
-        if (remainingBubbles <= 0) {           
+        if (remainingBubbles <= 0) {
+            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
+                    new FMODParameter("WIN_LOSE", 0.0f)
+            });
             transform.localScale = Vector3.one;
             foreach (Bubble bubble in bubbles)
             {

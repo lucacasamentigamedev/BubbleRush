@@ -1,9 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -56,6 +52,9 @@ public class NewBehaviourScript : MonoBehaviour
         if (maxTime - currentTime <= 0)
         {
             Debug.Log("Hai Perso");
+            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
+                    new FMODParameter("WIN_LOSE", 1.0f)
+            });
             onTimerEnd?.Invoke();
         }
 
