@@ -1,12 +1,10 @@
 {
-    "name": "GGJ2025_Pluriball",
+    "name": "GGJ2025_UI",
     "rootNamespace": "",
     "references": [
-        "GUID:c2cdb5ffd365dad4bb180619100cd2e2",
-        "GUID:49c22652fc94c9745bfbe819dfb9c1d7",
         "GUID:91c57153a7f3d224c9557e2737df038b",
-        "GUID:88524f201bc051240baecd055d30f695",
-        "GUID:c4e5b68bde2b1544aad2ab906fceffae"
+        "GUID:c2cdb5ffd365dad4bb180619100cd2e2",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

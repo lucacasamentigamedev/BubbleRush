@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class Pluriball : MonoBehaviour ,IClickable
@@ -13,6 +14,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     private PoolData rockPoppedBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
+    [SerializeField]
+    private UITimer timer;
 
 
 
@@ -56,7 +59,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
         remainingBubbles = rows * columns;
         bubbles = new Bubble[remainingBubbles];
-       
+        timer.InitTimer(20, true);
+        
         Generate(rows, columns);
 
     }

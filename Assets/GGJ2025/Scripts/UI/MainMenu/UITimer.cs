@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class UITimer : MonoBehaviour
 {
     [SerializeField]
     private float maxTime;
@@ -20,6 +20,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     public void InitTimer(float maxTime, bool isActive)
     {
+        gameObject.SetActive(true);
         defaultBarSizeDelta = bar.sizeDelta;
         currentTime = maxTime;
         timeToCheck = Time.time;
@@ -31,9 +32,33 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-    private void ResizeTimer()
+    public float GetTimerPercent()
+    {
+        return currentTime / maxTime;
+    }
+
+    public void ReduceTimer(float time)
+    {
+        currentTime -= time;
+        InternalResizeTimer();
+    }
+    private void InternalResizeTimer()
     {
         bar.sizeDelta = new Vector2(defaultBarSizeDelta.x * (currentTime / maxTime), bar.sizeDelta.y);
+        InternalOnLose();
+    }
+
+    private void InternalOnLose()
+    {
+        if (currentTime <= 0)
+        {
+            Debug.Log("Hai Perso");
+            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
+                    new FMODParameter("WIN_LOSE", 1.0f)
+            });
+            onTimerEnd?.Invoke();
+            isActive = false;
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -44,19 +69,10 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isActive) return;
+
         Debug.Log($"MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
-        currentTime -= Time.time - timeToCheck;
+        ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
-        ResizeTimer();
-
-        if (maxTime - currentTime <= 0)
-        {
-            Debug.Log("Hai Perso");
-            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
-                    new FMODParameter("WIN_LOSE", 1.0f)
-            });
-            onTimerEnd?.Invoke();
-        }
-
     }
 }
