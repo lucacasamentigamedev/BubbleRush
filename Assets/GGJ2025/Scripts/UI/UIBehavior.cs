@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class UIBehavior : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class UIBehavior : MonoBehaviour
     bool canGoInPause = false;
     #endregion
 
+    [SerializeField]
+    private RectTransform currentWeaponRectElem;
+
     #region Mono
     private void Awake()
     {
@@ -50,8 +54,10 @@ public class UIBehavior : MonoBehaviour
         endMenu.SetActive(false);
     }
 
+    //fabio non voleva, però io l'ho fatto lo stesso. By Fabri :)
     private void Update() {
-        if (InputManager.Player.TogglePause.WasPressedThisFrame()) {
+        if (InputManager.Player.TogglePause.WasPressedThisFrame() ||
+            InputManager.Menu.TogglePause.WasPressedThisFrame()) {
             Debug.Log("Received input action TogglePause");
             TogglePause();
         }
@@ -100,13 +106,25 @@ public class UIBehavior : MonoBehaviour
     private void OpenPauseMenu() {
         Debug.Log("UIBehavior - openPauseMenu");
         pauseMenu.SetActive(true);
+        currentWeaponRectElem.gameObject.SetActive(false);
+
+        Cursor.visible = true;
+        InputManager.Menu.Enable();
+        InputManager.Player.Disable();
         Time.timeScale = 0f;
+
     }
 
     private void ClosePauseMenu() {
         Debug.Log("UIBehavior - ClosePauseMenu");
         pauseMenu.SetActive(false);
+        currentWeaponRectElem.gameObject.SetActive(true);
+
+        Cursor.visible = false;
+        InputManager.Menu.Disable();
+        InputManager.Player.Enable();
         Time.timeScale = 1f;
+
     }
     #endregion
 }

@@ -31,6 +31,9 @@ public class Player : MonoBehaviour
         LevelManager.Get().OnStart += onLevelManagerStart;
         currentWeapon = avaiableWeapons[0];
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
+
+        //hide fingerone
+        currentWeaponRectElem.gameObject.SetActive(false);
     }
 
     private void Update() {
@@ -47,6 +50,14 @@ public class Player : MonoBehaviour
     }
 
     private void onLevelManagerStart() {
+
+        //active fingerone or other current weapon
+        InputManager.Player.Enable();
+        currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
+        currentWeaponRectElem.gameObject.SetActive(false);
+        currentWeaponRectElem.gameObject.SetActive(true);
+        Cursor.visible = false;
+
         uint level = LevelManager.Get().Level;
         Debug.Log("onLevelManagerStart sono al livello" + level);
         foreach (Weapon weapon in avaiableWeapons) {

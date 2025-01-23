@@ -2315,6 +2315,7 @@ MonoBehaviour:
   gameplayMenu: {fileID: 5144847356120270534}
   pauseMenu: {fileID: 307991787567173021}
   endMenu: {fileID: 9572218089945584}
+  currentWeaponRectElem: {fileID: 475752726}
 --- !u!210 &8702520741989323074
 SortingGroup:
   m_ObjectHideFlags: 0
