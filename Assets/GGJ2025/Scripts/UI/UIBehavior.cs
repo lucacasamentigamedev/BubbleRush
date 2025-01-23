@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Windows;
 
-public class UIBehavior : MonoBehaviour
-{
+public class UIBehavior : MonoBehaviour {
     #region Button references
     //buttons
     [SerializeField]
@@ -64,9 +62,14 @@ public class UIBehavior : MonoBehaviour
     }
     #endregion
 
+    public void OnButtonFocus() {
+        AudioManager.PlayOneShotSound("MenuSelect");
+    }
+
     #region onButtonCLick
     private void OnPlayButtonClick() {
         Debug.Log("UIBehavior - onPlayButtonClick");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         canGoInPause = true;
@@ -74,6 +77,7 @@ public class UIBehavior : MonoBehaviour
 
     private void OnBackToMainMenuButtonClick() {
         Debug.Log("UIBehavior - onBackToMainMenuButton");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
         Time.timeScale = 1f;
@@ -81,11 +85,13 @@ public class UIBehavior : MonoBehaviour
 
     private void OnQuitButtonClick() {
         Debug.Log("UIBehavior - UIBehavior");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         Application.Quit();
     }
 
     private void OnCloseButtonClick() {
         Debug.Log("UIBehavior - onCloseButton");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         TogglePause();
     }
     #endregion
@@ -105,26 +111,24 @@ public class UIBehavior : MonoBehaviour
 
     private void OpenPauseMenu() {
         Debug.Log("UIBehavior - openPauseMenu");
+        AudioManager.PlayOneShotSound("MenuOpen");
         pauseMenu.SetActive(true);
         currentWeaponRectElem.gameObject.SetActive(false);
-
         Cursor.visible = true;
         InputManager.Menu.Enable();
         InputManager.Player.Disable();
         Time.timeScale = 0f;
-
     }
 
     private void ClosePauseMenu() {
+        AudioManager.PlayOneShotSound("MenuClose");
         Debug.Log("UIBehavior - ClosePauseMenu");
         pauseMenu.SetActive(false);
         currentWeaponRectElem.gameObject.SetActive(true);
-
         Cursor.visible = false;
         InputManager.Menu.Disable();
         InputManager.Player.Enable();
         Time.timeScale = 1f;
-
     }
     #endregion
 }
