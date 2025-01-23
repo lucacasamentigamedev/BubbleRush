@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
             if (hit.collider != null) {
                 IClickable clickable = hit.collider.GetComponent<IClickable>();
                 if (clickable != null) {
-                    clickable.OnClick(mousePosition, 1);
+                    clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
                 }
             }
     }

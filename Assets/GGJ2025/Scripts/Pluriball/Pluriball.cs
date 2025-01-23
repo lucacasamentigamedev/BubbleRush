@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Pluriball : MonoBehaviour ,IClickable
 { 
-//    [SerializeField] 
-//    private int rows;
-//    [SerializeField]
-//    private int columns;
+
     [SerializeField]
     private PoolData normalBubbles;
     [SerializeField]
     private PoolData alreadyPoppedBubbles;
+    [SerializeField]
+    private PoolData rockPoppedBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
 
@@ -36,12 +35,15 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         Pooler.Instance.AddToPool(normalBubbles);
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
-        //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. Sì, si potrebbe usare un array serializzato di pool data e poi da ogni elemento
-        // risalire al tipo di bolla tramite il prefab associato, ma stica!
+        Pooler.Instance.AddToPool(rockPoppedBubbles);
+        
+        //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. Sì, si potrebbe usare un array serializzato
+        //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
         poolDataDictionary = new Dictionary<EBubbleType, PoolData>
         {
             { EBubbleType.Normal, normalBubbles },
-            { EBubbleType.AlredyPopped, alreadyPoppedBubbles }
+            { EBubbleType.AlredyPopped, alreadyPoppedBubbles },
+            { EBubbleType.Rock, rockPoppedBubbles }
         };
 
     }
@@ -95,13 +97,13 @@ public class Pluriball : MonoBehaviour ,IClickable
         transform.localScale = new Vector3(width, height, 1);
     }
 
-    public void OnClick(Vector2 point, float radius)
+    public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)
     {
         Bubble b = GetBubbleFromVector(point);
         if (b == null) return;
 
         //TODO: sto harcodando un pollice e uno schiaffo ma vanno presi dall'aram giusta
-        b.InternalOnHit(1, EWeaponType.Finger);
+        b.InternalOnHit(damage, weapon);
 
         /*TODOD check if has clicked a real cell
              what cell based on position
@@ -117,7 +119,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         return bubbles[index];
     }
 
-    //Al momento assumo che sia un quadrato perfetto, quindi un 2x2 3x3 ecc
+
     private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
         float cellDimensionX = pluriballDimension.x / columns;
