@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public class UITimer : MonoBehaviour
@@ -20,16 +20,13 @@ public class UITimer : MonoBehaviour
 
     public void InitTimer(float maxTime, bool isActive)
     {
-        gameObject.SetActive(true);
-        defaultBarSizeDelta = bar.sizeDelta;
+        gameObject.SetActive(isActive); 
+        this.isActive = isActive;
+        bar.sizeDelta = defaultBarSizeDelta;
         currentTime = maxTime;
         timeToCheck = Time.time;
-        Debug.Log($"MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
+        Debug.Log($"INIT → MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
 
-        if (!isActive)
-        {
-            gameObject.SetActive(false);
-        }
     }
 
     public float GetTimerPercent()
@@ -52,7 +49,6 @@ public class UITimer : MonoBehaviour
     {
         if (currentTime <= 0)
         {
-            Debug.Log("Hai Perso");
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                     new FMODParameter("WIN_LOSE", 1.0f)
             });
@@ -63,6 +59,7 @@ public class UITimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        defaultBarSizeDelta = bar.sizeDelta;
         InitTimer(maxTime, false);
     }
 
@@ -71,7 +68,6 @@ public class UITimer : MonoBehaviour
     {
         if (!isActive) return;
 
-        Debug.Log($"MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
         ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
     }

@@ -15,7 +15,7 @@ MonoBehaviour:
   data:
     is_Timer_Activate: 0
     unlock_Lvl: 2
-    grid_Size: {x: 5, y: 5}
+    grid_Size: {x: 6, y: 5}
     bubbles:
     - type: 0
       min_Spawn: 15
@@ -31,4 +31,9 @@ MonoBehaviour:
       min_Spawn: 5
       max_Spawn: 5
       min_Pop: 2
+      max_Pop: 3
+    - type: 2
+      min_Spawn: 5
+      max_Spawn: 5
+      min_Pop: 1
       max_Pop: 3
