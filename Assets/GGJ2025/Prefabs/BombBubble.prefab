@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 1570843799
   m_SortingLayer: 5
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ef233f4f2f213c042bbfd27b491cb786, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b5fe0f45cbafa9f47a089359b3cd296e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.35, y: 3.35}
+  m_Size: {x: 4.7240005, y: 4.7240005}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clickRangeToPop: {x: 0, y: 0}
-  unpoppedSprite: {fileID: 21300000, guid: ef233f4f2f213c042bbfd27b491cb786, type: 3}
-  poppedSprite: {fileID: 21300000, guid: 7203575713c9be64a95bce6594b785ea, type: 3}
+  unpoppedSprite: {fileID: 21300000, guid: b5fe0f45cbafa9f47a089359b3cd296e, type: 3}
+  poppedSprite: {fileID: 21300000, guid: 97d0cc8a551b492419091b8c15bf2f44, type: 3}
   requiredWeapon: 
   spriteRenderer: {fileID: 6008940093979654422}
   maxTimeForDisinnescation: 10
