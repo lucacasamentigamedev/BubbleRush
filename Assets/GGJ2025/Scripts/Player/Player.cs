@@ -18,11 +18,18 @@ public class Player : MonoBehaviour
             avaiableWeapons[i] = new Weapon();
             avaiableWeapons[i].prepareWeapon(weaponDatabase.GetWeaponData((EWeaponType)i));
         }
+        //inputs bind
         InputManager.Player.Interact.performed += onInteract;
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
+        InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
+
         LevelManager.Get().OnStart += onLevelManagerStart;
         currentWeapon = avaiableWeapons[0];
+    }
+
+    private void onChangeWeaponWheel(InputAction.CallbackContext context) {
+        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
     }
 
     private void onLevelManagerStart() {

@@ -71,6 +71,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeWeaponWheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""83b84347-2951-425c-a71c-6474c2551c18"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -139,6 +148,17 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""ChangeWeaponBackward"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e92a5c75-29c7-4086-9434-887b14777265"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeWeaponWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -152,6 +172,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_TogglePause = m_Player.FindAction("TogglePause", throwIfNotFound: true);
         m_Player_ChangeWeaponForward = m_Player.FindAction("ChangeWeaponForward", throwIfNotFound: true);
         m_Player_ChangeWeaponBackward = m_Player.FindAction("ChangeWeaponBackward", throwIfNotFound: true);
+        m_Player_ChangeWeaponWheel = m_Player.FindAction("ChangeWeaponWheel", throwIfNotFound: true);
     }
 
     ~@Inputs()
@@ -223,6 +244,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_TogglePause;
     private readonly InputAction m_Player_ChangeWeaponForward;
     private readonly InputAction m_Player_ChangeWeaponBackward;
+    private readonly InputAction m_Player_ChangeWeaponWheel;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
@@ -232,6 +254,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @TogglePause => m_Wrapper.m_Player_TogglePause;
         public InputAction @ChangeWeaponForward => m_Wrapper.m_Player_ChangeWeaponForward;
         public InputAction @ChangeWeaponBackward => m_Wrapper.m_Player_ChangeWeaponBackward;
+        public InputAction @ChangeWeaponWheel => m_Wrapper.m_Player_ChangeWeaponWheel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -256,6 +279,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @ChangeWeaponBackward.started += instance.OnChangeWeaponBackward;
             @ChangeWeaponBackward.performed += instance.OnChangeWeaponBackward;
             @ChangeWeaponBackward.canceled += instance.OnChangeWeaponBackward;
+            @ChangeWeaponWheel.started += instance.OnChangeWeaponWheel;
+            @ChangeWeaponWheel.performed += instance.OnChangeWeaponWheel;
+            @ChangeWeaponWheel.canceled += instance.OnChangeWeaponWheel;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -275,6 +301,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @ChangeWeaponBackward.started -= instance.OnChangeWeaponBackward;
             @ChangeWeaponBackward.performed -= instance.OnChangeWeaponBackward;
             @ChangeWeaponBackward.canceled -= instance.OnChangeWeaponBackward;
+            @ChangeWeaponWheel.started -= instance.OnChangeWeaponWheel;
+            @ChangeWeaponWheel.performed -= instance.OnChangeWeaponWheel;
+            @ChangeWeaponWheel.canceled -= instance.OnChangeWeaponWheel;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -299,5 +328,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnTogglePause(InputAction.CallbackContext context);
         void OnChangeWeaponForward(InputAction.CallbackContext context);
         void OnChangeWeaponBackward(InputAction.CallbackContext context);
+        void OnChangeWeaponWheel(InputAction.CallbackContext context);
     }
 }
