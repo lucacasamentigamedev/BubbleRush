@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc5ca5ca845027741be3886b594ae6bb, type: 3}
-  m_Name: NormalBubble
+  m_Name: AlreadyPoppedBubblePool
   m_EditorClassIdentifier: 
-  poolKey: NormalBubble
-  prefab: {fileID: 3538681049381805832, guid: 39f46098501f9054f98d9a7f37f72b3c, type: 3}
-  poolNumber: 9
+  poolKey: AlreadyPoppedBubble
+  prefab: {fileID: 4166875191486827422, guid: 932b44a738a7a70439a7bfc3dcea9f96, type: 3}
+  poolNumber: 16
   resizablePool: 1

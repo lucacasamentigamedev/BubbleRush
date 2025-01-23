@@ -46,9 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cbe015bda246404eaf044de62d5c5c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 5
-  columns: 4
   normalBubbles: {fileID: 11400000, guid: 79b3f96ce5fc01b419332da21f28fee3, type: 2}
+  alreadyPoppedBubbles: {fileID: 11400000, guid: 7631792543a583643a48d434015fa410, type: 2}
   _collider: {fileID: 2357253375511190445}
 --- !u!61 &2357253375511190445
 BoxCollider2D:

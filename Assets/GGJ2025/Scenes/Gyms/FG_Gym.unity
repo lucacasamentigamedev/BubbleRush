@@ -373,6 +373,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pluriball
       objectReference: {fileID: 0}
+    - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
+      propertyPath: alreadyPoppedBubbles
+      value: 
+      objectReference: {fileID: 11400000, guid: 7631792543a583643a48d434015fa410, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
