@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Pluriball : MonoBehaviour ,IClickable
@@ -99,24 +100,37 @@ public class Pluriball : MonoBehaviour ,IClickable
 
     public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)
     {
-        Bubble b = GetBubbleFromVector(point);
-        if (b == null) return;
-
-        //TODO: sto harcodando un pollice e uno schiaffo ma vanno presi dall'aram giusta
-        b.InternalOnHit(damage, weapon);
-
-        /*TODOD check if has clicked a real cell
-             what cell based on position
-            then check on what type of weapon player has
-            and switch for specific*/
+        Bubble[] bubblesToHit = GetNearBubbles(point, area);
+        foreach (Bubble b in bubblesToHit)
+        {
+            b.InternalOnHit(damage, weapon);
+        }
     }
 
-
-    private Bubble GetBubbleFromVector(Vector2 point)
+    private Bubble[] GetNearBubbles(Vector2 point, Vector2 area)
     {
-        Vector2 origin = transform.position;
-        int index = GetIndexBubble(point, origin, new Vector2(width, height));
-        return bubbles[index];
+        List<Bubble> arenaBubbleList = new List<Bubble>();
+        int index = GetIndexBubble(point, transform.position, new Vector2(width, height));
+        arenaBubbleList.Add(bubbles[index]);
+        int offsetRounderX = Mathf.FloorToInt((area.x - 1) / 2);
+        int offsetRounderY = Mathf.FloorToInt((area.y - 1) / 2);
+
+        for( int r = -offsetRounderX; r <= offsetRounderX; r++)
+        {
+            for (int c = -offsetRounderY; c <= offsetRounderY; c++)
+            {
+                if (index + r*columns + c  >= 0 && index + r* columns + c < columns * rows) //se è dentro i range
+                {
+                    if (index % columns == 0 && c < 0)        //sto premendo la prima colonna, ignoro la colonna di sx
+                        continue;
+                    if ((index + 1) % columns == 0 && c > 0)     //sto premendo l'ultima colonna, ignoro la colonna di dx
+                        continue;
+                    arenaBubbleList.Add(bubbles[index + r * columns + c]);
+                }                    
+            }
+        }
+
+        return arenaBubbleList.ToArray();
     }
 
 
