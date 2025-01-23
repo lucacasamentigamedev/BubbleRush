@@ -190,8 +190,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         }
 
         //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
-        //if (!CheckGenerationCorrectness(bubbles, typesToCreate))
-        //    ProceduralGeneration(levelStruct, poolDatas);
+        if (!CheckGenerationCorrectness(bubbles, typesToCreate))
+            ProceduralGeneration(levelStruct, poolDatas);
 
         return bubbles;
     }

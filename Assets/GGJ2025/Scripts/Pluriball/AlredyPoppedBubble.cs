@@ -2,7 +2,7 @@ public class AlredyPoppedBubble : Bubble
 {
     override protected void InternalOnAwake()
     {
-        bubbleType = EBubbleType.Normal;
+        bubbleType = EBubbleType.AlredyPopped;
         isAlive = false;
         spriteRenderer.sprite = poppedSprite;
     }
