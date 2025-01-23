@@ -161,6 +161,34 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Menu"",
+            ""id"": ""657f6189-9613-4a78-aed5-43265ac14acd"",
+            ""actions"": [
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""12bc25d5-4e17-4598-913a-42f700a99692"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3e924d88-2012-4237-8780-2964f848e385"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -173,11 +201,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_ChangeWeaponForward = m_Player.FindAction("ChangeWeaponForward", throwIfNotFound: true);
         m_Player_ChangeWeaponBackward = m_Player.FindAction("ChangeWeaponBackward", throwIfNotFound: true);
         m_Player_ChangeWeaponWheel = m_Player.FindAction("ChangeWeaponWheel", throwIfNotFound: true);
+        // Menu
+        m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
+        m_Menu_Interact = m_Menu.FindAction("Interact", throwIfNotFound: true);
     }
 
     ~@Inputs()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, Inputs.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Menu.enabled, "This will cause a leak and performance issues, Inputs.Menu.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -321,6 +353,52 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Menu
+    private readonly InputActionMap m_Menu;
+    private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
+    private readonly InputAction m_Menu_Interact;
+    public struct MenuActions
+    {
+        private @Inputs m_Wrapper;
+        public MenuActions(@Inputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Interact => m_Wrapper.m_Menu_Interact;
+        public InputActionMap Get() { return m_Wrapper.m_Menu; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(MenuActions set) { return set.Get(); }
+        public void AddCallbacks(IMenuActions instance)
+        {
+            if (instance == null || m_Wrapper.m_MenuActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_MenuActionsCallbackInterfaces.Add(instance);
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+        }
+
+        private void UnregisterCallbacks(IMenuActions instance)
+        {
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+        }
+
+        public void RemoveCallbacks(IMenuActions instance)
+        {
+            if (m_Wrapper.m_MenuActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IMenuActions instance)
+        {
+            foreach (var item in m_Wrapper.m_MenuActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_MenuActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public MenuActions @Menu => new MenuActions(this);
     public interface IPlayerActions
     {
         void OnInteract(InputAction.CallbackContext context);
@@ -329,5 +407,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnChangeWeaponForward(InputAction.CallbackContext context);
         void OnChangeWeaponBackward(InputAction.CallbackContext context);
         void OnChangeWeaponWheel(InputAction.CallbackContext context);
+    }
+    public interface IMenuActions
+    {
+        void OnInteract(InputAction.CallbackContext context);
     }
 }
