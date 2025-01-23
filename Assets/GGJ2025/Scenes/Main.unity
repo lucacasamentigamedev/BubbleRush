@@ -1303,6 +1303,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 881161610}
   m_CullTransparentMesh: 1
+--- !u!114 &894031931 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6077693681869617637, guid: f97602afe7cae744aabd459a284d4bb5, type: 3}
+  m_PrefabInstance: {fileID: 115991723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c45565a9025caa1419f8f47f08bcfbd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1381008335
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,7 +2078,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5910802084045327349}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 975549232865810788, guid: f97602afe7cae744aabd459a284d4bb5, type: 3}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4159333282503470971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2465,9 +2488,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8702520741989323073}
-          m_TargetAssemblyTypeName: UIBehavior, Assembly-CSharp
-          m_MethodName: OnButtonFocus
+        - m_Target: {fileID: 894031931}
+          m_TargetAssemblyTypeName: LevelManager, GGJ2025_LevelManager
+          m_MethodName: StartGame
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
