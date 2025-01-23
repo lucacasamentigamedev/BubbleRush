@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: 02_Chisel
   m_EditorClassIdentifier: 
   weaponType: 1
-  isUnlocked: 0
+  isUnlocked: 1
   levelToUnlock: 5
   damage: 1
   area: {x: 0, y: 0}
-  preInteract: {fileID: 21300000, guid: eeb0c309f44d7bc4e90af62703fa98ac, type: 3}
-  postInteract: {fileID: 21300000, guid: 22d4088d42260da49ae0e91a6e9ebd0b, type: 3}
+  preInteract: {fileID: 21300000, guid: 7a70601765c4674469d22635aac49cbd, type: 3}
+  postInteract: {fileID: 21300000, guid: 52a9fe7986badfb4283be6f2cc1cc493, type: 3}
