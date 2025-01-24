@@ -170,7 +170,6 @@ public class Pluriball : MonoBehaviour ,IClickable
     private void OnBubbleDestroy()
     {
         remainingBubbles--;
-        cameraShake.Shake();
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
             uiBehavior.OnpePreLevelMenu();
@@ -183,6 +182,7 @@ public class Pluriball : MonoBehaviour ,IClickable
             foreach (Bubble bubble in bubbles)
             {                
                 bubble.OnDestroy -= OnBubbleDestroy;
+                bubble.OnCamerShake -= OnCamerShake;
                 bubble.gameObject.SetActive(false);
             }
             Array.Clear(bubbles, 0, bubbles.Length);
@@ -217,7 +217,10 @@ public class Pluriball : MonoBehaviour ,IClickable
                 }
 
                 if (bubbles[index].IsAlive)
+                {
                     bubbles[index].OnDestroy += OnBubbleDestroy;
+                    bubbles[index].OnCamerShake += OnCamerShake;
+                }
                 else
                     remainingBubbles--;
             }
@@ -235,6 +238,12 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         transform.localScale = new Vector3(width, height, 1);
     }
+
+    private void OnCamerShake(float shakeMagnitude, float shakeDuration)
+    {
+        cameraShake.Shake(shakeMagnitude, shakeDuration);
+    }
+
     private Bubble[] ProceduralGeneration(LevelEntryStruct levelStruct, Dictionary<EBubbleType,PoolData> poolDatas)
     {
         int size = (int)levelStruct.grid_Size.x * (int)levelStruct.grid_Size.y;

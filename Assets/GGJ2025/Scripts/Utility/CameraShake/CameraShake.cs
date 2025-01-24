@@ -5,8 +5,6 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     private Vector3 originalPosition;
-    public float shakeMagnitude = 0.1f; // Intensità dello shake
-    public float shakeDuration = 0.5f;  // Durata dello shake
 
     private void Start()
     {
@@ -14,12 +12,12 @@ public class CameraShake : MonoBehaviour
     }
 
     // Funzione per avviare lo shake
-    public void Shake()
+    public void Shake(float shakeMagnitude, float shakeDuration)
     {
-        StartCoroutine(ShakeCoroutine());
+        StartCoroutine(ShakeCoroutine(shakeMagnitude, shakeDuration));
     }
 
-    private IEnumerator ShakeCoroutine()
+    private IEnumerator ShakeCoroutine(float shakeMagnitude, float shakeDuration)
     {
         float elapsed = 0f;
 

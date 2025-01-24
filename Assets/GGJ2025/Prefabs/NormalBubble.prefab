@@ -97,8 +97,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd6fa16f35d8534a84f6187840a5652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickRangeToPop: {x: 0, y: 0}
   unpoppedSprite: {fileID: 21300000, guid: 00276e905ca8f8d4b938dac8031e0026, type: 3}
   poppedSprite: {fileID: 21300000, guid: e6b8d10a123e5ec41a65efe19e3c664f, type: 3}
+  arraySprite: []
   requiredWeapon: 0000000002000000
   spriteRenderer: {fileID: 6008940093979654422}
+  shakeMagnitude: 0.01
+  shakeDuration: 0.2

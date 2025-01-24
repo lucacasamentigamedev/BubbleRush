@@ -97,11 +97,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64afc0c23e7b734468638d66bc27f621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickRangeToPop: {x: 0, y: 0}
   unpoppedSprite: {fileID: 21300000, guid: b5fe0f45cbafa9f47a089359b3cd296e, type: 3}
   poppedSprite: {fileID: 21300000, guid: 97d0cc8a551b492419091b8c15bf2f44, type: 3}
+  arraySprite: []
   requiredWeapon: 
   spriteRenderer: {fileID: 6008940093979654422}
+  shakeMagnitude: 0.1
+  shakeDuration: 0.5
   maxTimeForDisinnescation: 10
   wrongWeaponTimeReduction: 5
   noHitExplosionTimeReduction: 5
