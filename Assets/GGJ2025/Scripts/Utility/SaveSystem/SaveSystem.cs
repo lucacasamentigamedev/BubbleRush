@@ -9,7 +9,7 @@ public static class SaveSystem
         string destination = Application.persistentDataPath + "/save.fish";
         FileStream file;
 
-        if(File.Exists(destination))
+        if (File.Exists(destination))
             file = File.OpenWrite(destination);
         else
             file = File.Create(destination);
@@ -24,10 +24,10 @@ public static class SaveSystem
         string destination = Application.persistentDataPath + "/save.fish";
         FileStream file;
 
-        if (File.Exists(destination)) 
+        if (File.Exists(destination))
             file = File.OpenRead(destination);
         else
-        { 
+        {
             Debug.Log("File save.fish not found");
             level = 1;
             return;
@@ -38,12 +38,13 @@ public static class SaveSystem
         file.Close();
     }
 
-    public static void RemoveFile()
+    public static uint RemoveFile()
     {
         string destination = Application.persistentDataPath + "/save.fish";
         if (File.Exists(destination))
         {
             File.Delete(destination);
         }
+        return 1;
     }
 }
