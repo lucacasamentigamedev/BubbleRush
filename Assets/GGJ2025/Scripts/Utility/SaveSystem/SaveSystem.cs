@@ -27,8 +27,8 @@ public static class SaveSystem
         if (File.Exists(destination)) 
             file = File.OpenRead(destination);
         else
-        {
-            Debug.LogError("File not found");
+        { 
+            Debug.LogWarning("File save.fish not found");
             level = 1;
             return;
         }
