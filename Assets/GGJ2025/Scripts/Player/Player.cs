@@ -35,11 +35,6 @@ public class Player : MonoBehaviour
 
         //hide fingerone
         currentWeaponRectElem.gameObject.SetActive(false);
-
-
-
-        //prova rumena!!!!!!!!!!!!!!
-        currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
     }
 
     private void Update() {
@@ -66,6 +61,7 @@ public class Player : MonoBehaviour
         //Cursor.visible = false;
 
         uint level = LevelManager.Get().Level;
+
         Debug.Log("PLAYER - START LIV" + level);
         foreach (Weapon weapon in avaiableWeapons) {
             if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.isUnlocked) {
