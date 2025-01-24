@@ -31,7 +31,8 @@ public static class AudioManager
         { "BubbleBombBeep", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_MALUS_BOMB_BEEP", AudioCategory.Bubbles) },
         { "TimeEndBeep", new AudioEvent("event:/ACTION/TIMEEND", AudioCategory.Other) },
         { "TutorialMessagePop", new AudioEvent("event:/SCENE/TUTORIAL_MESAGE", AudioCategory.UI) },
-        { "Music", new AudioEvent("event:/ACTION/MUSIC", AudioCategory.UI) }
+        { "Music", new AudioEvent("event:/ACTION/MUSIC", AudioCategory.UI) },
+        { "BubbleSImpleCLick", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL_SIMPLECLICK", AudioCategory.Bubbles) }
     };
 
     private static readonly Dictionary<AudioCategory, float> volumes = new Dictionary<AudioCategory, float> {

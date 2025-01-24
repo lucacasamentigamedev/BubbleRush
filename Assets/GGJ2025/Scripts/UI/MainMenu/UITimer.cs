@@ -69,15 +69,17 @@ public class UITimer : MonoBehaviour
     void Update()
     {
         if (!isActive) return;
-        int t = (int)(Time.time - timeToCheck);
-        if (((t <= 5 && t > 4) || (t <= 3 && t > 2) || (t <= 1 && t > 0)) && !soundBeepExecuted) {
-            AudioManager.PlayOneShotSound("TimeEndBeep");
-            soundBeepExecuted = true;
-        } else if (((t <= 4 && t > 3) || (t <= 2 && t > 1)) && soundBeepExecuted) {
+        int t = (int)(currentTime);
+        Debug.Log("TIMERRRRR t =" + t);
+        if (((t <= 3 && t > 2) || (t <= 1 && t > 0)) && soundBeepExecuted) {
+            Debug.Log("TIMERRRRR if 1" +  t);
             AudioManager.PlayOneShotSound("TimeEndBeep");
             soundBeepExecuted = false;
+        } else if (((t <= 4 && t > 3) || (t <= 2 && t > 1) || t == 0) && !soundBeepExecuted) {
+            Debug.Log("TIMERRRRR if 2" + t);
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = true;
         }
-
         ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
     }

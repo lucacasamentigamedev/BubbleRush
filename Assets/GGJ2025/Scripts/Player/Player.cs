@@ -88,7 +88,17 @@ public class Player : MonoBehaviour
             currentIndexWeapon = avaiableWeapons.Length -1;
         if (avaiableWeapons[currentIndexWeapon].weaponData != null 
             && avaiableWeapons[currentIndexWeapon].weaponData.IsUnlocked) {
-            AudioManager.PlayOneShotSound("BubbleToolChange");
+
+            if(currentWeapon.weaponData == avaiableWeapons[currentIndexWeapon].weaponData) {
+                AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
+                    new FMODParameter("TOOL_CHANGE", 1.0f)
+                });
+            } else {
+                AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
+                    new FMODParameter("TOOL_CHANGE", 0.0f)
+                });
+            }
+
             currentWeapon = avaiableWeapons[currentIndexWeapon];
             Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());
             currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
