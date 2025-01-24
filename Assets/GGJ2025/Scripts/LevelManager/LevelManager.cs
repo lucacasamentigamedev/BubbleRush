@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
             currentLevel = value;
             Debug.Log(currentLevel);
             currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
-            StartGame();
+            //StartGame();
         } 
     }
 

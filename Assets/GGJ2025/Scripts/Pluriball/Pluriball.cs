@@ -21,9 +21,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     private CameraShake cameraShake;
     [SerializeField]
     private UIBehavior uiBehavior;
-
-
-
+    [SerializeField]
+    private GameObject pluriballVisual;
 
     private Dictionary<EBubbleType, PoolData> poolDataDictionary;
     private Bubble[] bubbles;
@@ -64,6 +63,7 @@ public class Pluriball : MonoBehaviour ,IClickable
 
     private void OnStart()
     {
+        pluriballVisual.SetActive(true);
         columns = (int)levelManager.ActiveEntryData.grid_Size.x;
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
         remainingBubbles = rows * columns;
@@ -76,10 +76,12 @@ public class Pluriball : MonoBehaviour ,IClickable
 
     private void OnRetry()
     {
+        pluriballVisual.SetActive(true);
         remainingBubbles = rows * columns;
         //reset all bubbles
         foreach (Bubble bubble in bubbles)
         {
+            bubble.gameObject.SetActive(true);
             if (bubble.BubbleType!= EBubbleType.AlredyPopped)
             {
                 bubble.ResetBubble();
@@ -94,7 +96,20 @@ public class Pluriball : MonoBehaviour ,IClickable
         }
         timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
     }
-       
+      
+    private void InternalEndLevel(bool win)
+    {
+        foreach (Bubble bubble in bubbles)
+        {
+            bubble.gameObject.SetActive(false);
+        }
+        if (win)
+            uiBehavior.OnpePreLevelMenu();
+        else
+            uiBehavior.OpenEndLevelMenu();
+        pluriballVisual.SetActive(false);
+
+    }
 
     #region Interface OnClick
     public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)
@@ -110,8 +125,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     #region TimerForBomb
     private void OnTimerEnd()
     {
+        InternalEndLevel(false);
         Debug.Log("onTimerEnd");
-        uiBehavior.OpenEndLevelMenu();
     }
     private void ReduceGlobalTime(float arg)
     {
@@ -172,12 +187,13 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles--;
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
-            uiBehavior.OnpePreLevelMenu();
             //probably 20 sarà cambiato poi
+            InternalEndLevel(true);
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                     new FMODParameter("WIN_LOSE", 0.0f)
             });
             transform.localScale = Vector3.one;
+            
             foreach (Bubble bubble in bubbles)
             {                
                 bubble.OnDestroy -= OnBubbleDestroy;

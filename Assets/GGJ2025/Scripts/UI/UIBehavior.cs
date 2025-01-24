@@ -161,6 +161,7 @@ public class UIBehavior : MonoBehaviour {
         gameplayMenu.SetActive(true);
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
+        LevelManager.Get().StartGame();
         canGoInPause = true;
         Time.timeScale = 1f;
     }
