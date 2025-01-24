@@ -26,7 +26,12 @@ public static class AudioManager
         { "MenuOpen", new AudioEvent("event:/MENU/MENU_OPEN", AudioCategory.UI) },
         { "MenuClose", new AudioEvent("event:/MENU/MENU_CLOSE", AudioCategory.UI) },
         { "MenuConfirm", new AudioEvent("event:/MENU/MENU_CONFIRM", AudioCategory.UI) },
-        { "MenuSelect", new AudioEvent("event:/MENU/MENU_SELECT", AudioCategory.UI) }
+        { "MenuSelect", new AudioEvent("event:/MENU/MENU_SELECT", AudioCategory.UI) },
+        { "BubbleBombExplode", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_MALUS", AudioCategory.Bubbles) },
+        { "BubbleBombBeep", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_MALUS_BOMB_BEEP", AudioCategory.Bubbles) },
+        { "TimeEndBeep", new AudioEvent("event:/ACTION/TIMEEND", AudioCategory.Other) },
+        { "TutorialMessagePop", new AudioEvent("event:/SCENE/TUTORIAL_MESAGE", AudioCategory.UI) },
+        { "Music", new AudioEvent("event:/ACTION/MUSIC", AudioCategory.UI) }
     };
 
     private static readonly Dictionary<AudioCategory, float> volumes = new Dictionary<AudioCategory, float> {

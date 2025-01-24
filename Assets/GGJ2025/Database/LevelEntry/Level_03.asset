@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 30
+    timer_for_level: 10
     stars_for_level:
     - 0.2
     - 0.4

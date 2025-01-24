@@ -9,23 +9,25 @@ public class UITimer : MonoBehaviour
     private bool isActive;
     [SerializeField]
     private RectTransform bar;
-    [SerializeField]
-    private RectTransform background;
-
-    private Vector2 defaultBarSizeDelta;
+    
+    private Vector2 scale;
     private float currentTime;
     private float timeToCheck;
 
     public Action onTimerEnd;
 
+    private bool soundBeepExecuted = false;
+
     public void InitTimer(float maxTime, bool isActive)
     {
+        soundBeepExecuted = false;
         gameObject.SetActive(isActive); 
         this.isActive = isActive;
-        bar.sizeDelta = defaultBarSizeDelta;
+        bar.localScale = Vector3.one;
+        this.maxTime = maxTime;
         currentTime = maxTime;
         timeToCheck = Time.time;
-        Debug.Log($"INIT → MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
+        Debug.Log($"INIT → MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time} Scale: {scale} LocalScale: {bar.localScale}");
 
     }
 
@@ -41,7 +43,8 @@ public class UITimer : MonoBehaviour
     }
     private void InternalResizeTimer()
     {
-        bar.sizeDelta = new Vector2(defaultBarSizeDelta.x * (currentTime / maxTime), bar.sizeDelta.y);
+        bar.localScale = new Vector2(currentTime / maxTime, scale.y);
+        Debug.Log($"UPDATE → LocalScale: {bar.localScale} MaxTime: {maxTime} currentTime : {currentTime}");
         InternalOnLose();
     }
 
@@ -59,14 +62,21 @@ public class UITimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        defaultBarSizeDelta = bar.sizeDelta;
-        InitTimer(maxTime, false);
+        scale = bar.localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!isActive) return;
+        int t = (int)(Time.time - timeToCheck);
+        if (((t <= 5 && t > 4) || (t <= 3 && t > 2) || (t <= 1 && t > 0)) && !soundBeepExecuted) {
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = true;
+        } else if (((t <= 4 && t > 3) || (t <= 2 && t > 1)) && soundBeepExecuted) {
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = false;
+        }
 
         ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
