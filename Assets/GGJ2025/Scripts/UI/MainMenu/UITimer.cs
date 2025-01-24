@@ -10,7 +10,7 @@ public class UITimer : MonoBehaviour
     [SerializeField]
     private RectTransform bar;
 
-    private Vector2 defaultBarSizeDelta;
+    private Vector2 scale;
     private float currentTime;
     private float timeToCheck;
 
@@ -20,10 +20,11 @@ public class UITimer : MonoBehaviour
     {
         gameObject.SetActive(isActive); 
         this.isActive = isActive;
-        bar.sizeDelta = defaultBarSizeDelta;
+        bar.localScale = scale;
+        this.maxTime = maxTime;
         currentTime = maxTime;
         timeToCheck = Time.time;
-        Debug.Log($"INIT → MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time}");
+        Debug.Log($"INIT → MaxTime: {maxTime} currentTime : {currentTime} timeToCheck: {timeToCheck} Time.time: {Time.time} Scale: {scale} LocalScale: {bar.localScale}");
 
     }
 
@@ -39,7 +40,8 @@ public class UITimer : MonoBehaviour
     }
     private void InternalResizeTimer()
     {
-        bar.sizeDelta = new Vector2(defaultBarSizeDelta.x * (currentTime / maxTime), bar.sizeDelta.y);
+        bar.localScale = new Vector2(currentTime / maxTime, scale.y);
+        Debug.Log($"UPDATE → LocalScale: {bar.localScale} MaxTime: {maxTime} currentTime : {currentTime}");
         InternalOnLose();
     }
 
@@ -57,7 +59,7 @@ public class UITimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        defaultBarSizeDelta = bar.sizeDelta;
+        scale = bar.localScale;
         InitTimer(maxTime, false);
     }
 
