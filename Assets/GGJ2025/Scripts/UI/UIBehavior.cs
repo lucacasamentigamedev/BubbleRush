@@ -130,6 +130,7 @@ public class UIBehavior : MonoBehaviour {
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
         canGoInPause = true;
+        LevelManager.Get().RetryLevel();
     }
 
     private void OnBackToMainMenuButtonClick() {

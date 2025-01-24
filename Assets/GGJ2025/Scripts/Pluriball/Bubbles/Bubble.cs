@@ -5,11 +5,11 @@ public class Bubble : MonoBehaviour
 {
     #region Serializable
     [SerializeField]
-    protected Vector2 clickRangeToPop;
-    [SerializeField]
     protected Sprite unpoppedSprite;
     [SerializeField] 
     protected Sprite poppedSprite;
+    [SerializeField] 
+    protected Sprite[] arraySprite;
     [SerializeField] 
     protected EWeaponType[] requiredWeapon;
     [SerializeField]
@@ -23,6 +23,7 @@ public class Bubble : MonoBehaviour
     protected EBubbleType bubbleType;
     protected bool isAlive;
     protected int currentClickRemains;
+    protected int clickToPop;
     #endregion
 
     #region MonoBehaviour
@@ -51,9 +52,17 @@ public class Bubble : MonoBehaviour
     #endregion
 
     public void ResetBubble(int life) {
-        InternalOnAwake ();
+        InternalOnAwake();
+        clickToPop= life;
         currentClickRemains = life;
     }
+    public void ResetBubble()
+    {
+        InternalOnAwake();
+        currentClickRemains = clickToPop;
+    }
+
+
 
     private void InternalOnDestroy()
     {

@@ -6,5 +6,6 @@ public class Weapon : MonoBehaviour
 
     public void prepareWeapon(WeaponData weaponData) {
         this.weaponData = weaponData;
+        this.weaponData.IsUnlocked = false;
     }
 }
