@@ -1021,6 +1021,10 @@ PrefabInstance:
       propertyPath: timer
       value: 
       objectReference: {fileID: 1612798772}
+    - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
+      propertyPath: uiBehavior
+      value: 
+      objectReference: {fileID: 8702520741989323073}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1859,7 +1863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fec0ffdc8277674b880adc4eb627ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTime: 2
+  maxTime: 20
   isActive: 1
   bar: {fileID: 12311935}
   background: {fileID: 1896185739}

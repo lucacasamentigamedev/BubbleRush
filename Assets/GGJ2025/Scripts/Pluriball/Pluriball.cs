@@ -19,7 +19,6 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private UITimer timer;
     [SerializeField]
-    private GameObject UI;
     private UIBehavior uiBehavior;
 
 
@@ -40,7 +39,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;
 
-        uiBehavior = UI.GetComponent<UIBehavior>();
+        //uiBehavior = UI.GetComponent<UIBehavior>();
 
         Pooler.Instance.AddToPool(normalBubbles);
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
@@ -57,6 +56,8 @@ public class Pluriball : MonoBehaviour ,IClickable
             { EBubbleType.Bomb, bombBubbles }
         };
 
+        timer.onTimerEnd += onTimerEnd;
+
     }
 
 
@@ -71,6 +72,12 @@ public class Pluriball : MonoBehaviour ,IClickable
         
         Generate(rows, columns);
 
+        
+    }
+
+    private void onTimerEnd() {
+        Debug.Log("onTimerEnd");
+        uiBehavior.OpenEndLevelMenu();
     }
 
     public void Generate(int rows, int columns)
@@ -182,7 +189,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles--;
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
-            uiBehavior.OpenEndLevelMenu();
             //probably 20 sarà cambiato poi
             timer.InitTimer(20, true);
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {

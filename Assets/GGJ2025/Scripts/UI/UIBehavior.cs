@@ -87,6 +87,9 @@ public class UIBehavior : MonoBehaviour {
         AudioManager.PlayOneShotSound("MenuConfirm");
         endMenu.SetActive(false);
         gameplayMenu.SetActive(true);
+        currentWeaponRectElem.gameObject.SetActive(true);
+        //Cursor.visible = false;
+        canGoInPause = true;
     }
 
     private void OnBackToMainMenuButtonClick() {
@@ -127,8 +130,11 @@ public class UIBehavior : MonoBehaviour {
         Debug.Log("UIBehavior - openPauseMenu");
         InputManager.Player.Disable();
         InputManager.Menu.Enable();
+        currentWeaponRectElem.gameObject.SetActive(false);
+        //Cursor.visible = true;
         endMenu.SetActive(true);
         gameplayMenu.SetActive(false);
+        canGoInPause = false;
     }
 
     private void OpenPauseMenu() {
@@ -136,7 +142,7 @@ public class UIBehavior : MonoBehaviour {
         AudioManager.PlayOneShotSound("MenuOpen");
         pauseMenu.SetActive(true);
         currentWeaponRectElem.gameObject.SetActive(false);
-        Cursor.visible = true;
+        //Cursor.visible = true;
         InputManager.Menu.Enable();
         InputManager.Player.Disable();
         Time.timeScale = 0f;
@@ -147,7 +153,7 @@ public class UIBehavior : MonoBehaviour {
         Debug.Log("UIBehavior - ClosePauseMenu");
         pauseMenu.SetActive(false);
         currentWeaponRectElem.gameObject.SetActive(true);
-        Cursor.visible = false;
+        //Cursor.visible = false;
         InputManager.Menu.Disable();
         InputManager.Player.Enable();
         Time.timeScale = 1f;
