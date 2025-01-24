@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -56,14 +57,16 @@ public class Player : MonoBehaviour
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
         currentWeaponRectElem.gameObject.SetActive(false);
         currentWeaponRectElem.gameObject.SetActive(true);
-        Cursor.visible = false;
+        //TODO: poi rimettere a false
+        //Cursor.visible = false;
 
         uint level = LevelManager.Get().Level;
-        Debug.Log("onLevelManagerStart sono al livello" + level);
+
+        Debug.Log("PLAYER - START LIV" + level);
         foreach (Weapon weapon in avaiableWeapons) {
             if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.isUnlocked) {
                 weapon.weaponData.isUnlocked = true;
-                Debug.Log("Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
+                Debug.Log("PLAYER - Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
             }
         }
     }
@@ -83,6 +86,7 @@ public class Player : MonoBehaviour
         else if(currentIndexWeapon < 0)
             currentIndexWeapon = avaiableWeapons.Length -1;
         if (avaiableWeapons[currentIndexWeapon].weaponData != null && avaiableWeapons[currentIndexWeapon].weaponData.isUnlocked) {
+            AudioManager.PlayOneShotSound("BubbleToolChange");
             currentWeapon = avaiableWeapons[currentIndexWeapon];
             Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());
             currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
@@ -92,15 +96,38 @@ public class Player : MonoBehaviour
     }
 
     void onInteract(InputAction.CallbackContext cc) {
-            Vector3 screenPoint = InputManager.Player_Mouse_Position;
-            screenPoint.z = 10;
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
-            if (hit.collider != null) {
-                IClickable clickable = hit.collider.GetComponent<IClickable>();
-                if (clickable != null) {
-                    clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
-                }
+        switch (currentWeapon.weaponData.weaponType) {
+            case EWeaponType.Chisel:
+                AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 1.0f)
+                });
+                break;
+            case EWeaponType.ToyHammer:
+                AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 2.0f)
+                });
+                break;
+        }
+
+        StartCoroutine(ChangeSpriteWithDelay());
+        //currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
+
+        Vector3 screenPoint = InputManager.Player_Mouse_Position;
+        screenPoint.z = 10;
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+        if (hit.collider != null) {
+            IClickable clickable = hit.collider.GetComponent<IClickable>();
+            if (clickable != null) {
+                clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
+        }
+    }
+
+
+    private IEnumerator ChangeSpriteWithDelay() {
+        currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
+        yield return new WaitForSeconds(0.15f);
+        currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
     }
 }

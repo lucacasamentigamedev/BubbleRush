@@ -2,11 +2,12 @@ using FMOD.Studio;
 using FMODUnity;
 
 public enum AudioCategory {
-    SFX,
-    UI,
-    Environment,
+    Bubbles,
+    Tools,
+    Other,
     Music,
-    Player
+    UI,
+    Test
 }
 
 public class AudioEvent {

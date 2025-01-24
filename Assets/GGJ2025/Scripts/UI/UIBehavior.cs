@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Windows;
+using TMPro;
 
-public class UIBehavior : MonoBehaviour
-{
+public class UIBehavior : MonoBehaviour {
     #region Button references
     //buttons
     [SerializeField]
@@ -15,6 +14,16 @@ public class UIBehavior : MonoBehaviour
     private Button quitButton;
     [SerializeField]
     private Button closeButton;
+    [SerializeField]
+    private Button backToMainMenuButtonEnd;
+    [SerializeField]
+    private Button retryLevelButton;
+    [SerializeField]
+    private Button nextLevelButton;
+    [SerializeField]
+    private Button backToMainMenuButtonPreNewLevel;
+    [SerializeField]
+    private TextMeshProUGUI textMeshProText;
     #endregion
 
     #region Menu references
@@ -27,6 +36,8 @@ public class UIBehavior : MonoBehaviour
     private GameObject pauseMenu;
     [SerializeField]
     private GameObject endMenu;
+    [SerializeField]
+    private GameObject preNextLevelMenu;
     #endregion
 
     #region Internal variables
@@ -34,8 +45,10 @@ public class UIBehavior : MonoBehaviour
     bool canGoInPause = false;
     #endregion
 
+    #region Weapon
     [SerializeField]
     private RectTransform currentWeaponRectElem;
+    #endregion
 
     #region Mono
     private void Awake()
@@ -43,7 +56,12 @@ public class UIBehavior : MonoBehaviour
         playButton.onClick.AddListener(OnPlayButtonClick);
         backToMainMenuButton.onClick.AddListener(OnBackToMainMenuButtonClick);
         quitButton.onClick.AddListener(OnQuitButtonClick);
+        //recycle other function callback for this two
+        backToMainMenuButtonEnd.onClick.AddListener(OnBackToMainMenuButtonClick);
+        backToMainMenuButtonPreNewLevel.onClick.AddListener(OnBackToMainMenuButtonClick);
+        retryLevelButton.onClick.AddListener(OnRetryLevel);
         closeButton.onClick.AddListener(OnCloseButtonClick);
+        nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
     }
 
     private void Start()
@@ -52,6 +70,7 @@ public class UIBehavior : MonoBehaviour
         gameplayMenu.SetActive(false);
         pauseMenu.SetActive(false);
         endMenu.SetActive(false);
+        preNextLevelMenu.SetActive(false);
     }
 
     //fabio non voleva, però io l'ho fatto lo stesso. By Fabri :)
@@ -64,16 +83,36 @@ public class UIBehavior : MonoBehaviour
     }
     #endregion
 
+    #region other
+    public void OnButtonFocus() {
+        AudioManager.PlayOneShotSound("MenuSelect");
+    }
+    #endregion
+
     #region onButtonCLick
     private void OnPlayButtonClick() {
         Debug.Log("UIBehavior - onPlayButtonClick");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         canGoInPause = true;
     }
 
+    private void OnRetryLevel() {
+        Debug.Log("UIBehavior - onPlayButtonClick");
+        AudioManager.PlayOneShotSound("MenuConfirm");
+        endMenu.SetActive(false);
+        gameplayMenu.SetActive(true);
+        currentWeaponRectElem.gameObject.SetActive(true);
+        //Cursor.visible = false;
+        InputManager.Player.Enable();
+        InputManager.Menu.Disable();
+        canGoInPause = true;
+    }
+
     private void OnBackToMainMenuButtonClick() {
         Debug.Log("UIBehavior - onBackToMainMenuButton");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
         Time.timeScale = 1f;
@@ -81,12 +120,61 @@ public class UIBehavior : MonoBehaviour
 
     private void OnQuitButtonClick() {
         Debug.Log("UIBehavior - UIBehavior");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         Application.Quit();
     }
 
     private void OnCloseButtonClick() {
         Debug.Log("UIBehavior - onCloseButton");
+        AudioManager.PlayOneShotSound("MenuConfirm");
         TogglePause();
+    }
+
+    private void OnNextLevelButtonClick()
+    {
+        Debug.Log("UIBehavior - OnNextLevelButtonClick");
+        currentWeaponRectElem.gameObject.SetActive(true);
+        preNextLevelMenu.SetActive(false);
+        gameplayMenu.SetActive(true);
+        InputManager.Player.Enable();
+        InputManager.Menu.Disable();
+        canGoInPause = true;
+        Time.timeScale = 1f;
+    }
+    #endregion
+
+    #region Level
+    public void ChangeLevelLabel()
+    {
+        textMeshProText.text = "Level " + LevelManager.Get().Level;
+    }
+#endregion
+
+    #region endlevel
+public void OpenEndLevelMenu()
+    {
+        Debug.Log("UIBehavior - openPauseMenu");
+        InputManager.Player.Disable();
+        InputManager.Menu.Enable();
+        currentWeaponRectElem.gameObject.SetActive(false);
+        //Cursor.visible = true;
+        endMenu.SetActive(true);
+        gameplayMenu.SetActive(false);
+        canGoInPause = false;
+    }
+    #endregion
+
+    #region preNextLevel
+    public void OnpePreLevelMenu()
+    {
+        Debug.Log("UIBehavior - OnpePreLevelMenu");
+        InputManager.Player.Disable();
+        InputManager.Menu.Enable();
+        preNextLevelMenu.SetActive(true);
+        gameplayMenu.SetActive(false);
+        canGoInPause = false;
+        Time.timeScale = 0f;
+        currentWeaponRectElem.gameObject.SetActive(false);
     }
     #endregion
 
@@ -105,26 +193,24 @@ public class UIBehavior : MonoBehaviour
 
     private void OpenPauseMenu() {
         Debug.Log("UIBehavior - openPauseMenu");
+        AudioManager.PlayOneShotSound("MenuOpen");
         pauseMenu.SetActive(true);
         currentWeaponRectElem.gameObject.SetActive(false);
-
-        Cursor.visible = true;
+        //Cursor.visible = true;
         InputManager.Menu.Enable();
         InputManager.Player.Disable();
         Time.timeScale = 0f;
-
     }
 
     private void ClosePauseMenu() {
+        AudioManager.PlayOneShotSound("MenuClose");
         Debug.Log("UIBehavior - ClosePauseMenu");
         pauseMenu.SetActive(false);
         currentWeaponRectElem.gameObject.SetActive(true);
-
-        Cursor.visible = false;
+        //Cursor.visible = false;
         InputManager.Menu.Disable();
         InputManager.Player.Enable();
         Time.timeScale = 1f;
-
     }
     #endregion
 }

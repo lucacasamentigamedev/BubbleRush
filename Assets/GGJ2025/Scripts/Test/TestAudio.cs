@@ -13,6 +13,8 @@ public class TestAudio : MonoBehaviour {
     }
 
     private void PlayTestSound() {
-        AudioManager.PlayOneShotSound(soundName);
+        AudioManager.PlayOneShotSound(soundName, new FMODParameter[] {
+            new FMODParameter("BUBBLE_POP_TYPE", 2.0f)
+        });
     }
 }

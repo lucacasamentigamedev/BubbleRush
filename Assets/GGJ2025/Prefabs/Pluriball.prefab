@@ -48,8 +48,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalBubbles: {fileID: 11400000, guid: 79b3f96ce5fc01b419332da21f28fee3, type: 2}
   alreadyPoppedBubbles: {fileID: 11400000, guid: 7631792543a583643a48d434015fa410, type: 2}
-  rockPoppedBubbles: {fileID: 11400000, guid: bc75bc6bcbfa4584fb721905d5cb88ba, type: 2}
+  rockBubbles: {fileID: 11400000, guid: bc75bc6bcbfa4584fb721905d5cb88ba, type: 2}
+  bombBubbles: {fileID: 11400000, guid: e255ee5ff14efc548a22d88d5e5c26f5, type: 2}
   _collider: {fileID: 2357253375511190445}
+  timer: {fileID: 0}
 --- !u!61 &2357253375511190445
 BoxCollider2D:
   m_ObjectHideFlags: 0

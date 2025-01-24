@@ -9,7 +9,7 @@ public class TestCustomCursor : MonoBehaviour
     void Start()
     {
         // Nasconde il cursore di sistema
-        Cursor.visible = false;
+        //Cursor.visible = false;
     }
 
     void Update()

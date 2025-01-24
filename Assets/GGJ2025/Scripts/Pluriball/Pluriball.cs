@@ -10,9 +10,15 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private PoolData alreadyPoppedBubbles;
     [SerializeField]
-    private PoolData rockPoppedBubbles;
+    private PoolData rockBubbles;
+    [SerializeField]
+    private PoolData bombBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
+    [SerializeField]
+    private UITimer timer;
+    [SerializeField]
+    private UIBehavior uiBehavior;
 
 
 
@@ -22,20 +28,22 @@ public class Pluriball : MonoBehaviour ,IClickable
     private float width, height;
     private int rows, columns;
     private LevelManager levelManager;
-    private Vector3 colliderOriginalSize;
+    //private Vector3 colliderOriginalSize;
 
     private void Start()
     {
         levelManager = LevelManager.Get();
         levelManager.OnStart += OnStart;
-        colliderOriginalSize = _collider.bounds.size;
+        //colliderOriginalSize = _collider.bounds.size;
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;
 
+        //uiBehavior = UI.GetComponent<UIBehavior>();
 
         Pooler.Instance.AddToPool(normalBubbles);
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
-        Pooler.Instance.AddToPool(rockPoppedBubbles);
+        Pooler.Instance.AddToPool(rockBubbles);
+        Pooler.Instance.AddToPool(bombBubbles);
         
         //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. Sì, si potrebbe usare un array serializzato
         //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
@@ -43,12 +51,13 @@ public class Pluriball : MonoBehaviour ,IClickable
         {
             { EBubbleType.Normal, normalBubbles },
             { EBubbleType.AlredyPopped, alreadyPoppedBubbles },
-            { EBubbleType.Rock, rockPoppedBubbles }
+            { EBubbleType.Rock, rockBubbles },
+            { EBubbleType.Bomb, bombBubbles }
         };
 
+        timer.onTimerEnd += onTimerEnd;
+
     }
-
-
 
     public void OnStart()
     {
@@ -56,9 +65,15 @@ public class Pluriball : MonoBehaviour ,IClickable
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
         remainingBubbles = rows * columns;
         bubbles = new Bubble[remainingBubbles];
-       
+        timer.InitTimer(20, true);
         Generate(rows, columns);
+        Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
+        uiBehavior.ChangeLevelLabel();
+    }
 
+    private void onTimerEnd() {
+        Debug.Log("onTimerEnd");
+        uiBehavior.OpenEndLevelMenu();
     }
 
     public void Generate(int rows, int columns)
@@ -75,7 +90,12 @@ public class Pluriball : MonoBehaviour ,IClickable
                 int index = row * columns + col;
                 bubbles[index].transform.position = origin + new Vector2(bubbles[index].GetSize().x * col, -(bubbles[index].GetSize().y * row));
 
-                bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);       
+                bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);
+
+                if (bubbles[index].BubbleType == EBubbleType.Bomb)
+                {
+                    ((BombBubble)bubbles[index]).OnExplode += ReduceGlobalTime;
+                }
 
                 if (bubbles[index].IsAlive)
                     bubbles[index].OnDestroy += OnBubbleDestroy;
@@ -97,28 +117,45 @@ public class Pluriball : MonoBehaviour ,IClickable
         transform.localScale = new Vector3(width, height, 1);
     }
 
+    private void ReduceGlobalTime(float arg)
+    {
+        timer.ReduceTimer(arg);
+    }
+
     public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)
     {
-        Bubble b = GetBubbleFromVector(point);
-        if (b == null) return;
-
-        //TODO: sto harcodando un pollice e uno schiaffo ma vanno presi dall'aram giusta
-        b.InternalOnHit(damage, weapon);
-
-        /*TODOD check if has clicked a real cell
-             what cell based on position
-            then check on what type of weapon player has
-            and switch for specific*/
+        Bubble[] bubblesToHit = GetNearBubbles(point, area);
+        foreach (Bubble b in bubblesToHit)
+        {
+            b.InternalOnHit(damage, weapon);
+        }
     }
 
-
-    private Bubble GetBubbleFromVector(Vector2 point)
+    private Bubble[] GetNearBubbles(Vector2 point, Vector2 area)
     {
-        Vector2 origin = transform.position;
-        int index = GetIndexBubble(point, origin, new Vector2(width, height));
-        return bubbles[index];
-    }
+        List<Bubble> arenaBubbleList = new List<Bubble>();
+        int index = GetIndexBubble(point, transform.position, new Vector2(width, height));
+        arenaBubbleList.Add(bubbles[index]);
+        int offsetRounderX = Mathf.FloorToInt((area.x - 1) / 2);
+        int offsetRounderY = Mathf.FloorToInt((area.y - 1) / 2);
 
+        for( int r = -offsetRounderX; r <= offsetRounderX; r++)
+        {
+            for (int c = -offsetRounderY; c <= offsetRounderY; c++)
+            {
+                if (index + r*columns + c  >= 0 && index + r* columns + c < columns * rows) //se è dentro i range
+                {
+                    if (index % columns == 0 && c < 0)        //sto premendo la prima colonna, ignoro la colonna di sx
+                        continue;
+                    if ((index + 1) % columns == 0 && c > 0)     //sto premendo l'ultima colonna, ignoro la colonna di dx
+                        continue;
+                    arenaBubbleList.Add(bubbles[index + r * columns + c]);
+                }                    
+            }
+        }
+
+        return arenaBubbleList.ToArray();
+    }
 
     private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
@@ -146,7 +183,13 @@ public class Pluriball : MonoBehaviour ,IClickable
     {
         remainingBubbles--;
         Debug.Log(remainingBubbles);
-        if (remainingBubbles <= 0) {           
+        if (remainingBubbles <= 0) {
+            uiBehavior.OnpePreLevelMenu();
+            //probably 20 sarà cambiato poi
+            timer.InitTimer(20, true);
+            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
+                    new FMODParameter("WIN_LOSE", 0.0f)
+            });
             transform.localScale = Vector3.one;
             foreach (Bubble bubble in bubbles)
             {
@@ -169,31 +212,29 @@ public class Pluriball : MonoBehaviour ,IClickable
         Bubble[] bubbles = new Bubble[size];
 
         BubbleToCreate[] typesToCreate = levelStruct.bubbles;
-        uint[] counterTypeBubbles = new uint[typesToCreate.Length];        
+        uint[] counterTypeBubbles = new uint[typesToCreate.Length];
 
-        //Creo la mappa di bolle, tenendo conto del numero massimo di tipo di bolla inseribile nel livello
-        int i = 0;
-        while (i < size) 
+        do
         {
-            int randomVar = UnityEngine.Random.Range(0, typesToCreate.Length);
-
-            BubbleToCreate bubbleChose = typesToCreate[randomVar];
-                    
-            if (counterTypeBubbles[randomVar] == bubbleChose.max_Spawn)
+            //Creo la mappa di bolle, tenendo conto del numero massimo di tipo di bolla inseribile nel livello
+            int i = 0;
+            while (i < size)
             {
-                //Raggiunto il numero  di bolle di quel tipo massimo, si riprova 
-                continue;
+                int randomVar = UnityEngine.Random.Range(0, typesToCreate.Length);
+
+                BubbleToCreate bubbleChose = typesToCreate[randomVar];
+
+                if (counterTypeBubbles[randomVar] == bubbleChose.max_Spawn)
+                {
+                    //Raggiunto il numero  di bolle di quel tipo massimo, si riprova 
+                    continue;
+                }
+                counterTypeBubbles[randomVar]++;
+                bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleChose.type]).GetComponent<Bubble>();
+                bubbles[i].gameObject.SetActive(true);
+                i++;
             }
-            counterTypeBubbles[randomVar]++;
-            bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleChose.type]).GetComponent<Bubble>();
-            bubbles[i].gameObject.SetActive(true);
-            i++;         
-
-        }
-
-        //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
-        if (!CheckGenerationCorrectness(bubbles, typesToCreate))
-            ProceduralGeneration(levelStruct, poolDatas);
+        } while (!CheckGenerationCorrectness(bubbles, typesToCreate));  //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
 
         return bubbles;
     }
@@ -210,12 +251,10 @@ public class Pluriball : MonoBehaviour ,IClickable
         
         foreach (BubbleToCreate bubble  in bubblesToCreate)
         {
-            if (!bubbleNumbersType.ContainsKey(bubble.type) || bubbleNumbersType[bubble.type] < bubble.min_Spawn)
+            if (bubble.max_Spawn>0 && (!bubbleNumbersType.ContainsKey(bubble.type) || bubbleNumbersType[bubble.type] < bubble.min_Spawn))
                 return false;
         }
         return true;
     }
     #endregion
-
-
 }
