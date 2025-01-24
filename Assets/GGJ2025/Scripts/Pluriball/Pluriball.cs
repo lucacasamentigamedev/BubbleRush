@@ -18,7 +18,10 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private UITimer timer;
     [SerializeField]
+    private CameraShake cameraShake;
+    [SerializeField]
     private UIBehavior uiBehavior;
+
 
 
 
@@ -65,7 +68,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
         remainingBubbles = rows * columns;
         bubbles = new Bubble[remainingBubbles];
-        timer.InitTimer(20, true);
+        timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(rows, columns);
         Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
         uiBehavior.ChangeLevelLabel();
@@ -89,7 +92,7 @@ public class Pluriball : MonoBehaviour ,IClickable
             }
                 
         }
-        timer.InitTimer(20, true);
+        timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
     }
        
 
@@ -171,7 +174,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         if (remainingBubbles <= 0) {
             uiBehavior.OnpePreLevelMenu();
             //probably 20 sarà cambiato poi
-            timer.InitTimer(20, true);
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                     new FMODParameter("WIN_LOSE", 0.0f)
             });
@@ -179,6 +181,7 @@ public class Pluriball : MonoBehaviour ,IClickable
             foreach (Bubble bubble in bubbles)
             {                
                 bubble.OnDestroy -= OnBubbleDestroy;
+                bubble.OnCamerShake -= OnCamerShake;
                 bubble.gameObject.SetActive(false);
             }
             Array.Clear(bubbles, 0, bubbles.Length);
@@ -195,7 +198,7 @@ public class Pluriball : MonoBehaviour ,IClickable
     {
 
         Vector2 origin = transform.position;
-        bubbles = ProceduralGeneration(LevelManager.Get().ActiveEntryData, poolDataDictionary);
+        bubbles = ProceduralGeneration(levelManager.ActiveEntryData, poolDataDictionary);
 
         for (int row = 0; row < rows; row++)
         {
@@ -213,7 +216,10 @@ public class Pluriball : MonoBehaviour ,IClickable
                 }
 
                 if (bubbles[index].IsAlive)
+                {
                     bubbles[index].OnDestroy += OnBubbleDestroy;
+                    bubbles[index].OnCamerShake += OnCamerShake;
+                }
                 else
                     remainingBubbles--;
             }
@@ -231,6 +237,12 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         transform.localScale = new Vector3(width, height, 1);
     }
+
+    private void OnCamerShake(float shakeMagnitude, float shakeDuration)
+    {
+        cameraShake.Shake(shakeMagnitude, shakeDuration);
+    }
+
     private Bubble[] ProceduralGeneration(LevelEntryStruct levelStruct, Dictionary<EBubbleType,PoolData> poolDatas)
     {
         int size = (int)levelStruct.grid_Size.x * (int)levelStruct.grid_Size.y;

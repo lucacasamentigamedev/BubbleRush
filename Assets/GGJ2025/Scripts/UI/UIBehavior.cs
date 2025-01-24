@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UIBehavior : MonoBehaviour {
     #region Button references
@@ -24,6 +25,10 @@ public class UIBehavior : MonoBehaviour {
     private Button backToMainMenuButtonPreNewLevel;
     [SerializeField]
     private TextMeshProUGUI textMeshProText;
+    [SerializeField]
+    private Button creditsButton;
+    [SerializeField]
+    private Button exitFromCreditsButton;
     #endregion
 
     #region Menu references
@@ -38,6 +43,8 @@ public class UIBehavior : MonoBehaviour {
     private GameObject endMenu;
     [SerializeField]
     private GameObject preNextLevelMenu;
+    [SerializeField]
+    private GameObject creditsMenu;
     #endregion
 
     #region Internal variables
@@ -62,10 +69,25 @@ public class UIBehavior : MonoBehaviour {
         retryLevelButton.onClick.AddListener(OnRetryLevel);
         closeButton.onClick.AddListener(OnCloseButtonClick);
         nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
+        creditsButton.onClick.AddListener(OnCreditsButtonClick);
+        exitFromCreditsButton.onClick.AddListener(OnExitFromCreditsButtonClick);
+    }
+
+    private void OnExitFromCreditsButtonClick() {
+        AudioManager.PlayOneShotSound("MenuClose");
+        creditsMenu.SetActive(false);
+        mainMenu.SetActive(true);
+    }
+
+    private void OnCreditsButtonClick() {
+        AudioManager.PlayOneShotSound("MenuOpen");
+        creditsMenu.SetActive(true);
+        mainMenu.SetActive(false);
     }
 
     private void Start()
     {
+        creditsMenu.SetActive(false);
         mainMenu.SetActive(true);
         gameplayMenu.SetActive(false);
         pauseMenu.SetActive(false);

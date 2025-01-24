@@ -104,6 +104,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b5fe0f45cbafa9f47a089359b3cd296e, type: 3}
   requiredWeapon: 
   spriteRenderer: {fileID: 6008940093979654422}
+  shakeMagnitude: 0.1
+  shakeDuration: 0.5
   maxTimeForDisinnescation: 10
   wrongWeaponTimeReduction: 5
   noHitExplosionTimeReduction: 5

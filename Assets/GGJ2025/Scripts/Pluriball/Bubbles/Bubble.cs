@@ -10,6 +10,10 @@ public class Bubble : MonoBehaviour
     protected EWeaponType[] requiredWeapon;
     [SerializeField]
     protected SpriteRenderer spriteRenderer;
+    [SerializeField]
+    protected float shakeMagnitude;
+    [SerializeField]
+    protected float shakeDuration;
     #endregion
 
     public bool IsAlive { get { return isAlive; } }
@@ -41,6 +45,8 @@ public class Bubble : MonoBehaviour
 
     #region Public Members
     public Action OnDestroy;
+    public Action<float, float> OnCamerShake;
+
     public Vector2 GetSize()
     {
         Vector2 spriteSize = spriteRenderer.sprite.bounds.size;
@@ -82,6 +88,7 @@ public class Bubble : MonoBehaviour
         }
         ChangeSprite(0);
         isAlive = false;
+        OnCamerShake?.Invoke(shakeMagnitude, shakeDuration);
         OnDestroy?.Invoke();
     }
 

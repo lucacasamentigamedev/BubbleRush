@@ -106,3 +106,5 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 765f9a9cf2b7585458288693cc625e10, type: 3}
   requiredWeapon: 01000000
   spriteRenderer: {fileID: 6008940093979654422}
+  shakeMagnitude: 0.01
+  shakeDuration: 0.5
