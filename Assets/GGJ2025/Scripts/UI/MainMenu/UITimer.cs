@@ -9,8 +9,6 @@ public class UITimer : MonoBehaviour
     private bool isActive;
     [SerializeField]
     private RectTransform bar;
-    [SerializeField]
-    private RectTransform background;
 
     private Vector2 defaultBarSizeDelta;
     private float currentTime;
