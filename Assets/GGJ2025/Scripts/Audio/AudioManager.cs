@@ -59,7 +59,7 @@ public static class AudioManager
             }
             instance.setVolume(categoryVolume);
             // play sound
-            Debug.Log($"Play sound '{soundName}' at volume '{categoryVolume}'");
+            //Debug.Log($"Play sound '{soundName}' at volume '{categoryVolume}'");
             instance.start();
             instance.release();
         } else {

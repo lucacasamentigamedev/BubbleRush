@@ -17,6 +17,10 @@ public class UIBehavior : MonoBehaviour {
     private Button backToMainMenuButtonEnd;
     [SerializeField]
     private Button retryLevelButton;
+    [SerializeField]
+    private Button nextLevelButton;
+    [SerializeField]
+    private Button backToMainMenuButtonPreNewLevel;
     #endregion
 
     #region Menu references
@@ -29,6 +33,8 @@ public class UIBehavior : MonoBehaviour {
     private GameObject pauseMenu;
     [SerializeField]
     private GameObject endMenu;
+    [SerializeField]
+    private GameObject preNextLevelMenu;
     #endregion
 
     #region Internal variables
@@ -49,8 +55,10 @@ public class UIBehavior : MonoBehaviour {
         quitButton.onClick.AddListener(OnQuitButtonClick);
         //recycle other function callback for this two
         backToMainMenuButtonEnd.onClick.AddListener(OnBackToMainMenuButtonClick);
+        backToMainMenuButtonPreNewLevel.onClick.AddListener(OnBackToMainMenuButtonClick);
         retryLevelButton.onClick.AddListener(OnRetryLevel);
         closeButton.onClick.AddListener(OnCloseButtonClick);
+        nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
     }
 
     private void Start()
@@ -59,6 +67,7 @@ public class UIBehavior : MonoBehaviour {
         gameplayMenu.SetActive(false);
         pauseMenu.SetActive(false);
         endMenu.SetActive(false);
+        preNextLevelMenu.SetActive(false);
     }
 
     //fabio non voleva, però io l'ho fatto lo stesso. By Fabri :)
@@ -117,6 +126,18 @@ public class UIBehavior : MonoBehaviour {
         AudioManager.PlayOneShotSound("MenuConfirm");
         TogglePause();
     }
+
+    private void OnNextLevelButtonClick()
+    {
+        Debug.Log("UIBehavior - OnNextLevelButtonClick");
+        currentWeaponRectElem.gameObject.SetActive(true);
+        preNextLevelMenu.SetActive(false);
+        gameplayMenu.SetActive(true);
+        InputManager.Player.Enable();
+        InputManager.Menu.Disable();
+        canGoInPause = true;
+        Time.timeScale = 1f;
+    }
     #endregion
 
     #region endlevel
@@ -130,6 +151,20 @@ public class UIBehavior : MonoBehaviour {
         endMenu.SetActive(true);
         gameplayMenu.SetActive(false);
         canGoInPause = false;
+    }
+    #endregion
+
+    #region preNextLevel
+    public void OnpePreLevelMenu()
+    {
+        Debug.Log("UIBehavior - OnpePreLevelMenu");
+        InputManager.Player.Disable();
+        InputManager.Menu.Enable();
+        preNextLevelMenu.SetActive(true);
+        gameplayMenu.SetActive(false);
+        canGoInPause = false;
+        Time.timeScale = 0f;
+        currentWeaponRectElem.gameObject.SetActive(false);
     }
     #endregion
 

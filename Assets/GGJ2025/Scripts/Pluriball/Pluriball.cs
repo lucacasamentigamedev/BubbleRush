@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Pluriball : MonoBehaviour ,IClickable
@@ -29,13 +28,13 @@ public class Pluriball : MonoBehaviour ,IClickable
     private float width, height;
     private int rows, columns;
     private LevelManager levelManager;
-    private Vector3 colliderOriginalSize;
+    //private Vector3 colliderOriginalSize;
 
     private void Start()
     {
         levelManager = LevelManager.Get();
         levelManager.OnStart += OnStart;
-        colliderOriginalSize = _collider.bounds.size;
+        //colliderOriginalSize = _collider.bounds.size;
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;
 
@@ -60,8 +59,6 @@ public class Pluriball : MonoBehaviour ,IClickable
 
     }
 
-
-
     public void OnStart()
     {
         columns = (int)levelManager.ActiveEntryData.grid_Size.x;
@@ -69,10 +66,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles = rows * columns;
         bubbles = new Bubble[remainingBubbles];
         timer.InitTimer(20, true);
-        
         Generate(rows, columns);
-
-        
+        Debug.Log("Nuovo livello -->" + levelManager.Level);
     }
 
     private void onTimerEnd() {
@@ -161,7 +156,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         return arenaBubbleList.ToArray();
     }
 
-
     private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
         float cellDimensionX = pluriballDimension.x / columns;
@@ -189,6 +183,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles--;
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
+            uiBehavior.OnpePreLevelMenu();
             //probably 20 sarà cambiato poi
             timer.InitTimer(20, true);
             AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
@@ -261,6 +256,4 @@ public class Pluriball : MonoBehaviour ,IClickable
         return true;
     }
     #endregion
-
-
 }

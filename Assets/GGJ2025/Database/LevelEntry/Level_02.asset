@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 0
-    unlock_Lvl: 25
+    unlock_Lvl: 15
     grid_Size: {x: 4, y: 4}
     bubbles:
     - type: 0
