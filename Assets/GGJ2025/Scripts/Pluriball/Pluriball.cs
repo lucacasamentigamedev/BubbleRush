@@ -18,7 +18,10 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private UITimer timer;
     [SerializeField]
+    private CameraShake cameraShake;
+    [SerializeField]
     private UIBehavior uiBehavior;
+
 
 
 
@@ -182,6 +185,7 @@ public class Pluriball : MonoBehaviour ,IClickable
     public void OnBubbleDestroy()
     {
         remainingBubbles--;
+        cameraShake.Shake();
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
             uiBehavior.OnpePreLevelMenu();
