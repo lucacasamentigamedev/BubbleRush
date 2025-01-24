@@ -4,6 +4,5 @@ public class AlredyPoppedBubble : Bubble
     {
         bubbleType = EBubbleType.AlredyPopped;
         isAlive = false;
-        spriteRenderer.sprite = poppedSprite;
     }
 }

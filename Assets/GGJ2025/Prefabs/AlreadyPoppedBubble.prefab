@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 1570843799
   m_SortingLayer: 5
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: e6b8d10a123e5ec41a65efe19e3c664f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 735aae2ca21ac7e4baada22d1c4aae0b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,8 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91d44789010de0d47855b3294a2c62b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickRangeToPop: {x: 0, y: 0}
-  unpoppedSprite: {fileID: 21300000, guid: 00276e905ca8f8d4b938dac8031e0026, type: 3}
-  poppedSprite: {fileID: 21300000, guid: e6b8d10a123e5ec41a65efe19e3c664f, type: 3}
+  arraySprite:
+  - {fileID: 21300000, guid: 735aae2ca21ac7e4baada22d1c4aae0b, type: 3}
   requiredWeapon: 
   spriteRenderer: {fileID: 3165593436505171373}

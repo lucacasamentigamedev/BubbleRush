@@ -4,10 +4,6 @@ using UnityEngine;
 public class Bubble : MonoBehaviour
 {
     #region Serializable
-    [SerializeField]
-    protected Sprite unpoppedSprite;
-    [SerializeField] 
-    protected Sprite poppedSprite;
     [SerializeField] 
     protected Sprite[] arraySprite;
     [SerializeField] 
@@ -36,8 +32,11 @@ public class Bubble : MonoBehaviour
 
     protected virtual void InternalOnAwake()
     {
+
+        currentClickRemains = clickToPop;
         isAlive = true;
-        spriteRenderer.sprite = unpoppedSprite;
+        ChangeSprite(clickToPop);
+        //spriteRenderer.sprite = unpoppedSprite;
     }
 
     #region Public Members
@@ -52,17 +51,18 @@ public class Bubble : MonoBehaviour
     #endregion
 
     public void ResetBubble(int life) {
-        InternalOnAwake();
         clickToPop= life;
-        currentClickRemains = life;
+        InternalOnAwake();
     }
     public void ResetBubble()
     {
         InternalOnAwake();
-        currentClickRemains = clickToPop;
     }
 
-
+    private void ChangeSprite(int indexLife)
+    {
+        spriteRenderer.sprite = arraySprite[indexLife];
+    }
 
     private void InternalOnDestroy()
     {
@@ -80,24 +80,28 @@ public class Bubble : MonoBehaviour
                 });
                 break;
         }
-        spriteRenderer.sprite = poppedSprite;
+        ChangeSprite(0);
         isAlive = false;
         OnDestroy?.Invoke();
     }
 
     public virtual void InternalOnHit(int damage, EWeaponType weaponType) {
-        if (!isAlive) {
-            Debug.Log("Sono morta, bona");
+
+        //Se sono morto
+        if (!isAlive) {            
             AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
                     new FMODParameter("BUBBLE_TOOL", 0.0f)
             });
             return;
         }
+        //quando mi colpiscono con un arma sbagliata
         if (requiredWeapon.Length == 0) {
             Debug.Log("tutto mi può colpire sono tipo Dende");
             TakeDamage(damage);
             return;
         }
+
+        //quando mi colpiscono con l'arma corretta
         foreach (EWeaponType weapon in requiredWeapon) {
             if (weapon == weaponType) {
                 TakeDamage(damage);
@@ -109,9 +113,9 @@ public class Bubble : MonoBehaviour
 
     private void TakeDamage(int damage) {
         currentClickRemains -= damage;
+        ChangeSprite(currentClickRemains);
         if (currentClickRemains <= 0) {
             InternalOnDestroy();
         }
-        Debug.Log("Sono anora viva con vita " + currentClickRemains);
     }
 }
