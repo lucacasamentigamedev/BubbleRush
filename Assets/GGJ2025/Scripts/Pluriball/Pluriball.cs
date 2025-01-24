@@ -34,12 +34,11 @@ public class Pluriball : MonoBehaviour ,IClickable
     {
         levelManager = LevelManager.Get();
         levelManager.OnStart += OnStart;
-        //colliderOriginalSize = _collider.bounds.size;
+        levelManager.OnRetry += OnRetry;
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;
 
-        //uiBehavior = UI.GetComponent<UIBehavior>();
-
+        #region Set Pooler
         Pooler.Instance.AddToPool(normalBubbles);
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
         Pooler.Instance.AddToPool(rockBubbles);
@@ -54,12 +53,13 @@ public class Pluriball : MonoBehaviour ,IClickable
             { EBubbleType.Rock, rockBubbles },
             { EBubbleType.Bomb, bombBubbles }
         };
+        #endregion
 
-        timer.onTimerEnd += onTimerEnd;
+        timer.onTimerEnd += OnTimerEnd;
 
     }
 
-    public void OnStart()
+    private void OnStart()
     {
         columns = (int)levelManager.ActiveEntryData.grid_Size.x;
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
@@ -71,57 +71,29 @@ public class Pluriball : MonoBehaviour ,IClickable
         uiBehavior.ChangeLevelLabel();
     }
 
-    private void onTimerEnd() {
-        Debug.Log("onTimerEnd");
-        uiBehavior.OpenEndLevelMenu();
-    }
-
-    public void Generate(int rows, int columns)
+    private void OnRetry()
     {
-        
-        Vector2 origin = transform.position;
-
-        bubbles = ProceduralGeneration(LevelManager.Get().ActiveEntryData, poolDataDictionary);
-
-        for (int row = 0; row < rows; row++)
+        remainingBubbles = rows * columns;
+        //reset all bubbles
+        foreach (Bubble bubble in bubbles)
         {
-            for (int col = 0; col < columns; col++)
+            if (bubble.BubbleType!= EBubbleType.AlredyPopped)
             {
-                int index = row * columns + col;
-                bubbles[index].transform.position = origin + new Vector2(bubbles[index].GetSize().x * col, -(bubbles[index].GetSize().y * row));
+                bubble.ResetBubble();
+            }else
+                remainingBubbles--;
 
-                bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);
-
-                if (bubbles[index].BubbleType == EBubbleType.Bomb)
-                {
-                    ((BombBubble)bubbles[index]).OnExplode += ReduceGlobalTime;
-                }
-
-                if (bubbles[index].IsAlive)
-                    bubbles[index].OnDestroy += OnBubbleDestroy;
-                else
-                    remainingBubbles--;
+            if (bubble.BubbleType == EBubbleType.Bomb)
+            {
+                ((BombBubble)bubble).OnExplode += ReduceGlobalTime;
             }
+                
         }
-
-        //resize
-        width = bubbles[0].GetSize().x * columns;       //+ offset 
-        height = bubbles[0].GetSize().y * rows;
-        Debug.Log($"width: {width} height {height}");
-        Vector3 newScale = transform.localScale;
-        newScale.x = width / _collider.bounds.size.x;
-        newScale.y = height / _collider.bounds.size.y;
-        newScale.z = 1;
-        Debug.Log($"New Scale: {newScale}");
-
-        transform.localScale = new Vector3(width, height, 1);
+        timer.InitTimer(20, true);
     }
+       
 
-    private void ReduceGlobalTime(float arg)
-    {
-        timer.ReduceTimer(arg);
-    }
-
+    #region Interface OnClick
     public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)
     {
         Bubble[] bubblesToHit = GetNearBubbles(point, area);
@@ -130,7 +102,21 @@ public class Pluriball : MonoBehaviour ,IClickable
             b.InternalOnHit(damage, weapon);
         }
     }
+    #endregion
 
+    #region TimerForBomb
+    private void OnTimerEnd()
+    {
+        Debug.Log("onTimerEnd");
+        uiBehavior.OpenEndLevelMenu();
+    }
+    private void ReduceGlobalTime(float arg)
+    {
+        timer.ReduceTimer(arg);
+    }
+    #endregion
+
+    #region After Click Methods
     private Bubble[] GetNearBubbles(Vector2 point, Vector2 area)
     {
         List<Bubble> arenaBubbleList = new List<Bubble>();
@@ -178,8 +164,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         int index = (row * columns) + column;
         return index;
     }
-
-    public void OnBubbleDestroy()
+    private void OnBubbleDestroy()
     {
         remainingBubbles--;
         Debug.Log(remainingBubbles);
@@ -192,8 +177,7 @@ public class Pluriball : MonoBehaviour ,IClickable
             });
             transform.localScale = Vector3.one;
             foreach (Bubble bubble in bubbles)
-            {
-                bubble.ResetBubble(1);
+            {                
                 bubble.OnDestroy -= OnBubbleDestroy;
                 bubble.gameObject.SetActive(false);
             }
@@ -204,8 +188,49 @@ public class Pluriball : MonoBehaviour ,IClickable
             
         }
     }
+    #endregion
 
     #region Procedural Generation
+    private void Generate(int rows, int columns)
+    {
+
+        Vector2 origin = transform.position;
+        bubbles = ProceduralGeneration(LevelManager.Get().ActiveEntryData, poolDataDictionary);
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < columns; col++)
+            {
+                int index = row * columns + col; 
+
+
+                bubbles[index].transform.position = origin + new Vector2(bubbles[index].GetSize().x * col, -(bubbles[index].GetSize().y * row));
+                bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);
+
+                if (bubbles[index].BubbleType == EBubbleType.Bomb)
+                {
+                    ((BombBubble)bubbles[index]).OnExplode += ReduceGlobalTime;
+                }
+
+                if (bubbles[index].IsAlive)
+                    bubbles[index].OnDestroy += OnBubbleDestroy;
+                else
+                    remainingBubbles--;
+            }
+        }
+
+        //resize
+        width = bubbles[0].GetSize().x * columns;       //+ offset 
+        height = bubbles[0].GetSize().y * rows;
+        Debug.Log($"width: {width} height {height}");
+        Vector3 newScale = transform.localScale;
+        newScale.x = width / _collider.bounds.size.x;
+        newScale.y = height / _collider.bounds.size.y;
+        newScale.z = 1;
+        Debug.Log($"New Scale: {newScale}");
+
+        transform.localScale = new Vector3(width, height, 1);
+    }
     private Bubble[] ProceduralGeneration(LevelEntryStruct levelStruct, Dictionary<EBubbleType,PoolData> poolDatas)
     {
         int size = (int)levelStruct.grid_Size.x * (int)levelStruct.grid_Size.y;
@@ -232,13 +257,14 @@ public class Pluriball : MonoBehaviour ,IClickable
                 counterTypeBubbles[randomVar]++;
                 bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleChose.type]).GetComponent<Bubble>();
                 bubbles[i].gameObject.SetActive(true);
+                int life = UnityEngine.Random.Range((int)bubbleChose.min_Pop, (int)bubbleChose.max_Pop + 1);
+                bubbles[i].ResetBubble(life);
                 i++;
             }
         } while (!CheckGenerationCorrectness(bubbles, typesToCreate));  //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
 
         return bubbles;
     }
-    
     private bool CheckGenerationCorrectness(Bubble[] bubbleGenerated, BubbleToCreate[] bubblesToCreate)
     {
         Dictionary<EBubbleType, int> bubbleNumbersType = new Dictionary<EBubbleType, int>();
