@@ -28,7 +28,7 @@ public static class SaveSystem
             file = File.OpenRead(destination);
         else
         { 
-            Debug.LogWarning("File save.fish not found");
+            Debug.Log("File save.fish not found");
             level = 1;
             return;
         }
@@ -36,5 +36,14 @@ public static class SaveSystem
         BinaryFormatter bf = new BinaryFormatter();
         level = (uint)bf.Deserialize(file);
         file.Close();
+    }
+
+    public static void RemoveFile()
+    {
+        string destination = Application.persistentDataPath + "/save.fish";
+        if (File.Exists(destination))
+        {
+            File.Delete(destination);
+        }
     }
 }
