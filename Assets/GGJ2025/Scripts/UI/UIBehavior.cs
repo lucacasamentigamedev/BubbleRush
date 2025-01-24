@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -37,8 +36,10 @@ public class UIBehavior : MonoBehaviour {
     bool canGoInPause = false;
     #endregion
 
+    #region Weapon
     [SerializeField]
     private RectTransform currentWeaponRectElem;
+    #endregion
 
     #region Mono
     private void Awake()
@@ -49,6 +50,7 @@ public class UIBehavior : MonoBehaviour {
         //recycle other function callback for this two
         backToMainMenuButtonEnd.onClick.AddListener(OnBackToMainMenuButtonClick);
         retryLevelButton.onClick.AddListener(OnRetryLevel);
+        closeButton.onClick.AddListener(OnCloseButtonClick);
     }
 
     private void Start()
@@ -69,9 +71,11 @@ public class UIBehavior : MonoBehaviour {
     }
     #endregion
 
+    #region other
     public void OnButtonFocus() {
         AudioManager.PlayOneShotSound("MenuSelect");
     }
+    #endregion
 
     #region onButtonCLick
     private void OnPlayButtonClick() {
@@ -89,6 +93,8 @@ public class UIBehavior : MonoBehaviour {
         gameplayMenu.SetActive(true);
         currentWeaponRectElem.gameObject.SetActive(true);
         //Cursor.visible = false;
+        InputManager.Player.Enable();
+        InputManager.Menu.Disable();
         canGoInPause = true;
     }
 
@@ -113,6 +119,20 @@ public class UIBehavior : MonoBehaviour {
     }
     #endregion
 
+    #region endlevel
+    public void OpenEndLevelMenu()
+    {
+        Debug.Log("UIBehavior - openPauseMenu");
+        InputManager.Player.Disable();
+        InputManager.Menu.Enable();
+        currentWeaponRectElem.gameObject.SetActive(false);
+        //Cursor.visible = true;
+        endMenu.SetActive(true);
+        gameplayMenu.SetActive(false);
+        canGoInPause = false;
+    }
+    #endregion
+
     #region Pause
     private void TogglePause()
     {
@@ -124,17 +144,6 @@ public class UIBehavior : MonoBehaviour {
         } else {
             ClosePauseMenu();
         }
-    }
-
-    public void OpenEndLevelMenu() {
-        Debug.Log("UIBehavior - openPauseMenu");
-        InputManager.Player.Disable();
-        InputManager.Menu.Enable();
-        currentWeaponRectElem.gameObject.SetActive(false);
-        //Cursor.visible = true;
-        endMenu.SetActive(true);
-        gameplayMenu.SetActive(false);
-        canGoInPause = false;
     }
 
     private void OpenPauseMenu() {
