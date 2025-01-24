@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
         for (int i = 0; i < avaiableWeapons.Length; i++) {
             avaiableWeapons[i] = new Weapon();
             avaiableWeapons[i].prepareWeapon(weaponDatabase.GetWeaponData((EWeaponType)i));
+
         }
         //inputs bind
         InputManager.Player.Interact.performed += onInteract;
@@ -64,8 +65,8 @@ public class Player : MonoBehaviour
 
         Debug.Log("PLAYER - START LIV" + level);
         foreach (Weapon weapon in avaiableWeapons) {
-            if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.isUnlocked) {
-                weapon.weaponData.isUnlocked = true;
+            if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.IsUnlocked) {
+                weapon.weaponData.IsUnlocked = true;
                 Debug.Log("PLAYER - Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
             }
         }
@@ -85,7 +86,8 @@ public class Player : MonoBehaviour
             currentIndexWeapon = 0;
         else if(currentIndexWeapon < 0)
             currentIndexWeapon = avaiableWeapons.Length -1;
-        if (avaiableWeapons[currentIndexWeapon].weaponData != null && avaiableWeapons[currentIndexWeapon].weaponData.isUnlocked) {
+        if (avaiableWeapons[currentIndexWeapon].weaponData != null 
+            && avaiableWeapons[currentIndexWeapon].weaponData.IsUnlocked) {
             AudioManager.PlayOneShotSound("BubbleToolChange");
             currentWeapon = avaiableWeapons[currentIndexWeapon];
             Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());

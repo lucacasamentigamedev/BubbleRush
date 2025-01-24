@@ -12,6 +12,7 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     public Action OnStart;
+    public Action OnRetry;
 
     #region Properties
     public uint Level { 
@@ -59,6 +60,10 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     #region PubblicMethods
+    public void RetryLevel()
+    {
+        OnRetry?.Invoke();
+    }
     public void StartGame()
     {
         OnStart?.Invoke();

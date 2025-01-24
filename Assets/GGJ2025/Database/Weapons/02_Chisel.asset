@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: 02_Chisel
   m_EditorClassIdentifier: 
   weaponType: 1
-  isUnlocked: 1
   levelToUnlock: 5
   damage: 1
   area: {x: 0, y: 0}
