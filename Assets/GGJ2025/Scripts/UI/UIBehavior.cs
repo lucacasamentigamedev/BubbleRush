@@ -29,6 +29,8 @@ public class UIBehavior : MonoBehaviour {
     private Button creditsButton;
     [SerializeField]
     private Button exitFromCreditsButton;
+    [SerializeField]
+    private Button deleteSaveButton;
     #endregion
 
     #region Menu references
@@ -71,6 +73,11 @@ public class UIBehavior : MonoBehaviour {
         nextLevelButton.onClick.AddListener(OnNextLevelButtonClick);
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitFromCreditsButton.onClick.AddListener(OnExitFromCreditsButtonClick);
+        deleteSaveButton.onClick.AddListener(OnDeleteSaveButtonClick);
+    }
+
+    private void OnDeleteSaveButtonClick() {
+        LevelManager.Get().Level = SaveSystem.RemoveFile();
     }
 
     private void OnExitFromCreditsButtonClick() {

@@ -16,8 +16,11 @@ public class UITimer : MonoBehaviour
 
     public Action onTimerEnd;
 
+    private bool soundBeepExecuted = false;
+
     public void InitTimer(float maxTime, bool isActive)
     {
+        soundBeepExecuted = false;
         gameObject.SetActive(isActive); 
         this.isActive = isActive;
         bar.localScale = scale;
@@ -67,6 +70,14 @@ public class UITimer : MonoBehaviour
     void Update()
     {
         if (!isActive) return;
+        int t = (int)(Time.time - timeToCheck);
+        if (((t <= 5 && t > 4) || (t <= 3 && t > 2) || (t <= 1 && t > 0)) && !soundBeepExecuted) {
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = true;
+        } else if (((t <= 4 && t > 3) || (t <= 2 && t > 1)) && soundBeepExecuted) {
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = false;
+        }
 
         ReduceTimer(Time.time - timeToCheck);
         timeToCheck = Time.time;
