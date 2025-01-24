@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 04_WireCutter
   m_EditorClassIdentifier: 
   weaponType: 3
-  isUnlocked: 1
+  isUnlocked: 0
   levelToUnlock: 15
   damage: 1
   area: {x: 0, y: 0}

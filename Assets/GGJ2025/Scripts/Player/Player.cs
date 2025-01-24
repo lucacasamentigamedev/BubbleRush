@@ -66,11 +66,11 @@ public class Player : MonoBehaviour
         //Cursor.visible = false;
 
         uint level = LevelManager.Get().Level;
-        Debug.Log("onLevelManagerStart sono al livello" + level);
+        Debug.Log("PLAYER - START LIV" + level);
         foreach (Weapon weapon in avaiableWeapons) {
             if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.isUnlocked) {
                 weapon.weaponData.isUnlocked = true;
-                Debug.Log("Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
+                Debug.Log("PLAYER - Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
             }
         }
     }

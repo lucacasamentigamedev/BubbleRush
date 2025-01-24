@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIBehavior : MonoBehaviour {
     #region Button references
@@ -21,6 +22,8 @@ public class UIBehavior : MonoBehaviour {
     private Button nextLevelButton;
     [SerializeField]
     private Button backToMainMenuButtonPreNewLevel;
+    [SerializeField]
+    private TextMeshProUGUI textMeshProText;
     #endregion
 
     #region Menu references
@@ -140,8 +143,15 @@ public class UIBehavior : MonoBehaviour {
     }
     #endregion
 
+    #region Level
+    public void ChangeLevelLabel()
+    {
+        textMeshProText.text = "Level " + LevelManager.Get().Level;
+    }
+#endregion
+
     #region endlevel
-    public void OpenEndLevelMenu()
+public void OpenEndLevelMenu()
     {
         Debug.Log("UIBehavior - openPauseMenu");
         InputManager.Player.Disable();

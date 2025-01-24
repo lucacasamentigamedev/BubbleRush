@@ -67,7 +67,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         bubbles = new Bubble[remainingBubbles];
         timer.InitTimer(20, true);
         Generate(rows, columns);
-        Debug.Log("Nuovo livello -->" + levelManager.Level);
+        Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
+        uiBehavior.ChangeLevelLabel();
     }
 
     private void onTimerEnd() {

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 03_ToyHammer
   m_EditorClassIdentifier: 
   weaponType: 2
-  isUnlocked: 1
+  isUnlocked: 0
   levelToUnlock: 10
   damage: 1
   area: {x: 3, y: 3}
