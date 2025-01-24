@@ -9,7 +9,7 @@ public class UITimer : MonoBehaviour
     private bool isActive;
     [SerializeField]
     private RectTransform bar;
-
+    
     private Vector2 scale;
     private float currentTime;
     private float timeToCheck;
@@ -20,7 +20,7 @@ public class UITimer : MonoBehaviour
     {
         gameObject.SetActive(isActive); 
         this.isActive = isActive;
-        bar.localScale = scale;
+        bar.localScale = Vector3.one;
         this.maxTime = maxTime;
         currentTime = maxTime;
         timeToCheck = Time.time;
@@ -60,7 +60,6 @@ public class UITimer : MonoBehaviour
     void Start()
     {
         scale = bar.localScale;
-        InitTimer(maxTime, false);
     }
 
     // Update is called once per frame
