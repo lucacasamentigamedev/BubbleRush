@@ -44,7 +44,16 @@ public class LevelManager : MonoBehaviour
     #endregion
 
     #region MonoBehaviourMethods
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+        // Start is called before the first frame update
     void Start()
     {
         SaveSystem.LoadFile(out currentLevel);

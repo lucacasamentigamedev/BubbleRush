@@ -16,7 +16,26 @@ public class Player : MonoBehaviour
     private Image currentWeaponImage;
     #endregion
 
+    #region Singleton
+
+    private static Player instance;
+    public static Player Get()
+    {
+        if (instance != null) return instance;
+        instance = FindObjectOfType<Player>();
+        return instance;
+    }
+    #endregion
+
     private void Awake() {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
         //prepare first weapon
         avaiableWeapons = new Weapon[(int)EWeaponType.LAST];
         for (int i = 0; i < avaiableWeapons.Length; i++) {
@@ -107,7 +126,9 @@ public class Player : MonoBehaviour
         ChangeWeapon(forward);
     }
 
-    void onInteract(InputAction.CallbackContext cc) {
+    void onInteract(InputAction.CallbackContext cc)
+    {
+        Debug.Log("ON INTERACT CALLED " + currentWeapon.weaponData.weaponType.ToString());
         switch (currentWeapon.weaponData.weaponType) {
             case EWeaponType.Chisel:
                 AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
@@ -139,6 +160,10 @@ public class Player : MonoBehaviour
                 clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
         }
+    }
+    public void StopCoroutine()
+    {
+        StopAllCoroutines();
     }
 
 
