@@ -87,8 +87,6 @@ public class UIBehavior : MonoBehaviour {
         quitPreNewLevel.onClick.AddListener(OnQuitButtonClick);
     }
     private void OnDeleteSaveButtonClick() {
-        if (!canUse) return;
-
         AudioManager.PlayOneShotSound("MenuConfirm");
         LevelManager.Get().Level = SaveSystem.RemoveFile();
     }
