@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level_02
   m_EditorClassIdentifier: 
   data:
-    is_Timer_Activate: 1
-    timer_for_level: 40
+    is_Timer_Activate: 0
+    timer_for_level: 30
     stars_for_level:
     - 0.1
     - 0.2
-    - 0.3
+    - 0.5
     unlock_Lvl: 2
     grid_Size: {x: 4, y: 3}
     bubbles:
@@ -26,4 +26,4 @@ MonoBehaviour:
       min_Spawn: 12
       max_Spawn: 12
       min_Pop: 1
-      max_Pop: 2
+      max_Pop: 3

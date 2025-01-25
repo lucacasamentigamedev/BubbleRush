@@ -17,23 +17,18 @@ MonoBehaviour:
     timer_for_level: 30
     stars_for_level:
     - 0.2
-    - 0.4
-    - 0.6
-    unlock_Lvl: 11
+    - 0.3
+    - 0.5
+    unlock_Lvl: 7
     grid_Size: {x: 10, y: 5}
     bubbles:
     - type: 0
       min_Spawn: 25
-      max_Spawn: 30
-      min_Pop: 1
-      max_Pop: 3
-    - type: 1
-      min_Spawn: 5
-      max_Spawn: 10
+      max_Spawn: 35
       min_Pop: 1
       max_Pop: 3
     - type: 3
-      min_Spawn: 0
-      max_Spawn: 10
+      min_Spawn: 15
+      max_Spawn: 25
       min_Pop: 0
       max_Pop: 0
