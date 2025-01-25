@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,6 +17,10 @@ public class UISuperMain : MonoBehaviour
     private float fadeTimer = 0f; // Timer per il fade-in
     private bool isFadingIn = true;  // Flag per sapere se stiamo facendo il fade-in
     private float fadeDuration = 3f;  // Durata del fade-in in secondi
+
+    private void Start() {
+        AudioManager.PlayBackgroundMusic("IntroMusic");
+    }
 
     // Update is called once per frame
     void Update()

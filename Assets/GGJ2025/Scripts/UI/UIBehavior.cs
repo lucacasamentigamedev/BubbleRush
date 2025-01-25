@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-using System;
-using System.Threading;
 using System.Collections;
 
 public class UIBehavior : MonoBehaviour {
@@ -36,6 +34,8 @@ public class UIBehavior : MonoBehaviour {
     private Button deleteSaveButton;
     [SerializeField]
     private Button quitPreNewLevel;
+    [SerializeField]
+    private Button quitGameFromMainMenu;
     #endregion
 
     #region Menu references
@@ -85,6 +85,7 @@ public class UIBehavior : MonoBehaviour {
         exitFromCreditsButton.onClick.AddListener(OnExitFromCreditsButtonClick);
         deleteSaveButton.onClick.AddListener(OnDeleteSaveButtonClick);
         quitPreNewLevel.onClick.AddListener(OnQuitButtonClick);
+        quitGameFromMainMenu.onClick.AddListener(PureQuitApplication);
     }
     private void OnDeleteSaveButtonClick() {
         AudioManager.PlayOneShotSound("MenuConfirm");
@@ -111,6 +112,7 @@ public class UIBehavior : MonoBehaviour {
         pauseMenu.SetActive(false);
         endMenu.SetActive(false);
         preNextLevelMenu.SetActive(false);
+        AudioManager.PlayBackgroundMusic("MainMenuMusic");
     }
 
     //fabio non voleva, però io l'ho fatto lo stesso. By Fabri :)
@@ -175,6 +177,11 @@ public class UIBehavior : MonoBehaviour {
         
         Debug.Log("UIBehavior - UIBehavior");
         AudioManager.PlayOneShotSound("MenuConfirm");
+        Application.Quit();
+    }
+
+    private void PureQuitApplication() {
+        Debug.Log("UIBehavior - PureQuitApplication");
         Application.Quit();
     }
 

@@ -24,6 +24,8 @@ public static class AudioManager
         { "BubbleToolChange", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL_CHANGE", AudioCategory.Tools) },
         { "WinLose", new AudioEvent("event:/ACTION/WIN_LOSE", AudioCategory.Other) },
         { "Conveyor", new AudioEvent("event:/SCENE/CONVEYOR", AudioCategory.Other) },
+        { "MainMenuMusic", new AudioEvent("event:/SCENE/MUSIC_MAINMENU", AudioCategory.Music) },
+        { "IntroMusic", new AudioEvent("event:/SCENE/MUSIC_INTRO", AudioCategory.Music) },
         { "MenuOpen", new AudioEvent("event:/MENU/MENU_OPEN", AudioCategory.UI) },
         { "MenuClose", new AudioEvent("event:/MENU/MENU_CLOSE", AudioCategory.UI) },
         { "MenuConfirm", new AudioEvent("event:/MENU/MENU_CONFIRM", AudioCategory.UI) },
