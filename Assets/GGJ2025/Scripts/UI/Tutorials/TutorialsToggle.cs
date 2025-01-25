@@ -32,13 +32,13 @@ public class TutorialsToggle : MonoBehaviour
             case 3:
                 OpenTutorialOnScreen(2);
                 break;
-            case 4:
+            case 5:
                 OpenTutorialOnScreen(3);
                 break;
-            case 5:
+            case 7:
                 OpenTutorialOnScreen(4);
                 break;
-            case 6:
+            case 10:
                 OpenTutorialOnScreen(5);
                 break;
             default:

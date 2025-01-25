@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 03_ToyHammer
   m_EditorClassIdentifier: 
   weaponType: 2
-  levelToUnlock: 6
+  levelToUnlock: 7
   damage: 1
   area: {x: 3, y: 3}
   preInteract: {fileID: 21300000, guid: 984cc2ea31efc294db8a6866e2307eef, type: 3}
