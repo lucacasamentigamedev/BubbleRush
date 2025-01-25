@@ -113,6 +113,9 @@ public class Pluriball : MonoBehaviour ,IClickable
         foreach (Bubble bubble in bubbles)
         {
             bubble.gameObject.SetActive(false);
+            BombBubble bubbleCast = bubble as BombBubble;
+            if (bubbleCast == null) continue;
+            bubbleCast.OnExplode -= ReduceGlobalTime;
         }
         if (win)
         {
