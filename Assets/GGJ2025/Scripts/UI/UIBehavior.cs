@@ -77,6 +77,7 @@ public class UIBehavior : MonoBehaviour {
     }
 
     private void OnDeleteSaveButtonClick() {
+        AudioManager.PlayOneShotSound("MenuConfirm");
         LevelManager.Get().Level = SaveSystem.RemoveFile();
     }
 
