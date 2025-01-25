@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
 public static class SaveSystem
 {
@@ -10,7 +11,15 @@ public static class SaveSystem
         FileStream file;
 
         if (File.Exists(destination))
-            file = File.OpenWrite(destination);
+            try
+            {
+                file = File.OpenWrite(destination);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return;
+            }
         else
             file = File.Create(destination);
 

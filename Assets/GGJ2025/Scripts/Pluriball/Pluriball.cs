@@ -23,6 +23,10 @@ public class Pluriball : MonoBehaviour ,IClickable
     private UIBehavior uiBehavior;
     [SerializeField]
     private GameObject pluriballVisual;
+    [SerializeField]
+    private Transform[] popLocation;
+    [SerializeField]
+    private GameObject asset;
 
     private Dictionary<EBubbleType, PoolData> poolDataDictionary;
     private Bubble[] bubbles;
@@ -234,7 +238,10 @@ public class Pluriball : MonoBehaviour ,IClickable
             levelManager.Level += 1;
             //TODO make things
         } else {
-            
+            int index = UnityEngine.Random.Range(0, popLocation.Length);
+
+            GameObject obj = Instantiate(asset, popLocation[index].transform.position, popLocation[index].transform.rotation);
+            obj.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-45, 46)));
         }
     }
     #endregion
