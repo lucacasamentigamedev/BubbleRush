@@ -32,6 +32,8 @@ public class UIBehavior : MonoBehaviour {
     private Button exitFromCreditsButton;
     [SerializeField]
     private Button deleteSaveButton;
+    [SerializeField]
+    private Button quitPreNewLevel;
     #endregion
 
     #region Menu references
@@ -80,6 +82,7 @@ public class UIBehavior : MonoBehaviour {
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitFromCreditsButton.onClick.AddListener(OnExitFromCreditsButtonClick);
         deleteSaveButton.onClick.AddListener(OnDeleteSaveButtonClick);
+        quitPreNewLevel.onClick.AddListener(OnQuitButtonClick);
     }
     private void OnDeleteSaveButtonClick() {
         AudioManager.PlayOneShotSound("MenuConfirm");
