@@ -61,11 +61,7 @@ public class UIBehavior : MonoBehaviour {
 
     #region stars
     [SerializeField]
-    private GameObject star1;
-    [SerializeField]
-    private GameObject star2;
-    [SerializeField]
-    private GameObject star3;
+    private GameObject[] starsUI;
     #endregion
 
     #region Mono
@@ -206,8 +202,12 @@ public void OpenEndLevelMenu()
     #endregion
 
     #region preNextLevel
-    public void OnpePreLevelMenu()
+    public void OnpePreLevelMenu(int stars=0)
     {
+        for(int i =0; i< starsUI.Length; i++)
+        {
+            starsUI[i].SetActive(false);
+        }
         Debug.Log("UIBehavior - OnpePreLevelMenu");
         InputManager.Player.Disable();
         InputManager.Menu.Enable();
@@ -216,6 +216,11 @@ public void OpenEndLevelMenu()
         canGoInPause = false;
         Time.timeScale = 0f;
         currentWeaponRectElem.gameObject.SetActive(false);
+        for(int i = 1; i <= stars; i++)
+        {
+            starsUI[i-1].SetActive(true);
+
+        }
     }
     #endregion
 

@@ -104,7 +104,23 @@ public class Pluriball : MonoBehaviour ,IClickable
             bubble.gameObject.SetActive(false);
         }
         if (win)
-            uiBehavior.OnpePreLevelMenu();
+        {
+            int starNumbers = 0;
+            float[] startsThreshold = levelManager.ActiveEntryData.stars_for_level;                       
+            for (int i = 0;i < startsThreshold.Length;i++)
+            {
+                if (startsThreshold[i] <= timer.GetTimerPercent())
+                {
+                    starNumbers++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            uiBehavior.OnpePreLevelMenu(starNumbers);
+
+        }
         else
             uiBehavior.OpenEndLevelMenu();
         pluriballVisual.SetActive(false);

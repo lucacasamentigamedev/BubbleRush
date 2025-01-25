@@ -4748,9 +4748,10 @@ MonoBehaviour:
   preNextLevelMenu: {fileID: 1499267217}
   creditsMenu: {fileID: 132662825}
   currentWeaponRectElem: {fileID: 475752726}
-  star1: {fileID: 914454439}
-  star2: {fileID: 1535982282}
-  star3: {fileID: 1678109767}
+  starsUI:
+  - {fileID: 914454439}
+  - {fileID: 1535982282}
+  - {fileID: 1678109767}
 --- !u!210 &8702520741989323074
 SortingGroup:
   m_ObjectHideFlags: 0
