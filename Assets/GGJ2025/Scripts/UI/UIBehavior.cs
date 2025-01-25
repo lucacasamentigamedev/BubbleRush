@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Threading;
+using System.Collections;
 
 public class UIBehavior : MonoBehaviour {
 
@@ -85,6 +87,8 @@ public class UIBehavior : MonoBehaviour {
         quitPreNewLevel.onClick.AddListener(OnQuitButtonClick);
     }
     private void OnDeleteSaveButtonClick() {
+        if (!canUse) return;
+
         AudioManager.PlayOneShotSound("MenuConfirm");
         LevelManager.Get().Level = SaveSystem.RemoveFile();
     }
@@ -121,6 +125,11 @@ public class UIBehavior : MonoBehaviour {
     }
     #endregion
 
+    #region ButtonCanPressed
+    private bool canUse;
+    private Coroutine coroutineDeleay;
+    #endregion
+
     #region other
     public void OnButtonFocus() {
         AudioManager.PlayOneShotSound("MenuSelect");
@@ -138,6 +147,8 @@ public class UIBehavior : MonoBehaviour {
     }
 
     private void OnRetryLevel() {
+        if (!canUse) return;
+
         AudioManager.ResumeBackgroundMusic();
         Debug.Log("UIBehavior - onPlayButtonClick");
         AudioManager.PlayOneShotSound("MenuConfirm");
@@ -152,6 +163,8 @@ public class UIBehavior : MonoBehaviour {
     }
 
     private void OnBackToMainMenuButtonClick() {
+        if (!canUse) return;
+
         Debug.Log("UIBehavior - onBackToMainMenuButton");
         AudioManager.PlayOneShotSound("MenuConfirm");        
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -159,13 +172,17 @@ public class UIBehavior : MonoBehaviour {
         Time.timeScale = 1f;
     }
 
-    private void OnQuitButtonClick() {
+    private void OnQuitButtonClick() {        
+        if (!canUse) return;   
+        
         Debug.Log("UIBehavior - UIBehavior");
         AudioManager.PlayOneShotSound("MenuConfirm");
         Application.Quit();
     }
 
     private void OnCloseButtonClick() {
+        if (!canUse) return;
+
         Debug.Log("UIBehavior - onCloseButton");
         AudioManager.PlayOneShotSound("MenuConfirm");
         TogglePause();
@@ -173,6 +190,7 @@ public class UIBehavior : MonoBehaviour {
 
     private void OnNextLevelButtonClick()
     {
+        if (!canUse) return;
         AudioManager.ResumeBackgroundMusic();
         Debug.Log("UIBehavior - OnNextLevelButtonClick");
         currentWeaponRectElem.gameObject.SetActive(true);
@@ -196,6 +214,7 @@ public class UIBehavior : MonoBehaviour {
     #region endlevel
     public void OpenEndLevelMenu()
     {
+        coroutineDeleay = StartCoroutine(ToggleButtonCorutine());
         AudioManager.PauseBackgroundMusic();
         Debug.Log("UIBehavior - openPauseMenu");
         InputManager.Player.Disable();
@@ -211,6 +230,7 @@ public class UIBehavior : MonoBehaviour {
     #region preNextLevel
     public void OnpePreLevelMenu(int stars=0)
     {
+        coroutineDeleay = StartCoroutine(ToggleButtonCorutine());
         AudioManager.PauseBackgroundMusic();
         for (int i =0; i< starsUI.Length; i++)
         {
@@ -246,6 +266,7 @@ public class UIBehavior : MonoBehaviour {
     }
 
     private void OpenPauseMenu() {
+        coroutineDeleay = StartCoroutine(ToggleButtonCorutine());
         AudioManager.PauseBackgroundMusic();
         Debug.Log("UIBehavior - openPauseMenu");
         AudioManager.PlayOneShotSound("MenuOpen");
@@ -269,4 +290,14 @@ public class UIBehavior : MonoBehaviour {
         Time.timeScale = 1f;
     }
     #endregion
+
+    private IEnumerator ToggleButtonCorutine()
+    {
+        canUse = false;
+        Debug.Log("START CORUTINE BUTTON TOGGLE");
+        yield return new WaitForSecondsRealtime(0.5f);
+        canUse = true;
+        Debug.Log("STOP CORUTINE BUTTON TOGGLE");
+
+    }
 }

@@ -1,18 +1,19 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 public class UITimer : MonoBehaviour
 {
     [SerializeField]
-    private float maxTime;
-    [SerializeField]
-    private bool isActive;
-    [SerializeField]
     private RectTransform bar;
+    [SerializeField]
+    private TextMeshProUGUI text;
     
     private Vector2 scale;
     private float currentTime;
     private float timeToCheck;
+    private float maxTime;
+    private bool isActive;
 
     public Action onTimerEnd;
 
@@ -43,6 +44,7 @@ public class UITimer : MonoBehaviour
     }
     private void InternalResizeTimer()
     {
+        text.text = string.Format(currentTime.ToString("00"));
         bar.localScale = new Vector2(currentTime / maxTime, scale.y);
         Debug.Log($"UPDATE → LocalScale: {bar.localScale} MaxTime: {maxTime} currentTime : {currentTime}");
         InternalOnLose();
