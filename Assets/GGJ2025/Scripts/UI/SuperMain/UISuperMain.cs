@@ -9,7 +9,7 @@ public class UISuperMain : MonoBehaviour
     [SerializeField]
     private Sprite[] sprites;
 
-    private float timeInterval = 3f;  // Interval di tempo tra le immagini in secondi
+    private float timeInterval = 9f;  // Interval di tempo tra le immagini in secondi
     private float timer = 0f;    // Variabile per tenere traccia del tempo passato
     private int currentIndex = 0;  // Indice per scorrere nell'array delle immagini
     private bool stopAnimation;
