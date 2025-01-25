@@ -16,7 +16,7 @@ MonoBehaviour:
     is_Timer_Activate: 0
     timer_for_level: 30
     stars_for_level:
-    - 0.2
+    - 0
     - 0.4
     - 0.6
     unlock_Lvl: 0
