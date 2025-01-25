@@ -131,6 +131,7 @@ public class UIBehavior : MonoBehaviour {
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         canGoInPause = true;
+        AudioManager.PlayBackgroundMusic("GameplayMusic");
     }
 
     private void OnRetryLevel() {
