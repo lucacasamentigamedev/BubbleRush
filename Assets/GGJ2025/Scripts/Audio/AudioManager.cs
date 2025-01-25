@@ -18,6 +18,7 @@ public static class AudioManager
 
     private static readonly Dictionary<string, AudioEvent> soundDictionary = new Dictionary<string, AudioEvent> {
         { "Test", new AudioEvent("event:/Test/Test", AudioCategory.Test) },
+        { "TestLoop", new AudioEvent("event:/Test/TestLoop", AudioCategory.Test) },
         { "BubblePop", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_POP", AudioCategory.Bubbles) },
         { "BubbleTool", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL", AudioCategory.Tools) },
         { "BubbleToolChange", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL_CHANGE", AudioCategory.Tools) },
@@ -31,7 +32,7 @@ public static class AudioManager
         { "BubbleBombBeep", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_MALUS_BOMB_BEEP", AudioCategory.Bubbles) },
         { "TimeEndBeep", new AudioEvent("event:/ACTION/TIMEEND", AudioCategory.Other) },
         { "TutorialMessagePop", new AudioEvent("event:/SCENE/TUTORIAL_MESAGE", AudioCategory.UI) },
-        { "Music", new AudioEvent("event:/ACTION/MUSIC", AudioCategory.UI) },
+        { "GameplayMusic", new AudioEvent("event:/ACTION/MUSIC", AudioCategory.Music) },
         { "BubbleSimpleCLick", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL_SIMPLECLICK", AudioCategory.Bubbles) }
     };
 
@@ -76,7 +77,7 @@ public static class AudioManager
     public static void PlayBackgroundMusic(string soundPath) {
         // stop actual bg
         if (currentBackgroundMusic.isValid()) {
-            currentBackgroundMusic.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            currentBackgroundMusic.stop(STOP_MODE.ALLOWFADEOUT);
         }
         // get event
         if (soundDictionary.TryGetValue(soundPath, out AudioEvent audioEvent)) {
@@ -86,6 +87,24 @@ public static class AudioManager
             currentBackgroundMusic = audioEvent.CreateInstance();
             currentBackgroundMusic.setVolume(categoryVolume);
             currentBackgroundMusic.start();
+        }
+    }
+
+    public static void PauseBackgroundMusic() {
+        if (currentBackgroundMusic.isValid()) {
+            currentBackgroundMusic.setPaused(true); // Pausa l'istanza
+            Debug.Log("Background music paused.");
+        } else {
+            Debug.LogWarning("No valid background music to pause.");
+        }
+    }
+
+    public static void ResumeBackgroundMusic() {
+        if (currentBackgroundMusic.isValid()) {
+            currentBackgroundMusic.setPaused(false); // Riprendi l'istanza
+            Debug.Log("Background music resumed.");
+        } else {
+            Debug.LogWarning("No valid background music to resume.");
         }
     }
 }

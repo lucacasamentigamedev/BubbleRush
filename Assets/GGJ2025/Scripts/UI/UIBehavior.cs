@@ -131,9 +131,11 @@ public class UIBehavior : MonoBehaviour {
         mainMenu.SetActive(false);
         gameplayMenu.SetActive(true);
         canGoInPause = true;
+        AudioManager.PlayBackgroundMusic("GameplayMusic");
     }
 
     private void OnRetryLevel() {
+        AudioManager.ResumeBackgroundMusic();
         Debug.Log("UIBehavior - onPlayButtonClick");
         AudioManager.PlayOneShotSound("MenuConfirm");
         endMenu.SetActive(false);
@@ -168,6 +170,7 @@ public class UIBehavior : MonoBehaviour {
 
     private void OnNextLevelButtonClick()
     {
+        AudioManager.ResumeBackgroundMusic();
         Debug.Log("UIBehavior - OnNextLevelButtonClick");
         currentWeaponRectElem.gameObject.SetActive(true);
         preNextLevelMenu.SetActive(false);
@@ -188,8 +191,9 @@ public class UIBehavior : MonoBehaviour {
 #endregion
 
     #region endlevel
-public void OpenEndLevelMenu()
+    public void OpenEndLevelMenu()
     {
+        AudioManager.PauseBackgroundMusic();
         Debug.Log("UIBehavior - openPauseMenu");
         InputManager.Player.Disable();
         InputManager.Menu.Enable();
@@ -204,7 +208,8 @@ public void OpenEndLevelMenu()
     #region preNextLevel
     public void OnpePreLevelMenu(int stars=0)
     {
-        for(int i =0; i< starsUI.Length; i++)
+        AudioManager.PauseBackgroundMusic();
+        for (int i =0; i< starsUI.Length; i++)
         {
             starsUI[i].SetActive(false);
         }
@@ -238,6 +243,7 @@ public void OpenEndLevelMenu()
     }
 
     private void OpenPauseMenu() {
+        AudioManager.PauseBackgroundMusic();
         Debug.Log("UIBehavior - openPauseMenu");
         AudioManager.PlayOneShotSound("MenuOpen");
         pauseMenu.SetActive(true);
@@ -249,6 +255,7 @@ public void OpenEndLevelMenu()
     }
 
     private void ClosePauseMenu() {
+        AudioManager.ResumeBackgroundMusic();
         AudioManager.PlayOneShotSound("MenuClose");
         Debug.Log("UIBehavior - ClosePauseMenu");
         pauseMenu.SetActive(false);
