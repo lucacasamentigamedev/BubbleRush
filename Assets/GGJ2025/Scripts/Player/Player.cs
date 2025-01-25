@@ -119,6 +119,11 @@ public class Player : MonoBehaviour
                     new FMODParameter("BUBBLE_TOOL", 2.0f)
                 });
                 break;
+            case EWeaponType.WireCutter:
+                AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 3.0f)
+                });
+                break;
         }
 
         StartCoroutine(ChangeSpriteWithDelay());
