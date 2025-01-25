@@ -34,33 +34,6 @@ public class UIBehavior : MonoBehaviour {
     private Button deleteSaveButton;
     #endregion
 
-    #region tutorials buttons and menu references
-    [SerializeField]
-    private GameObject tutorial1;
-    [SerializeField]
-    private Button closetutorial1;
-    [SerializeField]
-    private GameObject tutorial2;
-    [SerializeField]
-    private Button closetutorial2;
-    [SerializeField]
-    private GameObject tutorial3;
-    [SerializeField]
-    private Button closetutorial3;
-    [SerializeField]
-    private GameObject tutorial4;
-    [SerializeField]
-    private Button closetutorial4;
-    [SerializeField]
-    private GameObject tutorial5;
-    [SerializeField]
-    private Button closetutorial5;
-    [SerializeField]
-    private GameObject tutorial6;
-    [SerializeField]
-    private Button closetutorial6;
-    #endregion
-
     #region Menu references
     //menus
     [SerializeField]
@@ -107,54 +80,7 @@ public class UIBehavior : MonoBehaviour {
         creditsButton.onClick.AddListener(OnCreditsButtonClick);
         exitFromCreditsButton.onClick.AddListener(OnExitFromCreditsButtonClick);
         deleteSaveButton.onClick.AddListener(OnDeleteSaveButtonClick);
-        //tutorials
-        closetutorial1.onClick.AddListener(OnCloseTutorial1);
-        closetutorial2.onClick.AddListener(OnCloseTutorial2);
-        closetutorial3.onClick.AddListener(OnCloseTutorial3);
-        closetutorial4.onClick.AddListener(OnCloseTutorial4);
-        closetutorial5.onClick.AddListener(OnCloseTutorial5);
-        closetutorial6.onClick.AddListener(OnCloseTutorial6);
     }
-
-    #region tutorials close buttons
-    private void OpenTutorial1() {
-        tutorial1.SetActive(true);
-    }
-    private void OnCloseTutorial1() {
-        tutorial1.SetActive(false);
-    }
-    private void OpenTutorial2() {
-        tutorial2.SetActive(true);
-    }
-    private void OnCloseTutorial2() {
-        tutorial2.SetActive(false);
-    }
-    private void OpenTutorial3() {
-        tutorial3.SetActive(true);
-    }
-    private void OnCloseTutorial3() {
-        tutorial3.SetActive(false);
-    }
-    private void OpenTutorial4() {
-        tutorial4.SetActive(true);
-    }
-    private void OnCloseTutorial4() {
-        tutorial4.SetActive(false);
-    }
-    private void OpenTutorial5() {
-        tutorial5.SetActive(true);
-    }
-    private void OnCloseTutorial5() {
-        tutorial5.SetActive(false);
-    }
-    private void OpenTutorial6() {
-        tutorial6.SetActive(true);
-    }
-    private void OnCloseTutorial6() {
-        tutorial6.SetActive(false);
-    }
-    #endregion
-
     private void OnDeleteSaveButtonClick() {
         AudioManager.PlayOneShotSound("MenuConfirm");
         LevelManager.Get().Level = SaveSystem.RemoveFile();
@@ -253,7 +179,7 @@ public class UIBehavior : MonoBehaviour {
         InputManager.Menu.Disable();
         LevelManager.Get().StartGame();
         canGoInPause = true;
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
     }
     #endregion
 
