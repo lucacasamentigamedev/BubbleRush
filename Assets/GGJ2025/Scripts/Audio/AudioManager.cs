@@ -89,4 +89,22 @@ public static class AudioManager
             currentBackgroundMusic.start();
         }
     }
+
+    public static void PauseBackgroundMusic() {
+        if (currentBackgroundMusic.isValid()) {
+            currentBackgroundMusic.setPaused(true); // Pausa l'istanza
+            Debug.Log("Background music paused.");
+        } else {
+            Debug.LogWarning("No valid background music to pause.");
+        }
+    }
+
+    public static void ResumeBackgroundMusic() {
+        if (currentBackgroundMusic.isValid()) {
+            currentBackgroundMusic.setPaused(false); // Riprendi l'istanza
+            Debug.Log("Background music resumed.");
+        } else {
+            Debug.LogWarning("No valid background music to resume.");
+        }
+    }
 }
