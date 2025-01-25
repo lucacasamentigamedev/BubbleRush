@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 04_WireCutter
   m_EditorClassIdentifier: 
   weaponType: 3
-  levelToUnlock: 15
+  levelToUnlock: 9
   damage: 1
   area: {x: 0, y: 0}
   preInteract: {fileID: 21300000, guid: 5492b9a9989c7a64293629a74c32b621, type: 3}
