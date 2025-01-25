@@ -46,7 +46,6 @@ public class UITimer : MonoBehaviour
     {
         text.text = string.Format(currentTime.ToString("00"));
         bar.localScale = new Vector2(currentTime / maxTime, scale.y);
-        Debug.Log($"UPDATE → LocalScale: {bar.localScale} MaxTime: {maxTime} currentTime : {currentTime}");
         InternalOnLose();
     }
 
@@ -72,13 +71,10 @@ public class UITimer : MonoBehaviour
     {
         if (!isActive) return;
         int t = (int)(currentTime);
-        Debug.Log("TIMERRRRR t =" + t);
         if (((t <= 3 && t > 2) || (t <= 1 && t > 0)) && soundBeepExecuted) {
-            Debug.Log("TIMERRRRR if 1" +  t);
             AudioManager.PlayOneShotSound("TimeEndBeep");
             soundBeepExecuted = false;
         } else if (((t <= 4 && t > 3) || (t <= 2 && t > 1) || t == 0) && !soundBeepExecuted) {
-            Debug.Log("TIMERRRRR if 2" + t);
             AudioManager.PlayOneShotSound("TimeEndBeep");
             soundBeepExecuted = true;
         }
