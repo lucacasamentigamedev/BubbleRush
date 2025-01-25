@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3538681049381805832
+--- !u!1 &7994350054463778693
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5726034777112109461}
-  - component: {fileID: 6008940093979654422}
-  - component: {fileID: -4901134868213158701}
+  - component: {fileID: 5334855877896175239}
+  - component: {fileID: 4246207513649120227}
+  - component: {fileID: 3013116504207954045}
   m_Layer: 0
-  m_Name: BombBubble
+  m_Name: POP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5726034777112109461
+--- !u!4 &5334855877896175239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3538681049381805832}
+  m_GameObject: {fileID: 7994350054463778693}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.0788, y: 2.0463, z: 0.044879626}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 1}
+  m_LocalPosition: {x: -3.08, y: 1.16, z: -0.1410061}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6008940093979654422
+--- !u!212 &4246207513649120227
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3538681049381805832}
+  m_GameObject: {fileID: 7994350054463778693}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -71,42 +71,29 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1570843799
-  m_SortingLayer: 4
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: b5fe0f45cbafa9f47a089359b3cd296e, type: 3}
-  m_Color: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
+  m_SortingLayerID: 1178512623
+  m_SortingLayer: 8
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 3af018f673b461c4fa98151be5cfc973, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.7240005, y: 4.7240005}
+  m_Size: {x: 11.81, y: 5.91}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-4901134868213158701
+--- !u!114 &3013116504207954045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3538681049381805832}
+  m_GameObject: {fileID: 7994350054463778693}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64afc0c23e7b734468638d66bc27f621, type: 3}
+  m_Script: {fileID: 11500000, guid: ce7177c4df050e645ba6e7f8bda56c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arraySprite:
-  - {fileID: 21300000, guid: 735aae2ca21ac7e4baada22d1c4aae0b, type: 3}
-  - {fileID: 21300000, guid: b5fe0f45cbafa9f47a089359b3cd296e, type: 3}
-  requiredWeapon: 
-  spriteRenderer: {fileID: 6008940093979654422}
-  shakeMagnitude: 0.01
-  shakeDuration: 0.5
-  maxTimeForDisinnescation: 10
-  wrongWeaponTimeReduction: 5
-  noHitExplosionTimeReduction: 5
-  toolForNeutralization: 3
-  shakeMagnitudeOnExplode: 0.1
-  shakeDurationOnExplode: 0.5
