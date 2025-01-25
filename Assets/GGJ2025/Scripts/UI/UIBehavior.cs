@@ -59,6 +59,15 @@ public class UIBehavior : MonoBehaviour {
     private RectTransform currentWeaponRectElem;
     #endregion
 
+    #region stars
+    [SerializeField]
+    private GameObject star1;
+    [SerializeField]
+    private GameObject star2;
+    [SerializeField]
+    private GameObject star3;
+    #endregion
+
     #region Mono
     private void Awake()
     {
