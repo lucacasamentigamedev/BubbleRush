@@ -14,28 +14,12 @@ public class Player : MonoBehaviour
     [SerializeField]
     private RectTransform currentWeaponRectElem;
     private Image currentWeaponImage;
+    private Coroutine coroutineDeleay;
     #endregion
 
-    #region Singleton
-
-    private static Player instance;
-    public static Player Get()
-    {
-        if (instance != null) return instance;
-        instance = FindObjectOfType<Player>();
-        return instance;
-    }
-    #endregion
 
     private void Awake() {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-
+    
         //prepare first weapon
         avaiableWeapons = new Weapon[(int)EWeaponType.LAST];
         for (int i = 0; i < avaiableWeapons.Length; i++) {
@@ -50,17 +34,20 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
 
         LevelManager.Get().OnStart += onLevelManagerStart;
-        currentWeapon = avaiableWeapons[0];
-        currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
-
-        //hide fingerone
-        currentWeaponRectElem.gameObject.SetActive(false);
+        
     }
 
     private void Update() {
         MoveWeaponWithMouse();
     }
+    private void OnDestroy()
+    {
+        InputManager.Player.Interact.performed -= onInteract;
+        InputManager.Player.ChangeWeaponForward.performed -= onChangeWeaponForward;
+        InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
+        InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
 
+    }
     private void MoveWeaponWithMouse() {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         currentWeaponRectElem.position = mousePosition;
@@ -71,6 +58,11 @@ public class Player : MonoBehaviour
     }
 
     private void onLevelManagerStart() {
+
+        currentWeapon = avaiableWeapons[0];
+        currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
+        //hide fingerone
+        currentWeaponRectElem.gameObject.SetActive(false);
 
         //active fingerone or other current weapon
         InputManager.Player.Enable();
@@ -147,7 +139,11 @@ public class Player : MonoBehaviour
                 break;
         }
 
-        StartCoroutine(ChangeSpriteWithDelay());
+        if (coroutineDeleay != null)
+        {
+            StopCoroutine(coroutineDeleay);
+        }
+        coroutineDeleay = StartCoroutine(ChangeSpriteWithDelay());
         //currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
 
         Vector3 screenPoint = InputManager.Player_Mouse_Position;
@@ -160,10 +156,6 @@ public class Player : MonoBehaviour
                 clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
         }
-    }
-    public void StopCoroutine()
-    {
-        StopAllCoroutines();
     }
 
 

@@ -148,7 +148,7 @@ public class UIBehavior : MonoBehaviour {
 
     private void OnBackToMainMenuButtonClick() {
         Debug.Log("UIBehavior - onBackToMainMenuButton");
-        AudioManager.PlayOneShotSound("MenuConfirm");
+        AudioManager.PlayOneShotSound("MenuConfirm");        
         string currentSceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(currentSceneName);
         Time.timeScale = 1f;
