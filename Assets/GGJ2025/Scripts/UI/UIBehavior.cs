@@ -113,6 +113,7 @@ public class UIBehavior : MonoBehaviour {
         endMenu.SetActive(false);
         preNextLevelMenu.SetActive(false);
         AudioManager.PlayBackgroundMusic("MainMenuMusic");
+        canUse = true;
     }
 
     //fabio non voleva, però io l'ho fatto lo stesso. By Fabri :)
@@ -172,7 +173,8 @@ public class UIBehavior : MonoBehaviour {
         Time.timeScale = 1f;
     }
 
-    private void OnQuitButtonClick() {        
+    private void OnQuitButtonClick() {
+        Debug.Log(canUse);
         if (!canUse) return;   
         
         Debug.Log("UIBehavior - UIBehavior");
