@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Pluriball : MonoBehaviour ,IClickable
-{ 
-
+{
+    
     [SerializeField]
     private PoolData normalBubbles;
     [SerializeField]
@@ -67,11 +67,22 @@ public class Pluriball : MonoBehaviour ,IClickable
         columns = (int)levelManager.ActiveEntryData.grid_Size.x;
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
         remainingBubbles = rows * columns;
+        Bubble b = Pooler.Instance.GetPooledObject(poolDataDictionary[EBubbleType.Normal]).GetComponent<Bubble>();
+        InternalSetPosition(rows, columns, b.GetSize());
+        
         bubbles = new Bubble[remainingBubbles];
         timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(rows, columns);
         Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
         uiBehavior.ChangeLevelLabel();
+    }
+
+    private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)
+    {
+        float posx = columns * bubbleSize.x / 2;
+        float posy = rows * bubbleSize.y / 2;
+        Vector2 newPosition = new Vector2(-posx, posy);
+        gameObject.transform.position = newPosition;
     }
 
     private void OnRetry()
