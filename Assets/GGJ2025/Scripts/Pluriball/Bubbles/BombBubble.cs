@@ -43,19 +43,20 @@ public class BombBubble : Bubble
 
     public override void InternalOnHit(int damage, EWeaponType weaponType)
     {
+        if(!isAlive) return;
+        if (weaponType != toolForNeutralization)
+        {
+            if (weaponType == EWeaponType.LAST)     //esplode per i fatti suoi
+            {
+                OnExplode?.Invoke(noHitExplosionTimeReduction);
+            }
+            else     //esplode perchè cliccato con l'arma sbagliata
+            {
+                OnExplode?.Invoke(wrongWeaponTimeReduction);
+            }
+        }
         base.InternalOnHit(damage, weaponType);
-        if (weaponType == toolForNeutralization)
 
-            return;
-        if (weaponType == EWeaponType.LAST)     //esplode per i fatti suoi
-        {
-            OnExplode?.Invoke(noHitExplosionTimeReduction);
-        }
-        else     //esplode perchè cliccato con l'arma sbagliata
-        {
-            OnExplode?.Invoke(wrongWeaponTimeReduction);
-        }
-           
     }
     
     
