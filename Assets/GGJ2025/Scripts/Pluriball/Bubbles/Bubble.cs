@@ -65,12 +65,12 @@ public class Bubble : MonoBehaviour
         InternalOnAwake();
     }
 
-    private void ChangeSprite(int indexLife)
+    protected void ChangeSprite(int indexLife)
     {
         spriteRenderer.sprite = arraySprite[indexLife];
     }
 
-    private void InternalOnDestroy()
+    public virtual void InternalOnDestroy()
     {
         Debug.Log("Esplodo");
         //AudioManager.PlayOneShotSound("Test");
