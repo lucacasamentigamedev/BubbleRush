@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 30
+    timer_for_level: 33
     stars_for_level:
     - 0
-    - 0.3
-    - 0.5
+    - 0.2
+    - 0.4
     unlock_Lvl: 10
     grid_Size: {x: 12, y: 5}
     bubbles:
