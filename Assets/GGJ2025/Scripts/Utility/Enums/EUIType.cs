@@ -1,9 +1,9 @@
 public enum EUIType
 {
     MainMenu,
-    Credits,
-    Gameplay,
-    Pause,
-    EndLevelWin,
-    EndLevelLose
+    CreditsMenu,
+    GameplayMenu,
+    PauseMenu,
+    EndLevelWinMenu,
+    EndLevelLoseMenu
 }

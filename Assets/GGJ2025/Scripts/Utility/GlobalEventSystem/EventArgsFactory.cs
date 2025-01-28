@@ -15,4 +15,17 @@ public static class EventArgsFactory
         UIType = (EUIType)message.variables[0];
     }
     #endregion
+
+    #region OpenUITutorial
+    public static EventArgs OpenUITutorialFactory(EUITutorialType UITutorialType) {
+        EventArgs message = new EventArgs();
+        message.variables = new object[1];
+        message.variables[0] = UITutorialType;
+        return message;
+    }
+
+    public static void OpenUITutorialParser(EventArgs message, out EUITutorialType UIType) {
+        UIType = (EUITutorialType)message.variables[0];
+    }
+    #endregion
 }
