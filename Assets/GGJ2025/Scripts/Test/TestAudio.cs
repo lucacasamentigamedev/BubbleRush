@@ -4,7 +4,7 @@ using System.Collections;
 public class TestAudio : MonoBehaviour {
 
     private string soundName = "TestLoop";
-    private float interval = 2;
+    // private float interval = 2;
 
     private void Start() {
         // play sound every 2 seconds
