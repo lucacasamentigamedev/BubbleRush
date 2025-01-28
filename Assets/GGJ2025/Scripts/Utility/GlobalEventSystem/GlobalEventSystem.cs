@@ -1,13 +1,13 @@
 using System;
 
-public enum EventName
-{
-    OpenUI
-}
-
 public class EventArgs
 {
     public object[] variables;
+}
+
+public enum EventName
+{
+    OpenUI
 }
 
 public static class GlobalEventSystem
