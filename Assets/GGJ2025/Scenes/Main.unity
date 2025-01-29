@@ -729,7 +729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4197504299538288918, guid: 0ae8f7267dd4e8a4a9c8eb817101ae72, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4668845196024534213, guid: 0ae8f7267dd4e8a4a9c8eb817101ae72, type: 3}
       propertyPath: m_LocalScale.x
@@ -749,7 +749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4704496811270634254, guid: 0ae8f7267dd4e8a4a9c8eb817101ae72, type: 3}
       propertyPath: m_Name
-      value: UI
+      value: NEW_UI_IN_PROGRESS
       objectReference: {fileID: 0}
     - target: {fileID: 4704496811270634254, guid: 0ae8f7267dd4e8a4a9c8eb817101ae72, type: 3}
       propertyPath: m_IsActive
@@ -2755,7 +2755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3431625498403693875, guid: 146d5da5c3567a04d827301cd45f14fe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4876228751489689546, guid: 146d5da5c3567a04d827301cd45f14fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5200,7 +5200,7 @@ GameObject:
   - component: {fileID: 8702520741989323073}
   - component: {fileID: 8702520741989323074}
   m_Layer: 5
-  m_Name: UI
+  m_Name: OLD_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

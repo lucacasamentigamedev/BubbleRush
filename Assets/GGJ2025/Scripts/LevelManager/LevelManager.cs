@@ -8,6 +8,7 @@ public class LevelManager : MonoBehaviour
 
     #region PrivateVariable
     private uint currentLevel;
+    private int currentLevelStarsObtained;
     private LevelEntryStruct currentEntryData;
     #endregion
 
@@ -23,10 +24,14 @@ public class LevelManager : MonoBehaviour
         set 
         { 
             currentLevel = value;
-            Debug.Log(currentLevel);
             currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
             //StartGame();
         } 
+    }
+
+    public int CurrentLevelStarsObtained {
+        get { return currentLevelStarsObtained; }
+        set { currentLevelStarsObtained = value; }
     }
 
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }

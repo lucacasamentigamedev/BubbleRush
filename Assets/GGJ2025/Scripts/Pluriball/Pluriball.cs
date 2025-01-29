@@ -137,7 +137,9 @@ public class Pluriball : MonoBehaviour ,IClickable
                     break;
                 }
             }
+            LevelManager.Get().CurrentLevelStarsObtained = starNumbers;
             //uiBehavior.OnpePreLevelMenu(starNumbers);
+            Debug.Log("Pluriball - Ho ottenuto " + starNumbers + " stelle");
             GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
 
         } else {

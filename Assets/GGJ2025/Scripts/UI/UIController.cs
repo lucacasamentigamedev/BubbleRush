@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class UIController : MonoBehaviour
     #region Internal Variables
     //Menus
     [Header("Menu Prefabs")]
+    private BaseUI[] uiPrefabs;
     [SerializeField] private BaseUI mainMenuPrefab;
     [SerializeField] private BaseUI creditsMenuPrefab;
     [SerializeField] private GameplayHUD gameplayHUDPrefab;
@@ -16,6 +18,7 @@ public class UIController : MonoBehaviour
     //Other
     private BaseUI currentMenu;
     private bool firstTime;
+    private bool isPrevented;
     //Tutorials
     private readonly Dictionary<uint, EUITutorialType> levelToTutorialMap = new Dictionary<uint, EUITutorialType>()
     {
@@ -41,20 +44,28 @@ public class UIController : MonoBehaviour
         //pass UIController to every button
         BRButton[] buttons = GetComponentsInChildren<BRButton>(true);
         foreach (BRButton button in buttons) {
-            Debug.Log("assegno UICOntroller a " + button.gameObject.name);
+            Debug.Log("UICOntroller - assegno UICOntroller a " + button.gameObject.name);
             button.Init(this);
         }
+        //collect every UI into array
+        uiPrefabs = new BaseUI[]
+        {
+            mainMenuPrefab,
+            creditsMenuPrefab,
+            gameplayHUDPrefab,
+            pauseMenuPrefab,
+            endLevelWinMenuPrefab,
+            endLevelLoseMenuPrefab,
+            tutorialMenuPrefab
+        };
     }
 
     private void Start()
     {
-        //hide all 
-        /*creditsMenuPrefab.Hide();
-        gameplayHUDPrefab.Hide();
-        pauseMenuPrefab.Hide();
-        endLevelWinMenuPrefab.Hide();
-        endLevelLoseMenuPrefab.Hide();
-        tutorialMenuPrefab.Hide();*/
+        //hide all
+        foreach (BaseUI baseUI in uiPrefabs) {
+            baseUI.Hide();
+        }
         //open main menu
         OpenMenu(EUIType.MainMenu);
         //Check Tutorials
@@ -63,6 +74,8 @@ public class UIController : MonoBehaviour
             OnCheckTutorial();
             firstTime = true;
         }
+        //play bg music
+        AudioManager.PlayBackgroundMusic("MainMenuMusic");
     }
     #endregion Mono
 
@@ -79,6 +92,7 @@ public class UIController : MonoBehaviour
     #region Internal Methods
     public void OpenMenu(EUIType UIType)
     {
+        if(isPrevented) return;
         //close current
         CloseCurrentMenu();
         //set requested
@@ -122,6 +136,7 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0f;
             weapon.gameObject.SetActive(false);
         }
+        StartCoroutine(WaitBeforeUIInteract());
     }
 
     public void CloseCurrentMenu()
@@ -159,5 +174,15 @@ public class UIController : MonoBehaviour
     public void OpenPauseMenu() => OpenMenu(EUIType.PauseMenu);
     public void OpenEndLevelWinMenu() => OpenMenu(EUIType.EndLevelWinMenu);
     public void OpenEndLevelLoseMenu() => OpenMenu(EUIType.EndLevelLoseMenu);
+    #endregion
+
+    #region Coroutine
+    private IEnumerator WaitBeforeUIInteract() {
+        isPrevented = true;
+        Debug.Log("START CORUTINE BUTTON TOGGLE");
+        yield return new WaitForSecondsRealtime(0.5f);
+        isPrevented = false;
+        Debug.Log("STOP CORUTINE BUTTON TOGGLE");
+    }
     #endregion
 }
