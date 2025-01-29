@@ -26,12 +26,22 @@ public class UIController : MonoBehaviour
         { 7, EUITutorialType.ToyHammer },
         { 10, EUITutorialType.WireCutter }
     };
+    [SerializeField]
+    private RectTransform weapon;
     #endregion
 
     #region Mono
     private void OnEnable() {
         //Base UI Menu
         GlobalEventSystem.AddListener(EventName.OpenUI, OnOpenUI);
+    }
+
+    private void Awake() {
+        //pass UIController to every button
+        BRButton[] buttons = GetComponentsInChildren<BRButton>();
+        foreach (BRButton button in buttons) {
+            button.Init(this);
+        }
     }
 
     private void Start()
@@ -86,6 +96,20 @@ public class UIController : MonoBehaviour
         } else {
             Debug.Log("UIController - Menu to open not found" + UIType.ToString());
         }
+
+        //if gameplay reactive time and show weapon
+        if(UIType == EUIType.GameplayMenu) {
+            InputManager.Player.Enable();
+            InputManager.Menu.Disable();
+            Time.timeScale = 1f;
+            weapon.gameObject.SetActive(true);
+        } else {
+            //if other menu stop time, hide weapon
+            InputManager.Player.Disable();
+            InputManager.Menu.Enable();
+            Time.timeScale = 0f;
+            weapon.gameObject.SetActive(false);
+        }
     }
 
     public void CloseCurrentMenu()
@@ -114,5 +138,14 @@ public class UIController : MonoBehaviour
         tutorialMenuPrefab.prepareTutorial(UITutorialType);
         tutorialMenuPrefab.Show();
     }
+    #endregion
+
+    #region Wrapper methods
+    public void OpenMainMenu() => OpenMenu(EUIType.MainMenu);
+    public void OpenCreditsMenu() => OpenMenu(EUIType.CreditsMenu);
+    public void OpenGameplayMenu() => OpenMenu(EUIType.GameplayMenu);
+    public void OpenPauseMenu() => OpenMenu(EUIType.PauseMenu);
+    public void OpenEndLevelWinMenu() => OpenMenu(EUIType.EndLevelWinMenu);
+    public void OpenEndLevelLoseMenu() => OpenMenu(EUIType.EndLevelLoseMenu);
     #endregion
 }

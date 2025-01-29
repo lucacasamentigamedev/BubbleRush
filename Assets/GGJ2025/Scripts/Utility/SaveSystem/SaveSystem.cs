@@ -53,6 +53,9 @@ public static class SaveSystem
         if (File.Exists(destination))
         {
             File.Delete(destination);
+            Debug.Log("SaveSystem - Delete save");
+        } else {
+            Debug.Log("SaveSystem - Nothing to delete");
         }
         return 1;
     }
