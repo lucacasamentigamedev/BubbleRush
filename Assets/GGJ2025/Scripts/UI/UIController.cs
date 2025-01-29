@@ -17,8 +17,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
     //Other
     private BaseUI currentMenu;
-    private bool firstTime;
-    private bool isPrevented;
+    private bool firstTime = false;
+    public bool isPrevented = false;
+    private Coroutine waitBeforeUIInteract;
     //Tutorials
     private readonly Dictionary<uint, EUITutorialType> levelToTutorialMap = new Dictionary<uint, EUITutorialType>()
     {
@@ -92,7 +93,7 @@ public class UIController : MonoBehaviour
     #region Internal Methods
     public void OpenMenu(EUIType UIType)
     {
-        if(isPrevented) return;
+        if (isPrevented) return;
         //close current
         CloseCurrentMenu();
         //set requested
@@ -136,7 +137,10 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0f;
             weapon.gameObject.SetActive(false);
         }
-        StartCoroutine(WaitBeforeUIInteract());
+        if (waitBeforeUIInteract != null) {
+            StopCoroutine(waitBeforeUIInteract);
+        }
+        waitBeforeUIInteract = StartCoroutine(WaitBeforeUIInteract());
     }
 
     public void CloseCurrentMenu()
