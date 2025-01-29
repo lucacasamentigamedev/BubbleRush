@@ -671,6 +671,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 1377495673596057595, guid: 0ae8f7267dd4e8a4a9c8eb817101ae72, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1943708241143316714, guid: 0ae8f7267dd4e8a4a9c8eb817101ae72, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -323
@@ -1674,7 +1678,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &457915642
 Transform:
   m_ObjectHideFlags: 0
