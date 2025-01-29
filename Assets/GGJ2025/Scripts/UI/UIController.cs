@@ -8,7 +8,7 @@ public class UIController : MonoBehaviour
     [Header("Menu Prefabs")]
     [SerializeField] private BaseUI mainMenuPrefab;
     [SerializeField] private BaseUI creditsMenuPrefab;
-    [SerializeField] private BaseUI gameplayMenuPrefab;
+    [SerializeField] private GameplayHUD gameplayHUDPrefab;
     [SerializeField] private BaseUI pauseMenuPrefab;
     [SerializeField] private BaseUI endLevelWinMenuPrefab;
     [SerializeField] private BaseUI endLevelLoseMenuPrefab;
@@ -34,19 +34,28 @@ public class UIController : MonoBehaviour
     private void OnEnable() {
         //Base UI Menu
         GlobalEventSystem.AddListener(EventName.OpenUI, OnOpenUI);
+        GlobalEventSystem.AddListener(EventName.ChangeUILevelLabel, OnChangeUILevelLabel);
     }
 
     private void Awake() {
         //pass UIController to every button
-        BRButton[] buttons = GetComponentsInChildren<BRButton>();
+        BRButton[] buttons = GetComponentsInChildren<BRButton>(true);
         foreach (BRButton button in buttons) {
+            Debug.Log("assegno UICOntroller a " + button.gameObject.name);
             button.Init(this);
         }
     }
 
     private void Start()
     {
-        //open main menu by default
+        //hide all 
+        /*creditsMenuPrefab.Hide();
+        gameplayHUDPrefab.Hide();
+        pauseMenuPrefab.Hide();
+        endLevelWinMenuPrefab.Hide();
+        endLevelLoseMenuPrefab.Hide();
+        tutorialMenuPrefab.Hide();*/
+        //open main menu
         OpenMenu(EUIType.MainMenu);
         //Check Tutorials
         LevelManager.Get().OnStart += OnCheckTutorial;
@@ -61,6 +70,9 @@ public class UIController : MonoBehaviour
     private void OnOpenUI(EventArgs message) {
         EventArgsFactory.OpenUIParser(message, out EUIType UIType);
         OpenMenu(UIType);
+    }
+    private void OnChangeUILevelLabel(EventArgs message) {
+        gameplayHUDPrefab.ChangeLevelLabel();
     }
     #endregion
 
@@ -78,7 +90,7 @@ public class UIController : MonoBehaviour
                 currentMenu = creditsMenuPrefab;
                 break;
             case EUIType.GameplayMenu:
-                currentMenu = gameplayMenuPrefab;
+                currentMenu = gameplayHUDPrefab;
                 break;
             case EUIType.PauseMenu:
                 currentMenu = pauseMenuPrefab;

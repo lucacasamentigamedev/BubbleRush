@@ -19,8 +19,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     private UITimer timer;
     [SerializeField]
     private CameraShake cameraShake;
-    [SerializeField]
-    private UIBehavior uiBehavior;
+    /*[SerializeField]
+    private UIBehavior uiBehavior;*/
     [SerializeField]
     private GameObject pluriballVisual;
     [SerializeField]
@@ -78,7 +78,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(rows, columns);
         Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
-        uiBehavior.ChangeLevelLabel();
+        //uiBehavior.ChangeLevelLabel();
+        GlobalEventSystem.CastEvent(EventName.ChangeUILevelLabel, EventArgsFactory.ChangeUILevelLabelFactory());
     }
 
     private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)
@@ -136,11 +137,13 @@ public class Pluriball : MonoBehaviour ,IClickable
                     break;
                 }
             }
-            uiBehavior.OnpePreLevelMenu(starNumbers);
+            //uiBehavior.OnpePreLevelMenu(starNumbers);
+            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
 
+        } else {
+            //uiBehavior.OpenEndLevelMenu();
+            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelLoseMenu));
         }
-        else
-            uiBehavior.OpenEndLevelMenu();
         pluriballVisual.SetActive(false);
 
     }

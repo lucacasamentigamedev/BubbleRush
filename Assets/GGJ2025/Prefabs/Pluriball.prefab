@@ -55,6 +55,8 @@ MonoBehaviour:
   cameraShake: {fileID: 0}
   uiBehavior: {fileID: 0}
   pluriballVisual: {fileID: 6899241420535988120}
+  popLocation: []
+  asset: {fileID: 7994350054463778693, guid: d3fabf4dbf13c324698e07b8776f8239, type: 3}
 --- !u!61 &2357253375511190445
 BoxCollider2D:
   m_ObjectHideFlags: 0

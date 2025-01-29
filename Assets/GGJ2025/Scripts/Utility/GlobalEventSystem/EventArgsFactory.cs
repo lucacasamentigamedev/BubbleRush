@@ -16,7 +16,7 @@ public static class EventArgsFactory
     }
     #endregion
 
-    #region OpenUITutorial
+    /*#region OpenUITutorial
     public static EventArgs OpenUITutorialFactory(EUITutorialType UITutorialType) {
         EventArgs message = new EventArgs();
         message.variables = new object[1];
@@ -27,5 +27,14 @@ public static class EventArgsFactory
     public static void OpenUITutorialParser(EventArgs message, out EUITutorialType UIType) {
         UIType = (EUITutorialType)message.variables[0];
     }
+    #endregion*/
+
+    #region ChangeUILevelLabel
+    public static EventArgs ChangeUILevelLabelFactory() {
+        EventArgs message = new EventArgs();
+        return message;
+    }
+
+    public static void ChangeUILevelLabelParser(EventArgs message) {}
     #endregion
 }

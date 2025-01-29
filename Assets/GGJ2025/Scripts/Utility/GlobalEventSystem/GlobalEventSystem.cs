@@ -8,7 +8,8 @@ public class EventArgs
 public enum EventName
 {
     OpenUI,
-    OpenUITutorial
+    //OpenUITutorial,
+    ChangeUILevelLabel
 }
 
 public static class GlobalEventSystem

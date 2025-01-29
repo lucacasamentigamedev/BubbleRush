@@ -24,8 +24,8 @@ public class UIBehavior : MonoBehaviour {
     private Button nextLevelButton;
     [SerializeField]
     private Button backToMainMenuButtonPreNewLevel;
-    [SerializeField]
-    private TextMeshProUGUI textMeshProText;
+    /*[SerializeField]
+    private TextMeshProUGUI textMeshProText;*/
     [SerializeField]
     private Button creditsButton;
     [SerializeField]
@@ -212,10 +212,10 @@ public class UIBehavior : MonoBehaviour {
     #endregion
 
     #region Level
-    public void ChangeLevelLabel()
+    /*public void ChangeLevelLabel()
     {
         textMeshProText.text = "Level " + LevelManager.Get().Level;
-    }
+    }*/
 #endregion
 
     #region endlevel
