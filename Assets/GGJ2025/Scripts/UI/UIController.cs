@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
     #region Internal Variables
+    //Menus
     [Header("Menu Prefabs")]
     [SerializeField] private BaseUI mainMenuPrefab;
     [SerializeField] private BaseUI creditsMenuPrefab;
@@ -11,8 +13,19 @@ public class UIController : MonoBehaviour
     [SerializeField] private BaseUI endLevelWinMenuPrefab;
     [SerializeField] private BaseUI endLevelLoseMenuPrefab;
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
+    //Other
     private BaseUI currentMenu;
     private bool firstTime;
+    //Tutorials
+    private readonly Dictionary<uint, EUITutorialType> levelToTutorialMap = new Dictionary<uint, EUITutorialType>()
+    {
+        { 1, EUITutorialType.FingerSimple },
+        { 2, EUITutorialType.FingerMultiple },
+        { 3, EUITutorialType.TimeLimit },
+        { 5, EUITutorialType.Chisel },
+        { 7, EUITutorialType.ToyHammer },
+        { 10, EUITutorialType.WireCutter }
+    };
     #endregion
 
     #region Mono
@@ -24,7 +37,7 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         //open main menu by default
-        //OpenMenu(EUIType.MainMenu);
+        OpenMenu(EUIType.MainMenu);
         //Check Tutorials
         LevelManager.Get().OnStart += OnCheckTutorial;
         if (!firstTime) {
@@ -86,29 +99,17 @@ public class UIController : MonoBehaviour
     }
 
     private void OnCheckTutorial() {
-        switch (LevelManager.Get().Level) {
-            case 1:
-                OpenTutorial(EUITutorialType.FingerSimple);
-                break;
-            case 2:
-                OpenTutorial(EUITutorialType.FingerMultiple);
-                break;
-            case 3:
-                OpenTutorial(EUITutorialType.TimeLimit);
-                break;
-            case 5:
-                OpenTutorial(EUITutorialType.Chisel);
-                break;
-            case 7:
-                OpenTutorial(EUITutorialType.ToyHammer);
-                break;
-            case 10:
-                OpenTutorial(EUITutorialType.WireCutter);
-                break;
+        uint currentLevel = LevelManager.Get().Level;
+        if (levelToTutorialMap.TryGetValue(currentLevel, out var tutorialType)) {
+            OpenTutorial(tutorialType);
+        } else {
+            Debug.Log($"No tutorial associated with level {currentLevel}");
         }
     }
 
     private void OpenTutorial(EUITutorialType UITutorialType) {
+        //FIXME: per ora l'ho commentato
+        return;
         CloseCurrentMenu();
         tutorialMenuPrefab.prepareTutorial(UITutorialType);
         tutorialMenuPrefab.Show();

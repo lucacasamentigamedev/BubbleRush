@@ -57,9 +57,9 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         SaveSystem.LoadFile(out currentLevel);
-        Debug.Log(currentLevel);
+        Debug.Log("Level Manager - Start current level: " + currentLevel);
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
-        Debug.Log(currentEntryData.unlock_Lvl);
+        //Debug.Log(currentEntryData.unlock_Lvl);
     }
 
     void OnDestroy()
