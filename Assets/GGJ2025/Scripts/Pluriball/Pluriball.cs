@@ -228,9 +228,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         if (remainingBubbles <= 0) {
             //probably 20 sarà cambiato poi
             InternalEndLevel(true);
-            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
-                    new FMODParameter("WIN_LOSE", 0.0f)
-            });
             transform.localScale = Vector3.one;
             
             foreach (Bubble bubble in bubbles)

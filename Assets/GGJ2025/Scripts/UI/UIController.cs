@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIController : MonoBehaviour
 {
@@ -59,6 +60,9 @@ public class UIController : MonoBehaviour
             endLevelLoseMenuPrefab,
             tutorialMenuPrefab
         };
+        //pause input
+        InputManager.Player.TogglePause.performed += OnTogglePause;
+        InputManager.Menu.TogglePause.performed += OnTogglePause;
     }
 
     private void Start()
@@ -104,7 +108,7 @@ public class UIController : MonoBehaviour
             case EUIType.CreditsMenu:
                 currentMenu = creditsMenuPrefab;
                 break;
-            case EUIType.GameplayMenu:
+            case EUIType.GameplayHUD:
                 currentMenu = gameplayHUDPrefab;
                 break;
             case EUIType.PauseMenu:
@@ -125,17 +129,21 @@ public class UIController : MonoBehaviour
         }
 
         //if gameplay reactive time and show weapon
-        if(UIType == EUIType.GameplayMenu) {
+        if(UIType == EUIType.GameplayHUD) {
             InputManager.Player.Enable();
             InputManager.Menu.Disable();
             Time.timeScale = 1f;
-            weapon.gameObject.SetActive(true);
+            if (weapon != null) {
+                weapon.gameObject.SetActive(true);
+            }
         } else {
             //if other menu stop time, hide weapon
             InputManager.Player.Disable();
             InputManager.Menu.Enable();
             Time.timeScale = 0f;
-            weapon.gameObject.SetActive(false);
+            if (weapon != null) {
+                weapon.gameObject.SetActive(false);
+            }
         }
         if (waitBeforeUIInteract != null) {
             StopCoroutine(waitBeforeUIInteract);
@@ -169,12 +177,22 @@ public class UIController : MonoBehaviour
         tutorialMenuPrefab.prepareTutorial(UITutorialType);
         tutorialMenuPrefab.Show();
     }
+
+    private void OnTogglePause(InputAction.CallbackContext context) {
+        Debug.Log("UIController - OnTogglePause");
+        if (currentMenu != gameplayHUDPrefab && currentMenu != pauseMenuPrefab) return;
+        if (currentMenu == pauseMenuPrefab) {
+            OpenMenu(EUIType.GameplayHUD);
+        } else {
+            OpenMenu(EUIType.PauseMenu);
+        }
+    }
     #endregion
 
     #region Wrapper methods
     public void OpenMainMenu() => OpenMenu(EUIType.MainMenu);
     public void OpenCreditsMenu() => OpenMenu(EUIType.CreditsMenu);
-    public void OpenGameplayMenu() => OpenMenu(EUIType.GameplayMenu);
+    public void OpenGameplayMenu() => OpenMenu(EUIType.GameplayHUD);
     public void OpenPauseMenu() => OpenMenu(EUIType.PauseMenu);
     public void OpenEndLevelWinMenu() => OpenMenu(EUIType.EndLevelWinMenu);
     public void OpenEndLevelLoseMenu() => OpenMenu(EUIType.EndLevelLoseMenu);

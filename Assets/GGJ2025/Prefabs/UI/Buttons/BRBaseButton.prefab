@@ -135,6 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonType: 0
+  defaultSprite: {fileID: 0}
+  highlightedSprite: {fileID: 0}
 --- !u!114 &2021222699996578042
 MonoBehaviour:
   m_ObjectHideFlags: 0

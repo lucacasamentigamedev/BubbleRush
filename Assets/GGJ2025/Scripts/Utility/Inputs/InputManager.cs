@@ -14,4 +14,6 @@ public static class InputManager
     public static Inputs.MenuActions Menu { get { return input.Menu; } }
     public static bool Player_Left_Mouse_Click { get { return input.Player.Interact.IsPressed(); } }
     public static Vector2 Player_Mouse_Position { get { return input.Player.Position.ReadValue<Vector2>(); } }
+    public static bool Toggle_Pause { get { return input.Player.TogglePause.IsPressed(); } }
+
 }

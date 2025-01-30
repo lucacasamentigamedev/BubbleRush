@@ -17,9 +17,8 @@ public class Player : MonoBehaviour
     private Coroutine coroutineDeleay;
     #endregion
 
-
+    #region Mono
     private void Awake() {
-    
         //prepare first weapon
         avaiableWeapons = new Weapon[(int)EWeaponType.LAST];
         for (int i = 0; i < avaiableWeapons.Length; i++) {
@@ -28,18 +27,18 @@ public class Player : MonoBehaviour
 
         }
         //inputs bind
+        Debug.Log("Player - mi bindo agli input");
         InputManager.Player.Interact.performed += onInteract;
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
-
         LevelManager.Get().OnStart += onLevelManagerStart;
-        
     }
 
     private void Update() {
         MoveWeaponWithMouse();
     }
+
     private void OnDestroy()
     {
         InputManager.Player.Interact.performed -= onInteract;
@@ -48,11 +47,14 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
 
     }
+
     private void MoveWeaponWithMouse() {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         currentWeaponRectElem.position = mousePosition;
     }
+    #endregion
 
+    #region Internal Methods
     private void onChangeWeaponWheel(InputAction.CallbackContext context) {
         ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
     }
@@ -157,11 +159,13 @@ public class Player : MonoBehaviour
             }
         }
     }
+    #endregion
 
-
+    #region Coroutine
     private IEnumerator ChangeSpriteWithDelay() {
         currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
         yield return new WaitForSeconds(0.15f);
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
     }
+    #endregion
 }

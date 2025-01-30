@@ -2,7 +2,7 @@ public enum EUIType
 {
     MainMenu,
     CreditsMenu,
-    GameplayMenu,
+    GameplayHUD,
     PauseMenu,
     EndLevelWinMenu,
     EndLevelLoseMenu

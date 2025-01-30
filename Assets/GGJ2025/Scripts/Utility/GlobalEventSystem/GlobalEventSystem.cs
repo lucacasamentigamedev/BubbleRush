@@ -8,7 +8,6 @@ public class EventArgs
 public enum EventName
 {
     OpenUI,
-    //OpenUITutorial,
     ChangeUILevelLabel
 }
 

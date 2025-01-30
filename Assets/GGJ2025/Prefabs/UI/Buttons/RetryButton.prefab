@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4277432905612573835
+--- !u!1001 &2004011026276913213
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,20 +10,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1028268735025462345, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_Name
-      value: MainMenuButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 2021222699996578042, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: RetryButton
       objectReference: {fileID: 0}
     - target: {fileID: 2021222699996578042, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: -9114750090662361559}
+      objectReference: {fileID: 2496160487214873090}
     - target: {fileID: 2021222699996578042, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: -9114750090662361559}
+      objectReference: {fileID: 2496160487214873090}
     - target: {fileID: 2021222699996578042, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnMouseEnter
@@ -32,13 +28,9 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnMouseExit
       objectReference: {fileID: 0}
-    - target: {fileID: 2021222699996578042, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
-      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 4410938773965929025, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: buttonType
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4973531123999626972, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_Pivot.x
@@ -135,25 +127,25 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1028268735025462345, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -9114750090662361559}
+      addedObject: {fileID: 2496160487214873090}
   m_SourcePrefab: {fileID: 100100000, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
---- !u!1 &3826188760971706562 stripped
+--- !u!1 &1552204334620912756 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1028268735025462345, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
-  m_PrefabInstance: {fileID: 4277432905612573835}
+  m_PrefabInstance: {fileID: 2004011026276913213}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-9114750090662361559
+--- !u!114 &2496160487214873090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3826188760971706562}
+  m_GameObject: {fileID: 1552204334620912756}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3ea893c204c33a49b645246064c5cf5, type: 3}
+  m_Script: {fileID: 11500000, guid: a6186e3985f5fbf43824f0f884cfa75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonType: 5
+  buttonType: 7
   defaultSprite: {fileID: 0}
   highlightedSprite: {fileID: 0}

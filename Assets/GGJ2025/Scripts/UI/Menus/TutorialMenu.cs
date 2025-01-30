@@ -5,11 +5,10 @@ public class TutorialMenu : BaseUI
 {
     [SerializeField]
     private Sprite[] tutorialsImage;
-    private bool firstTime;
-    [SerializeField]
-    private Image imageToChange;
+    private Image background;
 
     public void prepareTutorial(EUITutorialType UITutorialType) {
-        imageToChange.sprite = tutorialsImage[(int)UITutorialType];
+        background = gameObject.GetComponent<Image>();
+        background.sprite = tutorialsImage[(int)UITutorialType];
     }
 }

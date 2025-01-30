@@ -53,9 +53,6 @@ public class UITimer : MonoBehaviour
     {
         if (currentTime <= 0)
         {
-            AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
-                    new FMODParameter("WIN_LOSE", 1.0f)
-            });
             onTimerEnd?.Invoke();
             isActive = false;
         }

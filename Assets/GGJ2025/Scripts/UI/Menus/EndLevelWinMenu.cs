@@ -7,6 +7,10 @@ public class EndLevelWinMenu : BaseUI {
     private Image[] stars;
 
     private void OnEnable() {
+        AudioManager.PauseBackgroundMusic();
+        AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
+                new FMODParameter("WIN_LOSE", 0.0f)
+        });
         hideAllStars();
         showRightStars();
     }

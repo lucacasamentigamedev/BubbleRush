@@ -63,7 +63,7 @@ public class TestUI : MonoBehaviour
     }
 
     private void OnGameplayClick() {
-        CastGlobalEventOpenUI(EUIType.GameplayMenu);
+        CastGlobalEventOpenUI(EUIType.GameplayHUD);
     }
 
     private void OnPauseClick() {
