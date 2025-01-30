@@ -72,7 +72,7 @@ public class Bubble : MonoBehaviour
 
     public virtual void InternalOnDestroy()
     {
-        Debug.Log("Esplodo");
+        //Debug.Log("Esplodo");
         //AudioManager.PlayOneShotSound("Test");
         switch(BubbleType) {
             case EBubbleType.Normal:

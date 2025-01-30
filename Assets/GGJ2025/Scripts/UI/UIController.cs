@@ -215,10 +215,8 @@ public class UIController : MonoBehaviour
     #region Coroutine
     private IEnumerator WaitBeforeUIInteract() {
         isPrevented = true;
-        Debug.Log("START CORUTINE BUTTON TOGGLE");
         yield return new WaitForSecondsRealtime(0.5f);
         isPrevented = false;
-        Debug.Log("STOP CORUTINE BUTTON TOGGLE");
     }
     #endregion
 }

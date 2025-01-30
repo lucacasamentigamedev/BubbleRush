@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
 
         }
         //inputs bind
-        Debug.Log("Player - mi bindo agli input");
         InputManager.Player.Interact.performed += onInteract;
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
@@ -60,20 +59,10 @@ public class Player : MonoBehaviour
     }
 
     private void onLevelManagerStart() {
-
         currentWeapon = avaiableWeapons[0];
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
-        //hide fingerone
-        currentWeaponRectElem.gameObject.SetActive(false);
-
-        //active fingerone or other current weapon
-        InputManager.Player.Enable();
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
-        currentWeaponRectElem.gameObject.SetActive(false);
-        currentWeaponRectElem.gameObject.SetActive(true);
-
         uint level = LevelManager.Get().Level;
-
         Debug.Log("PLAYER - START LIV" + level);
         foreach (Weapon weapon in avaiableWeapons) {
             if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.IsUnlocked) {
@@ -120,7 +109,7 @@ public class Player : MonoBehaviour
 
     void onInteract(InputAction.CallbackContext cc)
     {
-        Debug.Log("ON INTERACT CALLED " + currentWeapon.weaponData.weaponType.ToString());
+        //Debug.Log("ON INTERACT CALLED " + currentWeapon.weaponData.weaponType.ToString());
         switch (currentWeapon.weaponData.weaponType) {
             case EWeaponType.Chisel:
                 AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {

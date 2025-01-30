@@ -218,7 +218,7 @@ public class Pluriball : MonoBehaviour ,IClickable
     private void OnBubbleDestroy()
     {
         remainingBubbles--;
-        Debug.Log(remainingBubbles);
+        //Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
             InternalEndLevel(true);
             transform.localScale = Vector3.one;
@@ -275,12 +275,12 @@ public class Pluriball : MonoBehaviour ,IClickable
         //resize
         width = bubbles[0].GetSize().x * columns;       //+ offset 
         height = bubbles[0].GetSize().y * rows;
-        Debug.Log($"width: {width} height {height}");
+        //Debug.Log($"width: {width} height {height}");
         Vector3 newScale = transform.localScale;
         newScale.x = width / _collider.bounds.size.x;
         newScale.y = height / _collider.bounds.size.y;
         newScale.z = 1;
-        Debug.Log($"New Scale: {newScale}");
+        //Debug.Log($"New Scale: {newScale}");
 
         transform.localScale = new Vector3(width, height, 1);
     }
