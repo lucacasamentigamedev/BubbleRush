@@ -25,7 +25,6 @@ public class LevelManager : MonoBehaviour
         { 
             currentLevel = value;
             currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
-            //StartGame();
         } 
     }
 

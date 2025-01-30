@@ -71,8 +71,6 @@ public class Player : MonoBehaviour
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
         currentWeaponRectElem.gameObject.SetActive(false);
         currentWeaponRectElem.gameObject.SetActive(true);
-        //TODO: poi rimettere a false
-        //Cursor.visible = false;
 
         uint level = LevelManager.Get().Level;
 
@@ -146,7 +144,6 @@ public class Player : MonoBehaviour
             StopCoroutine(coroutineDeleay);
         }
         coroutineDeleay = StartCoroutine(ChangeSpriteWithDelay());
-        //currentWeaponImage.sprite = currentWeapon.weaponData.postInteract;
 
         Vector3 screenPoint = InputManager.Player_Mouse_Position;
         screenPoint.z = 10;

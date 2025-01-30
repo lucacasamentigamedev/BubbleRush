@@ -46,7 +46,7 @@ public class UIController : MonoBehaviour
         //pass UIController to every button
         BRButton[] buttons = GetComponentsInChildren<BRButton>(true);
         foreach (BRButton button in buttons) {
-            Debug.Log("UICOntroller - assegno UICOntroller a " + button.gameObject.name);
+            //Debug.Log("UICOntroller - assegno UICOntroller a " + button.gameObject.name);
             button.Init(this);
         }
         //collect every UI into array
@@ -67,18 +67,12 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        //hide all
+        //hide all menu
         foreach (BaseUI baseUI in uiPrefabs) {
             baseUI.Hide();
         }
-        //open main menu
+        //open main menu by default
         OpenMenu(EUIType.MainMenu);
-        //Check Tutorials
-        LevelManager.Get().OnStart += OnCheckTutorial;
-        if (!firstTime) {
-            OnCheckTutorial();
-            firstTime = true;
-        }
         //play bg music
         AudioManager.PlayBackgroundMusic("MainMenuMusic");
     }
@@ -89,6 +83,7 @@ public class UIController : MonoBehaviour
         EventArgsFactory.OpenUIParser(message, out EUIType UIType);
         OpenMenu(UIType);
     }
+
     private void OnChangeUILevelLabel(EventArgs message) {
         gameplayHUDPrefab.ChangeLevelLabel();
     }
@@ -120,9 +115,6 @@ public class UIController : MonoBehaviour
             case EUIType.EndLevelLoseMenu:
                 currentMenu = endLevelLoseMenuPrefab;
                 break;
-            case EUIType.TutorialMenu:
-                currentMenu = tutorialMenuPrefab;
-                break;
         }
         //open
         if (currentMenu != null) {
@@ -131,27 +123,43 @@ public class UIController : MonoBehaviour
             Debug.Log("UIController - Menu to open not found" + UIType.ToString());
         }
 
-        //if gameplay reactive time and show weapon
+        //setting gameplayHUD menù?
         if(UIType == EUIType.GameplayHUD) {
-            InputManager.Player.Enable();
-            InputManager.Menu.Disable();
-            Time.timeScale = 1f;
-            if (weapon != null) {
-                weapon.gameObject.SetActive(true);
+            //have tutorial?
+            if (OnCheckTutorial()) {
+                SetupForUIMenu();
+            } else {
+                //normal gameplay
+                SetupForGameplayHUD();
             }
         } else {
-            //if other menu stop time, hide weapon
-            InputManager.Player.Disable();
-            InputManager.Menu.Enable();
-            Time.timeScale = 0f;
-            if (weapon != null) {
-                weapon.gameObject.SetActive(false);
+            //normal UI Menu
+            SetupForUIMenu();
+            if (waitBeforeUIInteract != null) {
+                StopCoroutine(waitBeforeUIInteract);
             }
+            waitBeforeUIInteract = StartCoroutine(WaitBeforeUIInteract());
         }
-        if (waitBeforeUIInteract != null) {
-            StopCoroutine(waitBeforeUIInteract);
+    }
+
+    private void SetupForGameplayHUD() {
+        Debug.Log("UIController - SetupForGameplayHUD");
+        InputManager.Player.Enable();
+        InputManager.Menu.Disable();
+        Time.timeScale = 1f;
+        if (weapon != null) {
+            weapon.gameObject.SetActive(true);
         }
-        waitBeforeUIInteract = StartCoroutine(WaitBeforeUIInteract());
+    }
+
+    private void SetupForUIMenu() {
+        Debug.Log("UIController - SetupForUIMenu");
+        InputManager.Player.Disable();
+        InputManager.Menu.Enable();
+        Time.timeScale = 0f;
+        if (weapon != null) {
+            weapon.gameObject.SetActive(false);
+        }
     }
 
     public void CloseCurrentMenu()
@@ -164,22 +172,25 @@ public class UIController : MonoBehaviour
         currentMenu = null;
     }
 
-    private void OnCheckTutorial() {
-        /*uint currentLevel = LevelManager.Get().Level;
-        if (levelToTutorialMap.TryGetValue(currentLevel, out var tutorialType)) {
-            //OpenTutorial(tutorialType);
+    private bool OnCheckTutorial() {
+        uint currentLevel = LevelManager.Get().Level;
+        if (levelToTutorialMap.TryGetValue(currentLevel, out EUITutorialType tutorialType)) {
             Debug.Log($"UIController - Apro tutorial level {currentLevel}");
-            OpenMenu(EUIType.TutorialMenu);
+            tutorialMenuPrefab.prepareTutorial(tutorialType);
+            tutorialMenuPrefab.Show();
+            AudioManager.PlayOneShotSound("MenuOpen");
+            return true;
         } else {
             Debug.Log($"UIController - No tutorial associated with level {currentLevel}");
-        }*/
+            return false;
+        }
     }
 
-    /*private void OpenTutorial(EUITutorialType UITutorialType) {
-        CloseCurrentMenu();
-        tutorialMenuPrefab.Show();
-        tutorialMenuPrefab.prepareTutorial(UITutorialType);
-    }*/
+    public void CloseCurrentTutorial() {
+        tutorialMenuPrefab.Hide();
+        AudioManager.PlayOneShotSound("MenuClose");
+        SetupForGameplayHUD();
+    }
 
     private void OnTogglePause(InputAction.CallbackContext context) {
         Debug.Log("UIController - OnTogglePause");
@@ -192,7 +203,7 @@ public class UIController : MonoBehaviour
     }
     #endregion
 
-    #region Wrapper methods
+    #region Wrapper menus methods
     public void OpenMainMenu() => OpenMenu(EUIType.MainMenu);
     public void OpenCreditsMenu() => OpenMenu(EUIType.CreditsMenu);
     public void OpenGameplayMenu() => OpenMenu(EUIType.GameplayHUD);

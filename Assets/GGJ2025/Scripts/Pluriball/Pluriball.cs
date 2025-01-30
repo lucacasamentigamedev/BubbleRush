@@ -19,8 +19,6 @@ public class Pluriball : MonoBehaviour ,IClickable
     private UITimer timer;
     [SerializeField]
     private CameraShake cameraShake;
-    /*[SerializeField]
-    private UIBehavior uiBehavior;*/
     [SerializeField]
     private GameObject pluriballVisual;
     [SerializeField]
@@ -78,7 +76,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(rows, columns);
         Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
-        //uiBehavior.ChangeLevelLabel();
         GlobalEventSystem.CastEvent(EventName.ChangeUILevelLabel, EventArgsFactory.ChangeUILevelLabelFactory());
     }
 
@@ -138,12 +135,9 @@ public class Pluriball : MonoBehaviour ,IClickable
                 }
             }
             LevelManager.Get().CurrentLevelStarsObtained = starNumbers;
-            //uiBehavior.OnpePreLevelMenu(starNumbers);
             Debug.Log("Pluriball - Ho ottenuto " + starNumbers + " stelle");
             GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
-
         } else {
-            //uiBehavior.OpenEndLevelMenu();
             GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelLoseMenu));
         }
         pluriballVisual.SetActive(false);
@@ -226,7 +220,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles--;
         Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
-            //probably 20 sarà cambiato poi
             InternalEndLevel(true);
             transform.localScale = Vector3.one;
             
@@ -238,7 +231,6 @@ public class Pluriball : MonoBehaviour ,IClickable
             }
             Array.Clear(bubbles, 0, bubbles.Length);
             levelManager.Level += 1;
-            //TODO make things
         } else {
             int index = UnityEngine.Random.Range(0, popLocation.Length);
 

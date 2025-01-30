@@ -442,10 +442,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pluriball
       objectReference: {fileID: 0}
-    - target: {fileID: 1938680173733570480, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
       propertyPath: UI
       value: 
@@ -462,10 +458,6 @@ PrefabInstance:
       propertyPath: cameraShake
       value: 
       objectReference: {fileID: 1381008340}
-    - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
-      propertyPath: popLocation.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
       propertyPath: popLocation.Array.data[0]
       value: 
@@ -592,10 +584,6 @@ PrefabInstance:
     - target: {fileID: 3431625498403693875, guid: 146d5da5c3567a04d827301cd45f14fe, type: 3}
       propertyPath: m_Name
       value: EventInputSystem
-      objectReference: {fileID: 0}
-    - target: {fileID: 3431625498403693875, guid: 146d5da5c3567a04d827301cd45f14fe, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4876228751489689546, guid: 146d5da5c3567a04d827301cd45f14fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -890,7 +878,7 @@ PrefabInstance:
       objectReference: {fileID: 967394856}
     - target: {fileID: 7515083712159007316, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OpenGameplayMenu
+      value: CloseCurrentTutorial
       objectReference: {fileID: 0}
     - target: {fileID: 7910285636608445373, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
