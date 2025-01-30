@@ -523,7 +523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &761268549
 RectTransform:
   m_ObjectHideFlags: 0
@@ -874,7 +874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6196207063389842982, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6816766215313972594, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: weapon
@@ -882,7 +882,15 @@ PrefabInstance:
       objectReference: {fileID: 761268549}
     - target: {fileID: 6965199897235367634, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7515083712159007316, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 967394856}
+    - target: {fileID: 7515083712159007316, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenGameplayMenu
       objectReference: {fileID: 0}
     - target: {fileID: 7910285636608445373, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

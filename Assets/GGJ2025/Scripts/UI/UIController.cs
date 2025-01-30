@@ -120,6 +120,9 @@ public class UIController : MonoBehaviour
             case EUIType.EndLevelLoseMenu:
                 currentMenu = endLevelLoseMenuPrefab;
                 break;
+            case EUIType.TutorialMenu:
+                currentMenu = tutorialMenuPrefab;
+                break;
         }
         //open
         if (currentMenu != null) {
@@ -162,21 +165,21 @@ public class UIController : MonoBehaviour
     }
 
     private void OnCheckTutorial() {
-        uint currentLevel = LevelManager.Get().Level;
+        /*uint currentLevel = LevelManager.Get().Level;
         if (levelToTutorialMap.TryGetValue(currentLevel, out var tutorialType)) {
-            OpenTutorial(tutorialType);
+            //OpenTutorial(tutorialType);
+            Debug.Log($"UIController - Apro tutorial level {currentLevel}");
+            OpenMenu(EUIType.TutorialMenu);
         } else {
-            Debug.Log($"No tutorial associated with level {currentLevel}");
-        }
+            Debug.Log($"UIController - No tutorial associated with level {currentLevel}");
+        }*/
     }
 
-    private void OpenTutorial(EUITutorialType UITutorialType) {
-        //FIXME: per ora l'ho commentato
-        return;
+    /*private void OpenTutorial(EUITutorialType UITutorialType) {
         CloseCurrentMenu();
-        tutorialMenuPrefab.prepareTutorial(UITutorialType);
         tutorialMenuPrefab.Show();
-    }
+        tutorialMenuPrefab.prepareTutorial(UITutorialType);
+    }*/
 
     private void OnTogglePause(InputAction.CallbackContext context) {
         Debug.Log("UIController - OnTogglePause");

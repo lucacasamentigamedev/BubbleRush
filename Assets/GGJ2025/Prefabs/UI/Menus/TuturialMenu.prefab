@@ -57,7 +57,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9a8cce17566681549a191908edc8103b, type: 3}
   - {fileID: 21300000, guid: 249d510b0a6e50946b3dde0fdf2ef668, type: 3}
   - {fileID: 21300000, guid: 91488a375985eda46b244e034bd97181, type: 3}
-  imageToChange: {fileID: 0}
+  backgroundRef: {fileID: 7269065299332562827}
 --- !u!1 &6710126689942727582
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +145,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Close
       objectReference: {fileID: 0}
+    - target: {fileID: 4410938773965929025, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
+      propertyPath: buttonType
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4973531123999626972, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -207,11 +211,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4973531123999626972, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 763
+      value: 701
       objectReference: {fileID: 0}
     - target: {fileID: 4973531123999626972, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -481
+      value: -448
       objectReference: {fileID: 0}
     - target: {fileID: 4973531123999626972, guid: 62db36e7d6c0c6a49a78000a276fa6fb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

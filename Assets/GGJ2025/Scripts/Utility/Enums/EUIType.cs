@@ -5,5 +5,6 @@ public enum EUIType
     GameplayHUD,
     PauseMenu,
     EndLevelWinMenu,
-    EndLevelLoseMenu
+    EndLevelLoseMenu,
+    TutorialMenu
 }
