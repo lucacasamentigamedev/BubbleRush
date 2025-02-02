@@ -22,6 +22,9 @@ Each level presents you with a procedurally generated sheet of bubble wrap, feat
 Test your reflexes, strategy, and stress-popping skills as you race against the clock in this uniquely therapeutic and addictive game!
 Are you ready to conquer the ultimate bubble-popping challenge?
 
+Official Global Game Jam page: https://globalgamejam.org/games/2025/bubble-rush-4-2
+Trailer: https://www.youtube.com/watch?v=tBjxxanyd5Y
+
 # Screeshoots
 
 ![4](https://github.com/user-attachments/assets/0d8c6972-5468-4d0a-9fed-96203712baa3)
