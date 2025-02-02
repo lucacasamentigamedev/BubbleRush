@@ -23,6 +23,7 @@ Test your reflexes, strategy, and stress-popping skills as you race against the 
 Are you ready to conquer the ultimate bubble-popping challenge?
 
 Official Global Game Jam page: https://globalgamejam.org/games/2025/bubble-rush-4-2
+
 Trailer: https://www.youtube.com/watch?v=tBjxxanyd5Y
 
 # Screeshoots
