@@ -23,11 +23,13 @@ MonoBehaviour:
     grid_Size: {x: 5, y: 5}
     bubbles:
     - type: 0
+      setFiller: 0
       min_Spawn: 15
       max_Spawn: 20
       min_Pop: 1
       max_Pop: 2
     - type: 3
+      setFiller: 1
       min_Spawn: 5
       max_Spawn: 10
       min_Pop: 1

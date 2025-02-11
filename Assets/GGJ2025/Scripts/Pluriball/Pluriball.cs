@@ -251,8 +251,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         {
             for (int col = 0; col < columns; col++)
             {
-                int index = row * columns + col; 
-
+                int index = row * columns + col;
 
                 bubbles[index].transform.position = origin + new Vector2(bubbles[index].GetSize().x * col, -(bubbles[index].GetSize().y * row));
                 bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);
@@ -290,56 +289,57 @@ public class Pluriball : MonoBehaviour ,IClickable
         cameraShake.Shake(shakeMagnitude, shakeDuration);
     }
 
-    private Bubble[] ProceduralGeneration(LevelEntryStruct levelStruct, Dictionary<EBubbleType,PoolData> poolDatas)
+    private Bubble[] ProceduralGeneration(LevelEntryStruct levelStruct, Dictionary<EBubbleType, PoolData> poolDatas)
     {
         int size = (int)levelStruct.grid_Size.x * (int)levelStruct.grid_Size.y;
         Bubble[] bubbles = new Bubble[size];
 
         BubbleToCreate[] typesToCreate = levelStruct.bubbles;
-        uint[] counterTypeBubbles = new uint[typesToCreate.Length];
-
-        do
+        BubbleToCreate bubbleType;
+        BubbleToCreate bubbleFillerType = new BubbleToCreate();
+        int indexB = 0;
+        for (int i = 0; i < typesToCreate.Length; i++)
         {
-            //Creo la mappa di bolle, tenendo conto del numero massimo di tipo di bolla inseribile nel livello
-            int i = 0;
-            while (i < size)
+            bubbleType = typesToCreate[i];
+            if (bubbleType.setFiller)
             {
-                int randomVar = UnityEngine.Random.Range(0, typesToCreate.Length);
-
-                BubbleToCreate bubbleChose = typesToCreate[randomVar];
-
-                if (counterTypeBubbles[randomVar] == bubbleChose.max_Spawn)
-                {
-                    //Raggiunto il numero  di bolle di quel tipo massimo, si riprova 
-                    continue;
-                }
-                counterTypeBubbles[randomVar]++;
-                bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleChose.type]).GetComponent<Bubble>();
-                bubbles[i].gameObject.SetActive(true);
-                int life = UnityEngine.Random.Range((int)bubbleChose.min_Pop, (int)bubbleChose.max_Pop + 1);
-                bubbles[i].ResetBubble(life);
-                i++;
+                bubbleFillerType = bubbleType;
+                continue;
             }
-        } while (!CheckGenerationCorrectness(bubbles, typesToCreate));  //Controllo se le condizioni di bolle minime è stato rispettato. se non è così rigenero da capo
+            int rand = UnityEngine.Random.Range((int)bubbleType.min_Spawn, (int)bubbleType.max_Spawn);
+            for(int j = 0; j < rand; j++)
+            {
+                bubbles[indexB] = Pooler.Instance.GetPooledObject(poolDatas[bubbleType.type]).GetComponent<Bubble>();
+                bubbles[indexB].gameObject.SetActive(true);
+                int life = UnityEngine.Random.Range((int)bubbleType.min_Pop, (int)bubbleType.max_Pop + 1);
+                bubbles[indexB].ResetBubble(life);
+                indexB++;
+            }
+        }
+        for(int i = indexB; i< size; i++ )
+        {
+            bubbles[i] = Pooler.Instance.GetPooledObject(poolDatas[bubbleFillerType.type]).GetComponent<Bubble>();
+            bubbles[i].gameObject.SetActive(true);
+            int life = UnityEngine.Random.Range((int)bubbleFillerType.min_Pop, (int)bubbleFillerType.max_Pop + 1);
+            bubbles[i].ResetBubble(life);
+        }
+
+
+        Reshuffle(bubbles);
 
         return bubbles;
     }
-    private bool CheckGenerationCorrectness(Bubble[] bubbleGenerated, BubbleToCreate[] bubblesToCreate)
+
+    private void Reshuffle(Bubble[] array)
     {
-        Dictionary<EBubbleType, int> bubbleNumbersType = new Dictionary<EBubbleType, int>();
-        foreach (Bubble bubble in bubbleGenerated)
+        // Knuth shuffle algorithm 
+        for (int t = 0; t < array.Length; t++)
         {
-            if (!bubbleNumbersType.ContainsKey(bubble.BubbleType))
-                bubbleNumbersType.Add(bubble.BubbleType, 0);
-            bubbleNumbersType[bubble.BubbleType]++; 
+            Bubble tmp = array[t];
+            int r = UnityEngine.Random.Range(t, array.Length);
+            array[t] = array[r];
+            array[r] = tmp;
         }
-        
-        foreach (BubbleToCreate bubble  in bubblesToCreate)
-        {
-            if (bubble.max_Spawn>0 && (!bubbleNumbersType.ContainsKey(bubble.type) || bubbleNumbersType[bubble.type] < bubble.min_Spawn))
-                return false;
-        }
-        return true;
     }
     #endregion
 }
