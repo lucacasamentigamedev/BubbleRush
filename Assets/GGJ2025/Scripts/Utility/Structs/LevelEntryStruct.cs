@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[Serializable]
+[System.Serializable]
 public struct LevelEntryStruct
 {
     public bool is_Timer_Activate;
