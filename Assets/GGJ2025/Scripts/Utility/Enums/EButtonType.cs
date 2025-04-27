@@ -7,5 +7,8 @@ public enum ButtonType {
     MainMenu,
     NextLevel,
     Retry,
-    Close
+    Close,
+    Pause,
+    Left,
+    Right
 }

@@ -23,7 +23,10 @@ public class BRButton : MonoBehaviour {
         { ButtonType.MainMenu, "mainmenu" },
         { ButtonType.NextLevel, "nextlevel" },
         { ButtonType.Retry, "retry" },
-        { ButtonType.Close, "close" }
+        { ButtonType.Close, "close" },
+        { ButtonType.Pause, "pause" },
+        { ButtonType.Left, "left" },
+        { ButtonType.Right, "right" }
     };
     #endregion
 

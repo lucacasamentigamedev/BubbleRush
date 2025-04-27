@@ -37,4 +37,19 @@ public static class EventArgsFactory
 
     public static void ChangeUILevelLabelParser(EventArgs message) {}
     #endregion
+
+    #region ChangeWeapon
+    public static EventArgs ChangeWeaponFactory(int forward)
+    {
+        EventArgs message = new EventArgs();
+        message.variables = new object[1];
+        message.variables[0] = forward;
+        return message;
+    }
+    public static void ChangeWeaponParser(EventArgs message, out int forward) 
+    {
+        forward = (int)message.variables[0];
+    }
+
+    #endregion
 }

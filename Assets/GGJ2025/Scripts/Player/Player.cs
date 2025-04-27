@@ -32,10 +32,11 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
         LevelManager.Get().OnStart += onLevelManagerStart;
+        GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
     }
 
     private void Update() {
-        MoveWeaponWithMouse();
+        MoveWeaponWithInput();
     }
 
     private void OnDestroy()
@@ -44,16 +45,35 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponForward.performed -= onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
+        GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
 
     }
 
-    private void MoveWeaponWithMouse() {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        currentWeaponRectElem.position = mousePosition;
+    private void MoveWeaponWithInput()
+    {
+        #if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+        {
+            Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+            currentWeaponRectElem.position = touchPosition;
+        }
+        #else
+        if (Mouse.current != null)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();
+            currentWeaponRectElem.position = mousePosition;
+        }
+        #endif
     }
     #endregion
 
     #region Internal Methods
+    private void OnChangeWeapon(EventArgs message)
+    {
+        EventArgsFactory.ChangeWeaponParser(message, out int forwardChange);
+        ChangeWeapon(forwardChange);
+    }
+
     private void onChangeWeaponWheel(InputAction.CallbackContext context) {
         ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
     }
@@ -136,12 +156,27 @@ public class Player : MonoBehaviour
 
         Vector3 screenPoint = InputManager.Player_Mouse_Position;
         screenPoint.z = 10;
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero);
+        Vector2 inputPosition;
+      
+#if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
+            return;
+
+        inputPosition = Touchscreen.current.primaryTouch.position.ReadValue();
+#else
+        if (Mouse.current == null)
+            return;
+
+        inputPosition = Mouse.current.position.ReadValue();
+#endif
+        
+
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(inputPosition);
+        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null) {
             IClickable clickable = hit.collider.GetComponent<IClickable>();
             if (clickable != null) {
-                clickable.OnClick(mousePosition, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
+                clickable.OnClick(worldPoint, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
         }
     }

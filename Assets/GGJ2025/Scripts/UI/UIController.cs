@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private BaseUI endLevelWinMenuPrefab;
     [SerializeField] private BaseUI endLevelLoseMenuPrefab;
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
+    [SerializeField] private GameplayUIMenu gameplayMenuPrefab;
     //Other
     private BaseUI currentMenu;
     private bool firstTime = false;
@@ -58,7 +59,8 @@ public class UIController : MonoBehaviour
             pauseMenuPrefab,
             endLevelWinMenuPrefab,
             endLevelLoseMenuPrefab,
-            tutorialMenuPrefab
+            tutorialMenuPrefab,
+            gameplayMenuPrefab
         };
         //pause input
         InputManager.Player.TogglePause.performed += OnTogglePause;
@@ -104,7 +106,7 @@ public class UIController : MonoBehaviour
                 currentMenu = creditsMenuPrefab;
                 break;
             case EUIType.GameplayHUD:
-                currentMenu = gameplayHUDPrefab;
+                currentMenu = gameplayHUDPrefab;                
                 break;
             case EUIType.PauseMenu:
                 currentMenu = pauseMenuPrefab;
@@ -119,6 +121,17 @@ public class UIController : MonoBehaviour
         //open
         if (currentMenu != null) {
             currentMenu.Show();
+            /*
+            if(currentMenu == gameplayHUDPrefab) 
+            {
+                gameplayMenuPrefab.Show();
+            }
+            else
+            {
+                gameplayMenuPrefab.Hide();
+            }*/
+
+
         } else {
             Debug.Log("UIController - Menu to open not found" + UIType.ToString());
         }
@@ -147,6 +160,7 @@ public class UIController : MonoBehaviour
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
         Time.timeScale = 1f;
+        gameplayMenuPrefab.Show();
         if (weapon != null) {
             weapon.gameObject.SetActive(true);
         }
@@ -169,6 +183,7 @@ public class UIController : MonoBehaviour
             return;
         };
         currentMenu.Hide();
+        gameplayMenuPrefab.Hide();
         currentMenu = null;
     }
 
