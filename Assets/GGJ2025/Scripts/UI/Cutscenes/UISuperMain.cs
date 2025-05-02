@@ -20,11 +20,17 @@ public class UISuperMain : MonoBehaviour
 
     private void Start() {
         AudioManager.PlayBackgroundMusic("IntroMusic");
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(InputManager.Menu_Skip_Intro_Held)
+        {
+            SceneManager.LoadScene("Main");
+        }
+
         // Aumenta il timer con il tempo trascorso ogni frame
         timer += Time.deltaTime;
         // Se stiamo facendo il fade-in, aggiorna il timer
