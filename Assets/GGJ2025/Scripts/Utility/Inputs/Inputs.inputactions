@@ -205,6 +205,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SkipIntro",
+                    "type": "Value",
+                    "id": "244edc11-b24f-4f68-8a56-527a5779343c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -238,6 +247,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "TogglePause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca11759b-db44-464a-b7f2-b35d9848d3f2",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SkipIntro",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -227,6 +227,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SkipIntro"",
+                    ""type"": ""Value"",
+                    ""id"": ""244edc11-b24f-4f68-8a56-527a5779343c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -262,6 +271,17 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""TogglePause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca11759b-db44-464a-b7f2-b35d9848d3f2"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SkipIntro"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -280,6 +300,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Interact = m_Menu.FindAction("Interact", throwIfNotFound: true);
         m_Menu_TogglePause = m_Menu.FindAction("TogglePause", throwIfNotFound: true);
+        m_Menu_SkipIntro = m_Menu.FindAction("SkipIntro", throwIfNotFound: true);
     }
 
     ~@Inputs()
@@ -435,12 +456,14 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private List<IMenuActions> m_MenuActionsCallbackInterfaces = new List<IMenuActions>();
     private readonly InputAction m_Menu_Interact;
     private readonly InputAction m_Menu_TogglePause;
+    private readonly InputAction m_Menu_SkipIntro;
     public struct MenuActions
     {
         private @Inputs m_Wrapper;
         public MenuActions(@Inputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Interact => m_Wrapper.m_Menu_Interact;
         public InputAction @TogglePause => m_Wrapper.m_Menu_TogglePause;
+        public InputAction @SkipIntro => m_Wrapper.m_Menu_SkipIntro;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -456,6 +479,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @TogglePause.started += instance.OnTogglePause;
             @TogglePause.performed += instance.OnTogglePause;
             @TogglePause.canceled += instance.OnTogglePause;
+            @SkipIntro.started += instance.OnSkipIntro;
+            @SkipIntro.performed += instance.OnSkipIntro;
+            @SkipIntro.canceled += instance.OnSkipIntro;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -466,6 +492,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @TogglePause.started -= instance.OnTogglePause;
             @TogglePause.performed -= instance.OnTogglePause;
             @TogglePause.canceled -= instance.OnTogglePause;
+            @SkipIntro.started -= instance.OnSkipIntro;
+            @SkipIntro.performed -= instance.OnSkipIntro;
+            @SkipIntro.canceled -= instance.OnSkipIntro;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -496,5 +525,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     {
         void OnInteract(InputAction.CallbackContext context);
         void OnTogglePause(InputAction.CallbackContext context);
+        void OnSkipIntro(InputAction.CallbackContext context);
     }
 }

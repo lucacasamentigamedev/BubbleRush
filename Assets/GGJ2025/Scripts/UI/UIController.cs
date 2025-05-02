@@ -160,7 +160,7 @@ public class UIController : MonoBehaviour
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
         Time.timeScale = 1f;
-        gameplayMenuPrefab.Show();
+        gameplayMenuPrefab.Show();  // Attivo i tre bottoni Pause Left e Right
         if (weapon != null) {
             weapon.gameObject.SetActive(true);
         }
@@ -183,7 +183,7 @@ public class UIController : MonoBehaviour
             return;
         };
         currentMenu.Hide();
-        gameplayMenuPrefab.Hide();
+        gameplayMenuPrefab.Hide();  // Disattivo i tre bottoni Pause Left e Right TIPO SEMPRE, BELLA SCHIFEZZ
         currentMenu = null;
     }
 
@@ -216,7 +216,7 @@ public class UIController : MonoBehaviour
             OpenMenu(EUIType.PauseMenu);
         }
     }
-    #endregion
+#endregion
 
     #region Wrapper menus methods
     public void OpenMainMenu() => OpenMenu(EUIType.MainMenu);
