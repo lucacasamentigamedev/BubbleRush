@@ -8,12 +8,17 @@ public class LevelManager : MonoBehaviour
 
     #region PrivateVariable
     private uint currentLevel;
-    private int currentLevelStarsObtained;
     private LevelEntryStruct currentEntryData;
+    private float currentLevelTime;
+    private bool isTimerActive = false; //da togliere
+    private bool soundBeepExecuted = false; 
     #endregion
 
     public Action OnStart;
     public Action OnRetry;
+    public Action OnWinLevel;
+    public Action OnLoseLevel;
+    public Action<float> OnUpdateTimer;
 
     #region Properties
     public uint Level { 
@@ -28,9 +33,10 @@ public class LevelManager : MonoBehaviour
         } 
     }
 
-    public int CurrentLevelStarsObtained {
-        get { return currentLevelStarsObtained; }
-        set { currentLevelStarsObtained = value; }
+    public float CurrentLevelTimer
+    {
+        get { return currentLevelTime; }
+        set { currentLevelTime = value; }
     }
 
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }
@@ -63,16 +69,45 @@ public class LevelManager : MonoBehaviour
         SaveSystem.LoadFile(out currentLevel);
         Debug.Log("Level Manager - Start current level: " + currentLevel);
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
-        //Debug.Log(currentEntryData.unlock_Lvl);
+        GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevel);
     }
 
     void OnDestroy()
     {
         SaveSystem.SaveFile(currentLevel);
     }
+
+    //Da convertire in coroutine
+    private void Update()
+    {
+        if (!isTimerActive) return;
+
+        //---------STO COSO è PER FARE CASINO
+        int t = (int)currentLevelTime;
+        if (((t <= 3 && t > 2) || (t <= 1 && t > 0)) && soundBeepExecuted)
+        {
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = false;
+        }
+        else if (((t <= 4 && t > 3) || (t <= 2 && t > 1) || t == 0) && !soundBeepExecuted)
+        {
+            AudioManager.PlayOneShotSound("TimeEndBeep");
+            soundBeepExecuted = true;
+        }
+        //----------------------------
+
+        currentLevelTime -= Time.deltaTime;
+        OnUpdateTimer?.Invoke(currentLevelTime);
+        if(currentLevelTime <= 0) 
+        {
+            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelLoseMenu));
+            OnLoseLevel?.Invoke();
+            isTimerActive = false;
+        }
+    }
     #endregion
 
-    #region PubblicMethods
+    #region PublicMethods
     public void RetryLevel()
     {
         OnRetry?.Invoke();
@@ -81,5 +116,16 @@ public class LevelManager : MonoBehaviour
     {
         OnStart?.Invoke();
     }
+    public void WinLevel()
+    {
+        OnWinLevel?.Invoke();
+        GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
+    }
     #endregion
+
+    private void OnStartLevel(EventArgs message)
+    {
+        currentLevelTime = currentEntryData.timer_for_level;
+        isTimerActive = true;
+    }
 }

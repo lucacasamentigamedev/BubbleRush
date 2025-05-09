@@ -15,10 +15,11 @@ public class Pluriball : MonoBehaviour ,IClickable
     private PoolData bombBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
-    [SerializeField]
-    private UITimer timer;
+
     [SerializeField]
     private CameraShake cameraShake;
+
+
     [SerializeField]
     private GameObject pluriballVisual;
     [SerializeField]
@@ -59,12 +60,13 @@ public class Pluriball : MonoBehaviour ,IClickable
         };
         #endregion
 
-        timer.onTimerEnd += OnTimerEnd;
+        levelManager.OnLoseLevel += OnLoseLevel;
 
     }
 
     private void OnStart()
     {
+        
         pluriballVisual.SetActive(true);
         columns = (int)levelManager.ActiveEntryData.grid_Size.x;
         rows = (int)levelManager.ActiveEntryData.grid_Size.y;
@@ -73,7 +75,9 @@ public class Pluriball : MonoBehaviour ,IClickable
         InternalSetPosition(rows, columns, b.GetSize());
         
         bubbles = new Bubble[remainingBubbles];
-        timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
+
+        GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());        
+        //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(rows, columns);
         Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
         GlobalEventSystem.CastEvent(EventName.ChangeUILevelLabel, EventArgsFactory.ChangeUILevelLabelFactory());
@@ -107,11 +111,13 @@ public class Pluriball : MonoBehaviour ,IClickable
             }
                 
         }
-        timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
+        GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());
+        //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
     }
       
     private void InternalEndLevel(bool win)
     {
+        //Disattiviamo le bolle per
         foreach (Bubble bubble in bubbles)
         {
             bubble.gameObject.SetActive(false);
@@ -119,26 +125,10 @@ public class Pluriball : MonoBehaviour ,IClickable
             if (bubbleCast == null) continue;
             bubbleCast.OnExplode -= ReduceGlobalTime;
         }
+
         if (win)
         {
-            int starNumbers = 0;
-            float[] startsThreshold = levelManager.ActiveEntryData.stars_for_level;                       
-            for (int i = 0;i < startsThreshold.Length;i++)
-            {
-                if (startsThreshold[i] <= timer.GetTimerPercent())
-                {
-                    starNumbers++;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            LevelManager.Get().CurrentLevelStarsObtained = starNumbers;
-            Debug.Log("Pluriball - Ho ottenuto " + starNumbers + " stelle");
-            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
-        } else {
-            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelLoseMenu));
+            levelManager.WinLevel();
         }
         pluriballVisual.SetActive(false);
 
@@ -156,14 +146,16 @@ public class Pluriball : MonoBehaviour ,IClickable
     #endregion
 
     #region TimerForBomb
-    private void OnTimerEnd()
+    
+    private void OnLoseLevel()
     {
         InternalEndLevel(false);
         Debug.Log("onTimerEnd");
     }
     private void ReduceGlobalTime(float arg)
     {
-        timer.ReduceTimer(arg);
+        GlobalEventSystem.CastEvent(EventName.ModulateTimer, EventArgsFactory.ModulateTimerFactory(arg));
+        //timer.ReduceTimer(arg);
     }
     #endregion
 
@@ -233,7 +225,7 @@ public class Pluriball : MonoBehaviour ,IClickable
             levelManager.Level += 1;
         } else {
             int index = UnityEngine.Random.Range(0, popLocation.Length);
-
+            //CAMBIARE ASSOLUTAMENTE -> GESTIRLO TRAMITE POOLER
             GameObject obj = Instantiate(asset, popLocation[index].transform.position, popLocation[index].transform.rotation);
             obj.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-45, 46)));
         }

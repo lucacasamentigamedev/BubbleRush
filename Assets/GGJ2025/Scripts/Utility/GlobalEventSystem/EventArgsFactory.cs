@@ -50,6 +50,51 @@ public static class EventArgsFactory
     {
         forward = (int)message.variables[0];
     }
+    #endregion
+
+    #region Timer
+    //StartTimer  Pluriball -> UIController
+    //TimerEndend UIController -> LevelManager   ->OnFailLevel  ->(Pluriball) lvlMngRef.OnFailLevel() {peripezie}
+    #region StartTimer
+    public static EventArgs StartTimerFactory()
+    {
+        EventArgs message = new EventArgs();
+        message.variables = new object[0];
+        return message;
+    }
+    public static void StartTimerParser(EventArgs message)
+    {
+
+    }
+    #endregion
+
+    #region ModulateTimer
+    public static EventArgs ModulateTimerFactory(float time)
+    {
+        EventArgs message = new EventArgs();
+        message.variables = new object[1];
+        message.variables[0] = time;
+        return message;
+    }
+    public static void ModulateTimerParser(EventArgs message, out float time)
+    {
+        time = (float)message.variables[0];
+    }
+    #endregion
+
+    #region TimerEnded
+    public static EventArgs TimerEndedFactory()
+    {
+        EventArgs message = new EventArgs();
+        message.variables = new object[0];
+        return message;
+    }
+    public static void TimerEndedParser(EventArgs message)
+    {
+
+    }
+    #endregion
+
 
     #endregion
 }

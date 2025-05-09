@@ -6,6 +6,7 @@ public class CameraShake : MonoBehaviour
 {
     private Vector3 originalPosition;
 
+
     private void Start()
     {
         originalPosition = transform.position;

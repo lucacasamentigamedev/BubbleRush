@@ -6,6 +6,17 @@ using UnityEngine.InputSystem;
 public class UIController : MonoBehaviour
 {
     #region Internal Variables
+
+    static UIController instance;
+    public static UIController Instance
+    {
+        get {
+            if(instance == null)
+                instance = FindObjectOfType<UIController>();
+            return instance;
+        }
+    }
+
     //Menus
     [Header("Menu Prefabs")]
     private BaseUI[] uiPrefabs;
@@ -17,6 +28,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private BaseUI endLevelLoseMenuPrefab;
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
     [SerializeField] private GameplayUIMenu gameplayMenuPrefab;
+    [SerializeField] private RectTransform weapon;
+
     //Other
     private BaseUI currentMenu;
     private bool firstTime = false;
@@ -32,8 +45,6 @@ public class UIController : MonoBehaviour
         { 7, EUITutorialType.ToyHammer },
         { 10, EUITutorialType.WireCutter }
     };
-    [SerializeField]
-    private RectTransform weapon;
     #endregion
 
     #region Mono
@@ -44,6 +55,15 @@ public class UIController : MonoBehaviour
     }
 
     private void Awake() {
+        if(instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+        instance = this;
+               
+        
         //pass UIController to every button
         BRButton[] buttons = GetComponentsInChildren<BRButton>(true);
         foreach (BRButton button in buttons) {
@@ -65,6 +85,7 @@ public class UIController : MonoBehaviour
         //pause input
         InputManager.Player.TogglePause.performed += OnTogglePause;
         InputManager.Menu.TogglePause.performed += OnTogglePause;
+        
     }
 
     private void Start()

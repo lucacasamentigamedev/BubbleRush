@@ -22,8 +22,28 @@ public class EndLevelWinMenu : BaseUI {
     }
 
     private void showRightStars() {
-        for (int i = 0; i < LevelManager.Get().CurrentLevelStarsObtained; i++) {
+
+        int starNumbers = 3;
+        /*
+        float[] startsThreshold = LevelManager.Get().ActiveEntryData.stars_for_level;
+        for (int i = 0; i < startsThreshold.Length; i++)
+        {
+            if (startsThreshold[i] <= timer.GetTimerPercent())
+            {
+                starNumbers++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        */
+
+        for (int i = 0; i < starNumbers; i++) {
+
             stars[i].gameObject.SetActive(true);
         }
     }
+
+
 }

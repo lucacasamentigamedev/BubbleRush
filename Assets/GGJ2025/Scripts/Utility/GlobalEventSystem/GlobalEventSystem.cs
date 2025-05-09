@@ -9,7 +9,10 @@ public enum EventName
 {
     OpenUI,
     ChangeUILevelLabel,
-    ChangeWeapon
+    ChangeWeapon,
+    StartTimer,
+    ModulateTimer,
+    TimerEnded
 }
 
 public static class GlobalEventSystem

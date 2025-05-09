@@ -2,7 +2,8 @@
     "name": "GGJ2025_LevelManager",
     "rootNamespace": "",
     "references": [
-        "GUID:c2cdb5ffd365dad4bb180619100cd2e2"
+        "GUID:c2cdb5ffd365dad4bb180619100cd2e2",
+        "GUID:91c57153a7f3d224c9557e2737df038b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
