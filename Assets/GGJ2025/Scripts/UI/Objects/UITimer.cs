@@ -20,9 +20,9 @@ public class UITimer : MonoBehaviour
 
         LevelManager.Get().OnUpdateTimer += OnUpdate;
     }
-
+   
     void OnUpdate(float timer)
-    {
+    {        
         if (!gameObject.activeInHierarchy) return;
         text.text = string.Format(timer.ToString("00"));
         bar.localScale = new Vector2(timer / maxTime, scale.y);

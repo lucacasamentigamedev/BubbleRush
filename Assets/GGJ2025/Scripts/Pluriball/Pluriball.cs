@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Pluriball : MonoBehaviour ,IClickable
 {
     
@@ -18,7 +17,6 @@ public class Pluriball : MonoBehaviour ,IClickable
 
     [SerializeField]
     private CameraShake cameraShake;
-
 
     [SerializeField]
     private GameObject pluriballVisual;
@@ -38,7 +36,7 @@ public class Pluriball : MonoBehaviour ,IClickable
     private void Start()
     {
         levelManager = LevelManager.Get();
-        levelManager.OnStart += OnStart;
+        levelManager.OnStartLevel += OnStart;
         levelManager.OnRetry += OnRetry;
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;

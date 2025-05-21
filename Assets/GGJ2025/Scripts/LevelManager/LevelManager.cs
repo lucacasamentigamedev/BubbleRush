@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
     private bool soundBeepExecuted = false; 
     #endregion
 
-    public Action OnStart;
+    public Action OnStartLevel;
     public Action OnRetry;
     public Action OnWinLevel;
     public Action OnLoseLevel;
@@ -48,7 +48,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Get()
     {
         if (instance != null) return instance;
-        instance = GameObject.FindObjectOfType<LevelManager>();
+        instance = FindObjectOfType<LevelManager>();
         return instance;
     }
     #endregion
@@ -63,23 +63,27 @@ public class LevelManager : MonoBehaviour
         }
         instance = this;
     }
-        // Start is called before the first frame update
+    
+    // Start is called before the first frame update
     void Start()
     {
         SaveSystem.LoadFile(out currentLevel);
-        Debug.Log("Level Manager - Start current level: " + currentLevel);
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
-        GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevel);
+        GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
+        GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
     }
 
+   
     void OnDestroy()
     {
+        Debug.Log("OnDestroy LevelMngr");
         SaveSystem.SaveFile(currentLevel);
     }
 
     //Da convertire in coroutine
     private void Update()
     {
+        
         if (!isTimerActive) return;
 
         //---------STO COSO è PER FARE CASINO
@@ -95,7 +99,6 @@ public class LevelManager : MonoBehaviour
             soundBeepExecuted = true;
         }
         //----------------------------
-
         currentLevelTime -= Time.deltaTime;
         OnUpdateTimer?.Invoke(currentLevelTime);
         if(currentLevelTime <= 0) 
@@ -114,7 +117,7 @@ public class LevelManager : MonoBehaviour
     }
     public void StartGame()
     {
-        OnStart?.Invoke();
+        OnStartLevel?.Invoke();
     }
     public void WinLevel()
     {
@@ -123,9 +126,15 @@ public class LevelManager : MonoBehaviour
     }
     #endregion
 
-    private void OnStartLevel(EventArgs message)
+    private void OnStartLevelCallback(EventArgs message)
     {
         currentLevelTime = currentEntryData.timer_for_level;
         isTimerActive = true;
     }
+    private void OnModulateTimer(EventArgs message)
+    {
+        EventArgsFactory.ModulateTimerParser(message, out float arg);
+        currentLevelTime += arg;
+    }
+
 }

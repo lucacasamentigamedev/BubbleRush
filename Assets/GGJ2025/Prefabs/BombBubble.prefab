@@ -105,8 +105,8 @@ MonoBehaviour:
   shakeMagnitude: 0.01
   shakeDuration: 0.5
   maxTimeForDisinnescation: 10
-  wrongWeaponTimeReduction: 5
-  noHitExplosionTimeReduction: 5
+  wrongWeaponTimeReduction: -5
+  noHitExplosionTimeReduction: -5
   toolForNeutralization: 3
   shakeMagnitudeOnExplode: 0.1
   shakeDurationOnExplode: 0.5

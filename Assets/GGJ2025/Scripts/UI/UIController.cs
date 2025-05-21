@@ -6,17 +6,7 @@ using UnityEngine.InputSystem;
 public class UIController : MonoBehaviour
 {
     #region Internal Variables
-
-    static UIController instance;
-    public static UIController Instance
-    {
-        get {
-            if(instance == null)
-                instance = FindObjectOfType<UIController>();
-            return instance;
-        }
-    }
-
+    
     //Menus
     [Header("Menu Prefabs")]
     private BaseUI[] uiPrefabs;
@@ -55,14 +45,6 @@ public class UIController : MonoBehaviour
     }
 
     private void Awake() {
-        if(instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(gameObject);
-        instance = this;
-               
         
         //pass UIController to every button
         BRButton[] buttons = GetComponentsInChildren<BRButton>(true);
@@ -96,7 +78,6 @@ public class UIController : MonoBehaviour
         }
         //open main menu by default
         OpenMenu(EUIType.MainMenu);
-        //play bg music
         AudioManager.PlayBackgroundMusic("MainMenuMusic");
     }
     #endregion Mono
@@ -141,18 +122,7 @@ public class UIController : MonoBehaviour
         }
         //open
         if (currentMenu != null) {
-            currentMenu.Show();
-            /*
-            if(currentMenu == gameplayHUDPrefab) 
-            {
-                gameplayMenuPrefab.Show();
-            }
-            else
-            {
-                gameplayMenuPrefab.Hide();
-            }*/
-
-
+            currentMenu.Show();            
         } else {
             Debug.Log("UIController - Menu to open not found" + UIType.ToString());
         }
@@ -237,7 +207,7 @@ public class UIController : MonoBehaviour
             OpenMenu(EUIType.PauseMenu);
         }
     }
-#endregion
+    #endregion
 
     #region Wrapper menus methods
     public void OpenMainMenu() => OpenMenu(EUIType.MainMenu);

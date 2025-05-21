@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Mono
-    private void Awake() {
+    private void Start() {
         //prepare first weapon
         avaiableWeapons = new Weapon[(int)EWeaponType.LAST];
         for (int i = 0; i < avaiableWeapons.Length; i++) {
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
-        LevelManager.Get().OnStart += onLevelManagerStart;
+        LevelManager.Get().OnStartLevel += onLevelManagerStart;
         GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
     }
 
@@ -46,7 +46,6 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
         GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
-
     }
 
     private void MoveWeaponWithInput()
