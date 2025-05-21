@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     private uint currentLevel;
     private LevelEntryStruct currentEntryData;
     private float currentLevelTime;
-    private bool isTimerActive = false; //da togliere
+    private bool isTimerActive = false;
     private bool soundBeepExecuted = false; 
     #endregion
 
@@ -129,7 +129,7 @@ public class LevelManager : MonoBehaviour
     private void OnStartLevelCallback(EventArgs message)
     {
         currentLevelTime = currentEntryData.timer_for_level;
-        isTimerActive = true;
+        isTimerActive = currentEntryData.is_Timer_Activate;
     }
     private void OnModulateTimer(EventArgs message)
     {
