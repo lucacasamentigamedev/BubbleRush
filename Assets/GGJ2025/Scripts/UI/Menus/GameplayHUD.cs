@@ -30,9 +30,6 @@ public class GameplayHUD: BaseUI {
         {
             timerUI.SetActive(false);
         }
-    }
-
-    public void ChangeLevelLabel() {
         textMeshProText.text = "Level " + LevelManager.Get().Level;
     }
 }

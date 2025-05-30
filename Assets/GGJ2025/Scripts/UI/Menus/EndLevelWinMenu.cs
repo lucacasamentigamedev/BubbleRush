@@ -11,33 +11,17 @@ public class EndLevelWinMenu : BaseUI {
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                 new FMODParameter("WIN_LOSE", 0.0f)
         });
-        hideAllStars();
-        showRightStars();
+        HideAllStars();
     }
 
-    private void hideAllStars() {
+    private void HideAllStars() {
         foreach (Image star in stars) {
             star.gameObject.SetActive(false);
         }
     }
 
-    private void showRightStars() {
-
-        int starNumbers = 3;
-        /*
-        float[] startsThreshold = LevelManager.Get().ActiveEntryData.stars_for_level;
-        for (int i = 0; i < startsThreshold.Length; i++)
-        {
-            if (startsThreshold[i] <= timer.GetTimerPercent())
-            {
-                starNumbers++;
-            }
-            else
-            {
-                break;
-            }
-        }
-        */
+    public void ShowRightStars(int starNumbers) 
+    {
 
         for (int i = 0; i < starNumbers; i++) {
 

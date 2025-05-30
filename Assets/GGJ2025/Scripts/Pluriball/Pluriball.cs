@@ -77,8 +77,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());        
         //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(rows, columns);
-        Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
-        GlobalEventSystem.CastEvent(EventName.ChangeUILevelLabel, EventArgsFactory.ChangeUILevelLabelFactory());
     }
 
     private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)

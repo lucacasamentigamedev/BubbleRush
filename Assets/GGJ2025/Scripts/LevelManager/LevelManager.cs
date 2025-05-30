@@ -16,7 +16,7 @@ public class LevelManager : MonoBehaviour
 
     public Action OnStartLevel;
     public Action OnRetry;
-    public Action OnWinLevel;
+    public Action<int> OnWinLevel;
     public Action OnLoseLevel;
     public Action<float> OnUpdateTimer;
 
@@ -31,12 +31,6 @@ public class LevelManager : MonoBehaviour
             currentLevel = value;
             currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
         } 
-    }
-
-    public float CurrentLevelTimer
-    {
-        get { return currentLevelTime; }
-        set { currentLevelTime = value; }
     }
 
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }
@@ -103,7 +97,6 @@ public class LevelManager : MonoBehaviour
         OnUpdateTimer?.Invoke(currentLevelTime);
         if(currentLevelTime <= 0) 
         {
-            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelLoseMenu));
             OnLoseLevel?.Invoke();
             isTimerActive = false;
         }
@@ -115,14 +108,30 @@ public class LevelManager : MonoBehaviour
     {
         OnRetry?.Invoke();
     }
+    
     public void StartGame()
     {
         OnStartLevel?.Invoke();
     }
+
     public void WinLevel()
     {
-        OnWinLevel?.Invoke();
-        GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
+        //Calcolo del punteggio finale del livello
+        int starNumbers= 0;
+        float[] startsThreshold = ActiveEntryData.stars_for_level;
+        for (int i = 0; i < startsThreshold.Length; i++)
+        {
+            if (startsThreshold[i] <= GetTimerPercent())
+            {
+                starNumbers++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    
+        OnWinLevel?.Invoke(starNumbers);        
     }
     #endregion
 
@@ -137,4 +146,8 @@ public class LevelManager : MonoBehaviour
         currentLevelTime += arg;
     }
 
+    private float GetTimerPercent()
+    {
+        return currentLevelTime / currentEntryData.timer_for_level;
+    }
 }
