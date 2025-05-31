@@ -18,6 +18,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private EndLevelLoseMenu endLevelLoseMenuPrefab;
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
     [SerializeField] private GameplayUIMenu gameplayMenuPrefab;
+    [SerializeField] private LevelHubMenu levelHubMenuPrefab;
     [SerializeField] private RectTransform weapon;
 
     //Other
@@ -120,6 +121,9 @@ public class UIController : MonoBehaviour
             case EUIType.EndLevelLoseMenu:
                 currentMenu = endLevelLoseMenuPrefab;
                 break;
+            case EUIType.LevelHubMenu:
+                currentMenu = levelHubMenuPrefab;
+                break;
         }
         //open
         if (currentMenu != null) {
@@ -219,6 +223,8 @@ public class UIController : MonoBehaviour
     public void OpenPauseMenu() => OpenMenu(EUIType.PauseMenu);
     public void OpenEndLevelWinMenu() => OpenMenu(EUIType.EndLevelWinMenu);
     public void OpenEndLevelLoseMenu() => OpenMenu(EUIType.EndLevelLoseMenu);
+    public void OpenLevelHubMenu() => OpenMenu(EUIType.LevelHubMenu);
+
     #endregion
 
     #region Coroutine

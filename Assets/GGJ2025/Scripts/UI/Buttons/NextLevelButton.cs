@@ -4,6 +4,6 @@ public class NextLevelButton : BRButton {
         base.OnClick();
         AudioManager.ResumeBackgroundMusic();
         UIController.OpenMenu(EUIType.GameplayHUD);
-        LevelManager.Get().StartLevel(LevelManager.Get().Level );
+        LevelManager.Get().StartLevel(LevelManager.Get().Level + 1);
     }
 }

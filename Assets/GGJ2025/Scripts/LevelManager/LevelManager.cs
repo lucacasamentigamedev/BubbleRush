@@ -122,13 +122,13 @@ public class LevelManager : MonoBehaviour
         OnStartLevel?.Invoke(levelIndex);
         currentLevel = levelIndex;
     }
-    
-    
+
+
 
     public LevelEntryStruct GetLevelEntryData(uint levelIndex)
     {
         return LevelDatabase.GetCurrentEntry(levelIndex);
-
+    }
     public void WinLevel()
     {
         //Calcolo del punteggio finale del livello
@@ -146,7 +146,8 @@ public class LevelManager : MonoBehaviour
             }
         }
     
-        OnWinLevel?.Invoke(starNumbers);        
+        OnWinLevel?.Invoke(starNumbers);
+        UnlockNewLevel();
     }
     #endregion
 
