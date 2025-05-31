@@ -20,7 +20,7 @@ public class GameplayHUD: BaseUI {
         LevelManager.Get().OnStartLevel += OnStartLevel;
     }
 
-    private void OnStartLevel()
+    private void OnStartLevel(uint levelIndex)
     {
         if(LevelManager.Get().ActiveEntryData.is_Timer_Activate)
         {
@@ -30,9 +30,6 @@ public class GameplayHUD: BaseUI {
         {
             timerUI.SetActive(false);
         }
-    }
-
-    public void ChangeLevelLabel() {
-        textMeshProText.text = "Level " + LevelManager.Get().Level;
+        textMeshProText.text = "Level " + levelIndex;
     }
 }

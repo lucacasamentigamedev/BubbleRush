@@ -111,7 +111,7 @@ public class TestUI : MonoBehaviour
 
     private void InvokeOnStartToTriggerTutorial(uint level) {
         LevelManager.Get().Level = level;
-        LevelManager.Get().OnStartLevel.Invoke();
+        LevelManager.Get().OnStartLevel.Invoke(level);
     }
     #endregion
 }

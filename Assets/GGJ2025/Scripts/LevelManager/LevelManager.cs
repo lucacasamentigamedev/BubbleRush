@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -11,10 +12,14 @@ public class LevelManager : MonoBehaviour
     private LevelEntryStruct currentEntryData;
     private float currentLevelTime;
     private bool isTimerActive = false;
-    private bool soundBeepExecuted = false; 
+    private bool soundBeepExecuted = false;
+    private uint currentLevelUnlocked = 10;
+   
+    private Dictionary<uint, uint> levelScores = new Dictionary<uint, uint>();  //Creiamo una variabile per salvare i punteggi effettuati nei vari livelli
+
     #endregion
 
-    public Action OnStartLevel;
+    public Action<uint> OnStartLevel;
     public Action OnRetry;
     public Action OnWinLevel;
     public Action OnLoseLevel;
@@ -30,6 +35,8 @@ public class LevelManager : MonoBehaviour
         { 
             currentLevel = value;
             currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
+            if(currentLevelUnlocked < currentLevel)
+                currentLevelUnlocked = currentLevel;
         } 
     }
 
@@ -68,6 +75,7 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         SaveSystem.LoadFile(out currentLevel);
+        currentLevelUnlocked = currentLevel;
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
         GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
@@ -115,14 +123,27 @@ public class LevelManager : MonoBehaviour
     {
         OnRetry?.Invoke();
     }
-    public void StartGame()
+
+    public void StartLevel(uint levelIndex)
     {
-        OnStartLevel?.Invoke();
+        OnStartLevel?.Invoke(levelIndex);
+        currentLevel = levelIndex;
     }
+    
     public void WinLevel()
     {
-        OnWinLevel?.Invoke();
+        OnWinLevel?.Invoke(); 
         GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
+        if (levelScores[currentLevel] > 0)
+        {
+
+        }
+        UnlockNewLevel();
+    }
+
+    public LevelEntryStruct GetLevelEntryData(uint levelIndex)
+    {
+        return LevelDatabase.GetCurrentEntry(levelIndex);
     }
     #endregion
 
@@ -135,6 +156,11 @@ public class LevelManager : MonoBehaviour
     {
         EventArgsFactory.ModulateTimerParser(message, out float arg);
         currentLevelTime += arg;
+    }
+    private void UnlockNewLevel()
+    {
+        if (currentLevelUnlocked == currentLevel)
+            currentLevelUnlocked +=1;
     }
 
 }

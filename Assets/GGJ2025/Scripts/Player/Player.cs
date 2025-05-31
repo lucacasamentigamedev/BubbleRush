@@ -77,14 +77,13 @@ public class Player : MonoBehaviour
         ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
     }
 
-    private void onLevelManagerStart() {
+    private void onLevelManagerStart(uint levelIndex) {
         currentWeapon = avaiableWeapons[0];
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
-        uint level = LevelManager.Get().Level;
-        Debug.Log("PLAYER - START LIV" + level);
+        Debug.Log("PLAYER - START LIV" + levelIndex);
         foreach (Weapon weapon in avaiableWeapons) {
-            if(weapon.weaponData.levelToUnlock <= level && !weapon.weaponData.IsUnlocked) {
+            if(weapon.weaponData.levelToUnlock <= levelIndex && !weapon.weaponData.IsUnlocked) {
                 weapon.weaponData.IsUnlocked = true;
                 Debug.Log("PLAYER - Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
             }

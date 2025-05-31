@@ -41,7 +41,7 @@ public class UIController : MonoBehaviour
     private void OnEnable() {
         //Base UI Menu
         GlobalEventSystem.AddListener(EventName.OpenUI, OnOpenUI);
-        GlobalEventSystem.AddListener(EventName.ChangeUILevelLabel, OnChangeUILevelLabel);
+        //GlobalEventSystem.AddListener(EventName.ChangeUILevelLabel, OnChangeUILevelLabel);
     }
 
     private void Awake() {
@@ -88,9 +88,7 @@ public class UIController : MonoBehaviour
         OpenMenu(UIType);
     }
 
-    private void OnChangeUILevelLabel(EventArgs message) {
-        gameplayHUDPrefab.ChangeLevelLabel();
-    }
+    
     #endregion
 
     #region Internal Methods

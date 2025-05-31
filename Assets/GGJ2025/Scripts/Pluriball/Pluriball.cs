@@ -62,12 +62,12 @@ public class Pluriball : MonoBehaviour ,IClickable
 
     }
 
-    private void OnStart()
+    private void OnStart(uint levelIndex)
     {
         
         pluriballVisual.SetActive(true);
-        columns = (int)levelManager.ActiveEntryData.grid_Size.x;
-        rows = (int)levelManager.ActiveEntryData.grid_Size.y;
+        columns = (int)levelManager.GetLevelEntryData(levelIndex).grid_Size.x;
+        rows = (int)levelManager.GetLevelEntryData(levelIndex).grid_Size.y;
         remainingBubbles = rows * columns;
         Bubble b = Pooler.Instance.GetPooledObject(poolDataDictionary[EBubbleType.Normal]).GetComponent<Bubble>();
         InternalSetPosition(rows, columns, b.GetSize());
@@ -76,9 +76,7 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());        
         //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
-        Generate(rows, columns);
-        Debug.Log("PLURIBALL - Nuovo livello: " + levelManager.Level);
-        GlobalEventSystem.CastEvent(EventName.ChangeUILevelLabel, EventArgsFactory.ChangeUILevelLabelFactory());
+        Generate( levelManager.GetLevelEntryData(levelIndex) ); 
     }
 
     private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)
@@ -110,12 +108,11 @@ public class Pluriball : MonoBehaviour ,IClickable
                 
         }
         GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());
-        //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
     }
       
     private void InternalEndLevel(bool win)
     {
-        //Disattiviamo le bolle per
+        //Disattiviamo le bolle
         foreach (Bubble bubble in bubbles)
         {
             bubble.gameObject.SetActive(false);
@@ -123,12 +120,21 @@ public class Pluriball : MonoBehaviour ,IClickable
             if (bubbleCast == null) continue;
             bubbleCast.OnExplode -= ReduceGlobalTime;
         }
+        pluriballVisual.SetActive(false);
 
         if (win)
         {
+            transform.localScale = Vector3.one;
+
+            foreach (Bubble bubble in bubbles)
+            {
+                bubble.OnDestroy -= OnBubbleDestroy;
+                bubble.OnCamerShake -= OnCamerShake;
+                bubble.gameObject.SetActive(false);
+            }
+            Array.Clear(bubbles, 0, bubbles.Length);
             levelManager.WinLevel();
         }
-        pluriballVisual.SetActive(false);
 
     }
 
@@ -183,7 +189,6 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         return arenaBubbleList.ToArray();
     }
-
     private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
         float cellDimensionX = pluriballDimension.x / columns;
@@ -210,17 +215,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         remainingBubbles--;
         //Debug.Log(remainingBubbles);
         if (remainingBubbles <= 0) {
-            InternalEndLevel(true);
-            transform.localScale = Vector3.one;
-            
-            foreach (Bubble bubble in bubbles)
-            {                
-                bubble.OnDestroy -= OnBubbleDestroy;
-                bubble.OnCamerShake -= OnCamerShake;
-                bubble.gameObject.SetActive(false);
-            }
-            Array.Clear(bubbles, 0, bubbles.Length);
-            levelManager.Level += 1;
+            InternalEndLevel(true);    
         } else {
             int index = UnityEngine.Random.Range(0, popLocation.Length);
             //CAMBIARE ASSOLUTAMENTE -> GESTIRLO TRAMITE POOLER
@@ -231,11 +226,13 @@ public class Pluriball : MonoBehaviour ,IClickable
     #endregion
 
     #region Procedural Generation
-    private void Generate(int rows, int columns)
+    private void Generate(LevelEntryStruct currentLevelData)
     {
 
         Vector2 origin = transform.position;
-        bubbles = ProceduralGeneration(levelManager.ActiveEntryData, poolDataDictionary);
+        int rows = (int)currentLevelData.grid_Size.y;
+        int columns = (int)currentLevelData.grid_Size.x;
+        bubbles = ProceduralGeneration(currentLevelData, poolDataDictionary);
 
         for (int row = 0; row < rows; row++)
         {
