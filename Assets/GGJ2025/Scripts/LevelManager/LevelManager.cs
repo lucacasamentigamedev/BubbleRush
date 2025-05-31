@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour
 
     public Action<uint> OnStartLevel;
     public Action OnRetry;
-    public Action OnWinLevel;
+    public Action<int> OnWinLevel;
     public Action OnLoseLevel;
     public Action<float> OnUpdateTimer;
 
@@ -38,12 +38,6 @@ public class LevelManager : MonoBehaviour
             if(currentLevelUnlocked < currentLevel)
                 currentLevelUnlocked = currentLevel;
         } 
-    }
-
-    public float CurrentLevelTimer
-    {
-        get { return currentLevelTime; }
-        set { currentLevelTime = value; }
     }
 
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }
@@ -94,7 +88,7 @@ public class LevelManager : MonoBehaviour
         
         if (!isTimerActive) return;
 
-        //---------STO COSO è PER FARE CASINO
+        //---------STO COSO ï¿½ PER FARE CASINO
         int t = (int)currentLevelTime;
         if (((t <= 3 && t > 2) || (t <= 1 && t > 0)) && soundBeepExecuted)
         {
@@ -111,7 +105,6 @@ public class LevelManager : MonoBehaviour
         OnUpdateTimer?.Invoke(currentLevelTime);
         if(currentLevelTime <= 0) 
         {
-            GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelLoseMenu));
             OnLoseLevel?.Invoke();
             isTimerActive = false;
         }
@@ -130,20 +123,30 @@ public class LevelManager : MonoBehaviour
         currentLevel = levelIndex;
     }
     
-    public void WinLevel()
-    {
-        OnWinLevel?.Invoke(); 
-        GlobalEventSystem.CastEvent(EventName.OpenUI, EventArgsFactory.OpenUIFactory(EUIType.EndLevelWinMenu));
-        if (levelScores[currentLevel] > 0)
-        {
-
-        }
-        UnlockNewLevel();
-    }
+    
 
     public LevelEntryStruct GetLevelEntryData(uint levelIndex)
     {
         return LevelDatabase.GetCurrentEntry(levelIndex);
+
+    public void WinLevel()
+    {
+        //Calcolo del punteggio finale del livello
+        int starNumbers= 0;
+        float[] startsThreshold = ActiveEntryData.stars_for_level;
+        for (int i = 0; i < startsThreshold.Length; i++)
+        {
+            if (startsThreshold[i] <= GetTimerPercent())
+            {
+                starNumbers++;
+            }
+            else
+            {
+                break;
+            }
+        }
+    
+        OnWinLevel?.Invoke(starNumbers);        
     }
     #endregion
 
@@ -163,4 +166,8 @@ public class LevelManager : MonoBehaviour
             currentLevelUnlocked +=1;
     }
 
+    private float GetTimerPercent()
+    {
+        return currentLevelTime / currentEntryData.timer_for_level;
+    }
 }

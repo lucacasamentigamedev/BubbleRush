@@ -47,7 +47,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         Pooler.Instance.AddToPool(rockBubbles);
         Pooler.Instance.AddToPool(bombBubbles);
         
-        //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. Sì, si potrebbe usare un array serializzato
+        //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. Sï¿½, si potrebbe usare un array serializzato
         //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
         poolDataDictionary = new Dictionary<EBubbleType, PoolData>
         {
@@ -176,7 +176,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         {
             for (int c = -offsetRounderY; c <= offsetRounderY; c++)
             {
-                if (index + r*columns + c  >= 0 && index + r* columns + c < columns * rows) //se è dentro i range
+                if (index + r*columns + c  >= 0 && index + r* columns + c < columns * rows) //se ï¿½ dentro i range
                 {
                     if (index % columns == 0 && c < 0)        //sto premendo la prima colonna, ignoro la colonna di sx
                         continue;

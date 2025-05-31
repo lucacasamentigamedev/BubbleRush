@@ -14,8 +14,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private BaseUI creditsMenuPrefab;
     [SerializeField] private GameplayHUD gameplayHUDPrefab;
     [SerializeField] private BaseUI pauseMenuPrefab;
-    [SerializeField] private BaseUI endLevelWinMenuPrefab;
-    [SerializeField] private BaseUI endLevelLoseMenuPrefab;
+    [SerializeField] private EndLevelWinMenu endLevelWinMenuPrefab;
+    [SerializeField] private EndLevelLoseMenu endLevelLoseMenuPrefab;
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
     [SerializeField] private GameplayUIMenu gameplayMenuPrefab;
     [SerializeField] private RectTransform weapon;
@@ -39,9 +39,8 @@ public class UIController : MonoBehaviour
 
     #region Mono
     private void OnEnable() {
-        //Base UI Menu
-        GlobalEventSystem.AddListener(EventName.OpenUI, OnOpenUI);
-        //GlobalEventSystem.AddListener(EventName.ChangeUILevelLabel, OnChangeUILevelLabel);
+        LevelManager.Get().OnWinLevel += OnWinLevel;
+        LevelManager.Get().OnLoseLevel += OnLoseLevel;
     }
 
     private void Awake() {
@@ -67,7 +66,6 @@ public class UIController : MonoBehaviour
         //pause input
         InputManager.Player.TogglePause.performed += OnTogglePause;
         InputManager.Menu.TogglePause.performed += OnTogglePause;
-        
     }
 
     private void Start()
@@ -83,12 +81,17 @@ public class UIController : MonoBehaviour
     #endregion Mono
 
     #region Global Event System
-    private void OnOpenUI(EventArgs message) {
-        EventArgsFactory.OpenUIParser(message, out EUIType UIType);
-        OpenMenu(UIType);
+    private void OnWinLevel(int starNumbers)
+    {
+        OpenMenu(EUIType.EndLevelWinMenu);
+        endLevelWinMenuPrefab.ShowRightStars(starNumbers);
     }
-
+    private void OnLoseLevel()
+    {
+        OpenMenu(EUIType.EndLevelLoseMenu);
+    }
     
+   
     #endregion
 
     #region Internal Methods
@@ -125,7 +128,7 @@ public class UIController : MonoBehaviour
             Debug.Log("UIController - Menu to open not found" + UIType.ToString());
         }
 
-        //setting gameplayHUD menù?
+        //setting gameplayHUD menï¿½?
         if(UIType == EUIType.GameplayHUD) {
             //have tutorial?
             if (OnCheckTutorial()) {
@@ -134,7 +137,9 @@ public class UIController : MonoBehaviour
                 //normal gameplay
                 SetupForGameplayHUD();
             }
-        } else {
+        } 
+        else 
+        {
             //normal UI Menu
             SetupForUIMenu();
             if (waitBeforeUIInteract != null) {
