@@ -4,6 +4,5 @@ public class PlayButton : BRButton {
         base.OnClick();
         LevelManager.Get().StartLevel(LevelManager.Get().Level);
         AudioManager.PlayBackgroundMusic("GameplayMusic");
-        UIController.OpenMenu(EUIType.GameplayHUD);
     }
 }

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 public class UITimer : MonoBehaviour
@@ -13,6 +14,7 @@ public class UITimer : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Timer Activate");
         bar.localScale = Vector3.one;
         scale = bar.localScale;
 
@@ -20,7 +22,8 @@ public class UITimer : MonoBehaviour
 
         LevelManager.Get().OnUpdateTimer += OnUpdate;
     }
-   
+
+
     void OnUpdate(float timer)
     {        
         if (!gameObject.activeInHierarchy) return;

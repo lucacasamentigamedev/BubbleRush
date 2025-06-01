@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TestUI : MonoBehaviour
 {
-    #region Menus
+/*    #region Menus
     [SerializeField]
     private Button mainMenu;
     [SerializeField]
@@ -114,4 +114,5 @@ public class TestUI : MonoBehaviour
         LevelManager.Get().OnStartLevel.Invoke(level);
     }
     #endregion
+*/
 }

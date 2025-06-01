@@ -7,7 +7,7 @@ public class BRButton : MonoBehaviour {
 
     #region variables
     public ButtonType buttonType;
-    private Button button;
+    protected Button button;
     private Image buttonImage;
     private const string SpriteBasePath = "Sprites/Buttons/";
     public Sprite defaultSprite;

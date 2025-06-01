@@ -70,7 +70,6 @@ public class BombBubble : Bubble
 
     public override void InternalOnDestroy()
     {
-        Debug.Log("Esplodo");
         if (isExploded)
         {
             AudioManager.PlayOneShotSound("BubbleBombExplode", new FMODParameter[] {

@@ -81,11 +81,9 @@ public class Player : MonoBehaviour
         currentWeapon = avaiableWeapons[0];
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
-        Debug.Log("PLAYER - START LIV" + levelIndex);
         foreach (Weapon weapon in avaiableWeapons) {
             if(weapon.weaponData.levelToUnlock <= levelIndex && !weapon.weaponData.IsUnlocked) {
                 weapon.weaponData.IsUnlocked = true;
-                Debug.Log("PLAYER - Arma sbloccata: " + weapon.weaponData.weaponType.ToString());
             }
         }
     }
@@ -118,7 +116,6 @@ public class Player : MonoBehaviour
             }
 
             currentWeapon = avaiableWeapons[currentIndexWeapon];
-            Debug.Log("Cambiata arma in " + currentWeapon.weaponData.weaponType.ToString());
             currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
             return;
         }

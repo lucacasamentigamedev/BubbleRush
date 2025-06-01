@@ -40,6 +40,7 @@ public class UIController : MonoBehaviour
 
     #region Mono
     private void OnEnable() {
+        LevelManager.Get().OnStartLevel += OnStartLevel;
         LevelManager.Get().OnWinLevel += OnWinLevel;
         LevelManager.Get().OnLoseLevel += OnLoseLevel;
     }
@@ -81,7 +82,11 @@ public class UIController : MonoBehaviour
     }
     #endregion Mono
 
-    #region Global Event System
+    #region Callback Actions
+    private void OnStartLevel(uint levelIndex)
+    {
+        OpenMenu(EUIType.GameplayHUD);
+    }
     private void OnWinLevel(int starNumbers)
     {
         OpenMenu(EUIType.EndLevelWinMenu);
@@ -91,8 +96,6 @@ public class UIController : MonoBehaviour
     {
         OpenMenu(EUIType.EndLevelLoseMenu);
     }
-    
-   
     #endregion
 
     #region Internal Methods
@@ -129,7 +132,7 @@ public class UIController : MonoBehaviour
         if (currentMenu != null) {
             currentMenu.Show();            
         } else {
-            Debug.Log("UIController - Menu to open not found" + UIType.ToString());
+            Debug.LogWarning("UIController - Menu to open not found" + UIType.ToString());
         }
 
         //setting gameplayHUD men�?
@@ -154,7 +157,6 @@ public class UIController : MonoBehaviour
     }
 
     private void SetupForGameplayHUD() {
-        Debug.Log("UIController - SetupForGameplayHUD");
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
         Time.timeScale = 1f;
@@ -165,7 +167,6 @@ public class UIController : MonoBehaviour
     }
 
     private void SetupForUIMenu() {
-        Debug.Log("UIController - SetupForUIMenu");
         InputManager.Player.Disable();
         InputManager.Menu.Enable();
         Time.timeScale = 0f;
@@ -177,7 +178,7 @@ public class UIController : MonoBehaviour
     public void CloseCurrentMenu()
     {
         if(currentMenu == null) {
-            Debug.Log("UIController - Nothing to close");
+            Debug.LogWarning("UIController - Nothing to close");
             return;
         };
         currentMenu.Hide();
@@ -188,13 +189,13 @@ public class UIController : MonoBehaviour
     private bool OnCheckTutorial() {
         uint currentLevel = LevelManager.Get().Level;
         if (levelToTutorialMap.TryGetValue(currentLevel, out EUITutorialType tutorialType)) {
-            Debug.Log($"UIController - Apro tutorial level {currentLevel}");
+            //Debug.Log($"UIController - Apro tutorial level {currentLevel}");
             tutorialMenuPrefab.prepareTutorial(tutorialType);
             tutorialMenuPrefab.Show();
             AudioManager.PlayOneShotSound("MenuOpen");
             return true;
         } else {
-            Debug.Log($"UIController - No tutorial associated with level {currentLevel}");
+            //Debug.Log($"UIController - No tutorial associated with level {currentLevel}");
             return false;
         }
     }
@@ -206,7 +207,6 @@ public class UIController : MonoBehaviour
     }
 
     private void OnTogglePause(InputAction.CallbackContext context) {
-        Debug.Log("UIController - OnTogglePause");
         if (currentMenu != gameplayHUDPrefab && currentMenu != pauseMenuPrefab) return;
         if (currentMenu == pauseMenuPrefab) {
             OpenMenu(EUIType.GameplayHUD);

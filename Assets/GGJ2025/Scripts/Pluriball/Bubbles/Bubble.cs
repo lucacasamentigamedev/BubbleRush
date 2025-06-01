@@ -108,7 +108,6 @@ public class Bubble : MonoBehaviour
         }
         //quando mi colpiscono con un arma sbagliata
         if (requiredWeapon.Length == 0) {
-            Debug.Log("tutto mi può colpire sono tipo Dende");
             TakeDamage(damage);
             return;
         }
@@ -120,7 +119,6 @@ public class Bubble : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("Non hai l'arma adatta per me");
     }
 
     private void TakeDamage(int damage) {

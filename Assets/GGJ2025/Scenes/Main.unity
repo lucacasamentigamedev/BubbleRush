@@ -2649,6 +2649,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4525127151663406596, guid: 84037301dede38f4f83e6f014d7a215c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6214811089382704207, guid: 84037301dede38f4f83e6f014d7a215c, type: 3}
       propertyPath: m_Name
       value: LevelButton
@@ -4499,7 +4503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4571465217762324513, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0002670288
+      value: -0.0002746582
       objectReference: {fileID: 0}
     - target: {fileID: 4651296133708815775, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_IsActive

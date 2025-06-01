@@ -6,6 +6,8 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField]
     private LevelDatabase LevelDatabase;
+    [SerializeField]
+    private uint defaultUnlockedLevels;
 
     #region PrivateVariable
     private uint currentLevel;
@@ -13,7 +15,7 @@ public class LevelManager : MonoBehaviour
     private float currentLevelTime;
     private bool isTimerActive = false;
     private bool soundBeepExecuted = false;
-    private uint currentLevelUnlocked = 10;
+    private uint currentLevelUnlocked;
    
     private Dictionary<uint, uint> levelScores = new Dictionary<uint, uint>();  //Creiamo una variabile per salvare i punteggi effettuati nei vari livelli
 
@@ -30,13 +32,6 @@ public class LevelManager : MonoBehaviour
         get 
         { 
             return currentLevel; 
-        } 
-        set 
-        { 
-            currentLevel = value;
-            currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel); 
-            if(currentLevelUnlocked < currentLevel)
-                currentLevelUnlocked = currentLevel;
         } 
     }
 
@@ -68,8 +63,8 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SaveSystem.LoadFile(out currentLevel);
-        currentLevelUnlocked = currentLevel;
+        SaveSystem.LoadFile(out currentLevel);        
+        currentLevelUnlocked = currentLevel> defaultUnlockedLevels ? currentLevel : defaultUnlockedLevels;
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
         GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
@@ -78,7 +73,6 @@ public class LevelManager : MonoBehaviour
    
     void OnDestroy()
     {
-        Debug.Log("OnDestroy LevelMngr");
         SaveSystem.SaveFile(currentLevel);
     }
 
@@ -119,8 +113,16 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel(uint levelIndex)
     {
-        OnStartLevel?.Invoke(levelIndex);
         currentLevel = levelIndex;
+        currentEntryData = LevelDatabase.GetCurrentEntry(levelIndex);
+        OnStartLevel?.Invoke(levelIndex);
+    }
+
+    public void OnDeleteSaves()
+    {   
+        currentLevel = 1;
+        currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
+        currentLevelUnlocked = defaultUnlockedLevels;
     }
 
 

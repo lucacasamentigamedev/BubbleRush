@@ -11,9 +11,13 @@ public class HUBLevelButton : BRButton
 
     void Start()
     {
-        if(LevelManager.Get().Level>levelIndex)
+        if(LevelManager.Get().Level<levelIndex)
         {
-            gameObject.SetActive(false);
+            button.interactable = false;
+        }
+        else
+        {
+            button.interactable = true;
         }
         btnText = GetComponentInChildren<TextMeshPro>();
         if(btnText != null )
@@ -28,7 +32,6 @@ public class HUBLevelButton : BRButton
         base.OnClick();
         LevelManager.Get().StartLevel(levelIndex);
         AudioManager.PlayBackgroundMusic("GameplayMusic");
-        UIController.OpenMenu(EUIType.GameplayHUD);
     }
 
 }

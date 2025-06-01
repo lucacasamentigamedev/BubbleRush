@@ -154,7 +154,6 @@ public class Pluriball : MonoBehaviour ,IClickable
     private void OnLoseLevel()
     {
         InternalEndLevel(false);
-        Debug.Log("onTimerEnd");
     }
     private void ReduceGlobalTime(float arg)
     {
