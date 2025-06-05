@@ -127,12 +127,12 @@ public class Bubble : MonoBehaviour
     }
 
     protected void TakeDamage(int damage) {
-        Debug.Log($"Bubble {gameObject.name} took {damage} damage, remaining: {currentClickRemains - damage}");
+        //Debug.Log($"Bubble {gameObject.name} took {damage} damage, remaining: {currentClickRemains - damage}");
         currentClickRemains -= damage;
         if (currentClickRemains < 0) {
             currentClickRemains = 0;
         }
-        Debug.Log($"Chiamo la change sprite con: {currentClickRemains}");
+        //Debug.Log($"Chiamo la change sprite con: {currentClickRemains}");
         ChangeSprite(currentClickRemains);
         if (currentClickRemains <= 0) {
             InternalOnDestroy();
