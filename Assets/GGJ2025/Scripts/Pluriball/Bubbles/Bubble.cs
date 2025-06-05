@@ -90,6 +90,11 @@ public class Bubble : MonoBehaviour
                     new FMODParameter("BUBBLE_MALUS", 0.0f)
                 });
                 break;
+            case EBubbleType.Teleport:
+                AudioManager.PlayOneShotSound("BubblePop", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_POP_TYPE", 1.0f)
+                });
+                break;
         }
         ChangeSprite(0);
         isAlive = false;

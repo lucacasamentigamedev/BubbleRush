@@ -13,6 +13,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     [SerializeField]
     private PoolData bombBubbles;
     [SerializeField]
+    private PoolData teleportBubbles;
+    [SerializeField]
     private BoxCollider2D _collider;
 
     [SerializeField]
@@ -31,6 +33,9 @@ public class Pluriball : MonoBehaviour ,IClickable
     private float width, height;
     private int rows, columns;
     private LevelManager levelManager;
+
+    
+
     //private Vector3 colliderOriginalSize;
 
     private void Start()
@@ -46,7 +51,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
         Pooler.Instance.AddToPool(rockBubbles);
         Pooler.Instance.AddToPool(bombBubbles);
-        
+        Pooler.Instance.AddToPool(teleportBubbles);
+
         //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. S�, si potrebbe usare un array serializzato
         //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
         poolDataDictionary = new Dictionary<EBubbleType, PoolData>
@@ -54,7 +60,8 @@ public class Pluriball : MonoBehaviour ,IClickable
             { EBubbleType.Normal, normalBubbles },
             { EBubbleType.AlredyPopped, alreadyPoppedBubbles },
             { EBubbleType.Rock, rockBubbles },
-            { EBubbleType.Bomb, bombBubbles }
+            { EBubbleType.Bomb, bombBubbles },
+            { EBubbleType.Teleport, teleportBubbles }
         };
         #endregion
 
@@ -77,6 +84,14 @@ public class Pluriball : MonoBehaviour ,IClickable
         GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());        
         //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate( levelManager.GetLevelEntryData(levelIndex) ); 
+
+        foreach(Bubble bubble in bubbles)
+        {
+            if (bubble is TeleportBubble)
+            {
+                (bubble as TeleportBubble).TeleportEvent += OnTeleportCall;
+            }
+        }
     }
 
     private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)
@@ -326,6 +341,32 @@ public class Pluriball : MonoBehaviour ,IClickable
             array[t] = array[r];
             array[r] = tmp;
         }
+    }
+
+
+    private Bubble GetRandomEmptyBubble()
+    {
+        int emptyBubbles = -1;
+        foreach (Bubble b in bubbles)
+        {
+            if (b as AlredyPoppedBubble)
+            {
+                emptyBubbles++;
+            }
+        }
+        if (emptyBubbles < 0)
+            return null;
+
+        int rand = UnityEngine.Random.Range(0, emptyBubbles);
+        Vector2 pos = new Vector2(bubbles[rand].transform.position.x, bubbles[rand].transform.position.y);
+        return GetNearBubbles(pos, Vector2.zero)[0];
+    }
+    #endregion
+
+    #region Teleport Bubble
+    private void OnTeleportCall()
+    {
+
     }
     #endregion
 }
