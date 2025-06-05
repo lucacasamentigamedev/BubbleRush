@@ -64,7 +64,8 @@ public class BombBubble : Bubble
         {
             isExploded = false;
         }
-        base.InternalOnHit(damage, weaponType);
+        //base.InternalOnHit(damage, weaponType);
+        base.TakeDamage(damage);
 
     }
 

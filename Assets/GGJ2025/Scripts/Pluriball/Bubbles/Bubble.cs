@@ -126,7 +126,7 @@ public class Bubble : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int damage) {
+    protected void TakeDamage(int damage) {
         Debug.Log($"Bubble {gameObject.name} took {damage} damage, remaining: {currentClickRemains - damage}");
         currentClickRemains -= damage;
         if (currentClickRemains < 0) {
