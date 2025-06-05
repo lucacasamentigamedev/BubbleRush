@@ -188,6 +188,7 @@ public class Pluriball : MonoBehaviour ,IClickable
 
         return arenaBubbleList.ToArray();
     }
+
     private int GetIndexBubble(Vector2 point, Vector2 pluriballOrigin, Vector2 pluriballDimension)
     {
         float cellDimensionX = pluriballDimension.x / columns;
@@ -209,6 +210,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         int index = (row * columns) + column;
         return index;
     }
+
     private void OnBubbleDestroy()
     {
         remainingBubbles--;

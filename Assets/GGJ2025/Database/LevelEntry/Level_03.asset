@@ -26,8 +26,8 @@ MonoBehaviour:
       setFiller: 0
       min_Spawn: 15
       max_Spawn: 20
-      min_Pop: 1
-      max_Pop: 2
+      min_Pop: 2
+      max_Pop: 4
     - type: 3
       setFiller: 1
       min_Spawn: 5

@@ -8,6 +8,8 @@ public class Bubble : MonoBehaviour
     protected Sprite[] arraySprite;
     [SerializeField] 
     protected EWeaponType[] requiredWeapon;
+    [SerializeField] 
+    protected EWeaponType[] secondaryWeapons;
     [SerializeField]
     protected SpriteRenderer spriteRenderer;
     [SerializeField]
@@ -106,14 +108,17 @@ public class Bubble : MonoBehaviour
             });
             return;
         }
-        //quando mi colpiscono con un arma sbagliata
-        if (requiredWeapon.Length == 0) {
-            TakeDamage(damage);
-            return;
-        }
 
-        //quando mi colpiscono con l'arma corretta
+        //quando mi colpiscono con l'arma corretta faccio il doppio del danno (default 2)
         foreach (EWeaponType weapon in requiredWeapon) {
+            if (weapon == weaponType) {
+                TakeDamage(damage*2);
+                return;
+            }
+        }
+        
+        //quando mi colpiscono con l'arma secondaria faccio il danno normale (default 1)
+        foreach (EWeaponType weapon in secondaryWeapons) {
             if (weapon == weaponType) {
                 TakeDamage(damage);
                 return;
@@ -122,7 +127,12 @@ public class Bubble : MonoBehaviour
     }
 
     private void TakeDamage(int damage) {
+        Debug.Log($"Bubble {gameObject.name} took {damage} damage, remaining: {currentClickRemains - damage}");
         currentClickRemains -= damage;
+        if (currentClickRemains < 0) {
+            currentClickRemains = 0;
+        }
+        Debug.Log($"Chiamo la change sprite con: {currentClickRemains}");
         ChangeSprite(currentClickRemains);
         if (currentClickRemains <= 0) {
             InternalOnDestroy();
