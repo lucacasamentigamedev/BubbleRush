@@ -9,7 +9,7 @@ public class TeleportBubble : Bubble
     [SerializeField]
     private int maxTimeToDisappeared;
 
-    public Action TeleportEvent;
+    public Action<TeleportBubble> TeleportEvent;
 
     private float timeToDisappeared;
     private float currentTimeAppeared;
@@ -34,7 +34,7 @@ public class TeleportBubble : Bubble
         currentTimeAppeared -= time;
         if (currentTimeAppeared <= 0)
         {
-            TeleportEvent?.Invoke();
+            TeleportEvent?.Invoke(this);
             Debug.Log("TELEPORT!!");
             currentTimeAppeared = timeToDisappeared;
         }
