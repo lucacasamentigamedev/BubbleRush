@@ -14,7 +14,6 @@ public class UITimer : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Timer Activate");
         bar.localScale = Vector3.one;
         scale = bar.localScale;
 

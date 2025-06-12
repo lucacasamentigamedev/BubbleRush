@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 public class Pluriball : MonoBehaviour ,IClickable
 {
-    
+
     [SerializeField]
     private PoolData normalBubbles;
     [SerializeField]
@@ -12,6 +13,8 @@ public class Pluriball : MonoBehaviour ,IClickable
     private PoolData rockBubbles;
     [SerializeField]
     private PoolData bombBubbles;
+    [SerializeField]
+    private PoolData teleportBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
 
@@ -31,6 +34,9 @@ public class Pluriball : MonoBehaviour ,IClickable
     private float width, height;
     private int rows, columns;
     private LevelManager levelManager;
+
+    
+
     //private Vector3 colliderOriginalSize;
 
     private void Start()
@@ -46,7 +52,8 @@ public class Pluriball : MonoBehaviour ,IClickable
         Pooler.Instance.AddToPool(alreadyPoppedBubbles);
         Pooler.Instance.AddToPool(rockBubbles);
         Pooler.Instance.AddToPool(bombBubbles);
-        
+        Pooler.Instance.AddToPool(teleportBubbles);
+
         //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. S�, si potrebbe usare un array serializzato
         //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
         poolDataDictionary = new Dictionary<EBubbleType, PoolData>
@@ -54,7 +61,8 @@ public class Pluriball : MonoBehaviour ,IClickable
             { EBubbleType.Normal, normalBubbles },
             { EBubbleType.AlredyPopped, alreadyPoppedBubbles },
             { EBubbleType.Rock, rockBubbles },
-            { EBubbleType.Bomb, bombBubbles }
+            { EBubbleType.Bomb, bombBubbles },
+            { EBubbleType.Teleport, teleportBubbles }
         };
         #endregion
 
@@ -77,6 +85,14 @@ public class Pluriball : MonoBehaviour ,IClickable
         GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());        
         //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate( levelManager.GetLevelEntryData(levelIndex) ); 
+
+        foreach(Bubble bubble in bubbles)
+        {
+            if (bubble is TeleportBubble)
+            {
+                (bubble as TeleportBubble).TeleportEvent +=  OnTeleportCall;
+            }
+        }
     }
 
     private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)
@@ -277,6 +293,13 @@ public class Pluriball : MonoBehaviour ,IClickable
         cameraShake.Shake(shakeMagnitude, shakeDuration);
     }
 
+    
+    /// <summary>
+    /// Istanzia tutte le bolle dall'object pooling corrispondente, poi ne mescola l'ordine e le mantiene disattive in scena
+    /// </summary>
+    /// <param name="levelStruct">La struttura dove si trovano le info delle bolle della scena</param>
+    /// <param name="poolDatas">Un dizionario TipoBolla-PoolData con le pool delle bolle dalle istanziare</param>
+    /// <returns></returns>
     private Bubble[] ProceduralGeneration(LevelEntryStruct levelStruct, Dictionary<EBubbleType, PoolData> poolDatas)
     {
         int size = (int)levelStruct.grid_Size.x * (int)levelStruct.grid_Size.y;
@@ -328,6 +351,69 @@ public class Pluriball : MonoBehaviour ,IClickable
             array[t] = array[r];
             array[r] = tmp;
         }
+    }
+
+
+    private Bubble GetRandomBubbleOfType(EBubbleType type)
+    {
+        List<Bubble> listBubbles = new List<Bubble>();
+        int emptyBubbles=0;
+        foreach (Bubble b in bubbles)
+        {
+            if (b.BubbleType == type)
+            {
+                listBubbles.Add(b);
+                emptyBubbles++;
+            }
+        }
+        if (emptyBubbles < 0)
+            return null;
+
+        int rand = UnityEngine.Random.Range(0, emptyBubbles);
+
+        return listBubbles[rand];
+    }
+
+    private void SwitchBubblesPosition(Bubble a, Bubble b)
+    {
+        int indexA = GetBubbleIndex(a);
+        int indexB = GetBubbleIndex(b);
+
+        bubbles[indexA] = b;
+        bubbles[indexB] = a;
+
+        int rowA = indexA / columns;
+        int colA = indexA % columns;
+
+        int rowB = indexB / columns;
+        int colB = indexB % columns;
+
+
+        Vector2 origin = transform.position;
+        bubbles[indexA].transform.position = origin + new Vector2(bubbles[indexA].GetSize().x * colA, -(bubbles[indexA].GetSize().y * rowA));
+        bubbles[indexA].transform.position += new Vector3(bubbles[indexA].GetSize().x * 0.5f, -(bubbles[indexA].GetSize().y * 0.5f), 0);
+
+        bubbles[indexB].transform.position = origin + new Vector2(bubbles[indexB].GetSize().x * colB, -(bubbles[indexB].GetSize().y * rowB));
+        bubbles[indexB].transform.position += new Vector3(bubbles[indexB].GetSize().x * 0.5f, -(bubbles[indexB].GetSize().y * 0.5f), 0);
+    }
+
+    private int GetBubbleIndex(Bubble bubble)
+    {
+        for(int i = 0; i < bubbles.Length; i++)
+        {
+            if (bubbles[i] == bubble)
+                return i;
+        }
+        return -1;
+    }
+    #endregion
+
+    #region Teleport Bubble
+    //Teletrasporta la bolla teleport nello slot di una bolla già scoppiata
+    private void OnTeleportCall(TeleportBubble bubble)
+    {
+        Bubble emptyBubble = GetRandomBubbleOfType(EBubbleType.AlredyPopped);
+        SwitchBubblesPosition(bubble, emptyBubble);
     }
     #endregion
 }
