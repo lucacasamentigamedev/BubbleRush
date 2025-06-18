@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.Image;
-public class Pluriball : MonoBehaviour ,IClickable
+public class Pluriball : MonoBehaviour, IClickable
 {
 
     [SerializeField]
@@ -35,9 +35,16 @@ public class Pluriball : MonoBehaviour ,IClickable
     private int rows, columns;
     private LevelManager levelManager;
 
-    
+
 
     //private Vector3 colliderOriginalSize;
+
+    Vector3 bubbleSizeMax12x5 = new Vector3(0.15f, 0.15f, 0.0f);
+    Vector3 bubbleSizeMax13x6 = new Vector3(0.13f, 0.13f, 0.0f);
+    Vector3 bubbleSizeMax14x7 = new Vector3(0.12f, 0.12f, 0.0f);
+    Vector3 bubbleSizeMax17x8 = new Vector3(0.1f, 0.1f, 0.0f);
+
+    Vector3 currentBubbleSize;
 
     private void Start()
     {
@@ -67,7 +74,6 @@ public class Pluriball : MonoBehaviour ,IClickable
         #endregion
 
         levelManager.OnLoseLevel += OnLoseLevel;
-
     }
 
     private void OnStart(uint levelIndex)
@@ -77,8 +83,20 @@ public class Pluriball : MonoBehaviour ,IClickable
         columns = (int)levelManager.GetLevelEntryData(levelIndex).grid_Size.x;
         rows = (int)levelManager.GetLevelEntryData(levelIndex).grid_Size.y;
         remainingBubbles = rows * columns;
+
+        if (columns > 14 || rows > 7)
+            currentBubbleSize = bubbleSizeMax17x8;
+        else if (columns > 13 || rows > 6)
+            currentBubbleSize = bubbleSizeMax14x7;
+        else if (columns > 12 || rows > 5)
+            currentBubbleSize = bubbleSizeMax13x6;
+        else
+            currentBubbleSize = bubbleSizeMax12x5;
+
         Bubble b = Pooler.Instance.GetPooledObject(poolDataDictionary[EBubbleType.Normal]).GetComponent<Bubble>();
-        InternalSetPosition(rows, columns, b.GetSize());
+        b.transform.localScale = currentBubbleSize;
+
+        InternalSetPluriballPosition(rows, columns, b.GetSize());
         
         bubbles = new Bubble[remainingBubbles];
 
@@ -95,7 +113,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         }
     }
 
-    private void InternalSetPosition(int rows, int columns, Vector2 bubbleSize)
+    private void InternalSetPluriballPosition(int rows, int columns, Vector2 bubbleSize)
     {
         float posx = columns * bubbleSize.x / 2;
         float posy = rows * bubbleSize.y / 2;
@@ -251,12 +269,15 @@ public class Pluriball : MonoBehaviour ,IClickable
         int columns = (int)currentLevelData.grid_Size.x;
         bubbles = ProceduralGeneration(currentLevelData, poolDataDictionary);
 
+
+
         for (int row = 0; row < rows; row++)
         {
             for (int col = 0; col < columns; col++)
             {
                 int index = row * columns + col;
 
+                bubbles[index].transform.localScale = currentBubbleSize;                
                 bubbles[index].transform.position = origin + new Vector2(bubbles[index].GetSize().x * col, -(bubbles[index].GetSize().y * row));
                 bubbles[index].transform.position += new Vector3(bubbles[index].GetSize().x * 0.5f, -(bubbles[index].GetSize().y * 0.5f), 0);
 
@@ -278,13 +299,7 @@ public class Pluriball : MonoBehaviour ,IClickable
         //resize
         width = bubbles[0].GetSize().x * columns;       //+ offset 
         height = bubbles[0].GetSize().y * rows;
-        //Debug.Log($"width: {width} height {height}");
-        Vector3 newScale = transform.localScale;
-        newScale.x = width / _collider.bounds.size.x;
-        newScale.y = height / _collider.bounds.size.y;
-        newScale.z = 1;
-        //Debug.Log($"New Scale: {newScale}");
-
+        
         transform.localScale = new Vector3(width, height, 1);
     }
 
