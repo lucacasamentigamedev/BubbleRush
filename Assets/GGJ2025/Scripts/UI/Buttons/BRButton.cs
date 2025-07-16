@@ -27,7 +27,8 @@ public class BRButton : MonoBehaviour {
         { ButtonType.Pause, "pause" },
         { ButtonType.Left, "left" },
         { ButtonType.Right, "right" },
-        { ButtonType.Options, "options" }
+        { ButtonType.Options, "options" },
+        { ButtonType.Apply, "apply" }
     };
     #endregion
 

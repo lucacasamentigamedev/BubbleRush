@@ -11,5 +11,6 @@ public enum ButtonType {
     Pause,
     Left,
     Right,
-    Options
+    Options,
+    Apply
 }

@@ -39,6 +39,7 @@ public static class AudioManager
     };
 
     private static readonly Dictionary<AudioCategory, float> volumes = new Dictionary<AudioCategory, float> {
+        { AudioCategory.Master, 1.0f },
         { AudioCategory.Bubbles, 1.0f },
         { AudioCategory.Tools, 1.0f },
         { AudioCategory.Other, 1.0f },
@@ -46,6 +47,12 @@ public static class AudioManager
         { AudioCategory.UI, 1.0f },
         { AudioCategory.Test, 1.0f }
     };
+
+    private static float GetEffectiveVolume(AudioCategory category) {
+        float masterVolume = volumes.GetValueOrDefault(AudioCategory.Master, 1.0f);
+        float categoryVolume = volumes.GetValueOrDefault(category, 1.0f);
+        return masterVolume * categoryVolume;
+    }
 
     public static void SetCategoryVolume(AudioCategory category, float volume) {
         if (volumes.ContainsKey(category)) {
@@ -57,7 +64,7 @@ public static class AudioManager
         // check if event exists
         if (soundDictionary.TryGetValue(soundName, out AudioEvent audioEvent)) {
             // get volume
-            float categoryVolume = volumes.GetValueOrDefault(audioEvent.Category, 1.0f);
+            float categoryVolume = GetEffectiveVolume(audioEvent.Category);
             var instance = audioEvent.CreateInstance();
             // Set FMOD parameters if provided
             if (parameters != null && parameters.Length > 0) {
@@ -83,7 +90,7 @@ public static class AudioManager
         // get event
         if (soundDictionary.TryGetValue(soundPath, out AudioEvent audioEvent)) {
             // get volume
-            float categoryVolume = volumes.GetValueOrDefault(audioEvent.Category, 1.0f);
+            float categoryVolume = GetEffectiveVolume(audioEvent.Category);
             // play
             currentBackgroundMusic = audioEvent.CreateInstance();
             currentBackgroundMusic.setVolume(categoryVolume);
@@ -104,6 +111,27 @@ public static class AudioManager
             currentBackgroundMusic.setPaused(false); // Riprendi l'istanza
         } else {
             Debug.LogWarning("No valid background music to resume.");
+        }
+    }
+
+    public static float GetRawVolume(AudioCategory category) {
+        return volumes.TryGetValue(category, out float v) ? v : 1.0f;
+    }
+
+    public static void SetRawVolume(AudioCategory category, float value) {
+        Debug.Log($"Setting volume for {category} to {value}");
+        volumes[category] = Mathf.Clamp01(value);
+        //update background music volume if necessary
+        if (category == AudioCategory.Music || category == AudioCategory.Master) {
+            RefreshBackgroundMusicVolume();
+        }
+    }
+
+    public static void RefreshBackgroundMusicVolume() {
+        if (currentBackgroundMusic.isValid()) {
+            float newVolume = GetEffectiveVolume(AudioCategory.Music);
+            currentBackgroundMusic.setVolume(newVolume);
+            Debug.Log($"Updated background music volume to {newVolume}");
         }
     }
 }

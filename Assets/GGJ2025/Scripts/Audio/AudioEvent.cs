@@ -2,6 +2,7 @@ using FMOD.Studio;
 using FMODUnity;
 
 public enum AudioCategory {
+    Master,
     Bubbles,
     Tools,
     Other,
