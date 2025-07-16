@@ -1,30 +1,35 @@
-using UnityEngine;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using System;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+[System.Serializable]
+public class SaveData {
+    public uint level;
+    public Dictionary<AudioCategory, float> volumes = new();
+}
 
 public static class SaveSystem
 {
-    public static void SaveFile(uint level)
-    {
+    public static void SaveFile(uint level) {
         string destination = Application.persistentDataPath + "/save.fish";
         FileStream file;
 
-        if (File.Exists(destination))
-            try
-            {
-                file = File.OpenWrite(destination);
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                return;
-            }
-        else
-            file = File.Create(destination);
+        try {
+            file = File.Exists(destination) ? File.OpenWrite(destination) : File.Create(destination);
+        } catch (Exception e) {
+            Debug.LogException(e);
+            return;
+        }
+
+        SaveData data = new SaveData();
+        data.level = level;
+        data.volumes = new Dictionary<AudioCategory, float>(AudioManager.GetAllVolumes());
 
         BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(file, level);
+        bf.Serialize(file, data);
         file.Close();
     }
 

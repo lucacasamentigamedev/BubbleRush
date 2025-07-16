@@ -39,5 +39,6 @@ public class OptionsMenu : BaseUI {
         AudioManager.SetRawVolume(AudioCategory.Other, otherSlider.value);
         AudioManager.SetRawVolume(AudioCategory.Music, musicSlider.value);
         AudioManager.SetRawVolume(AudioCategory.UI, UISlider.value);
+        SaveSystem.SaveFile(LevelManager.Get().Level);
     }
 }

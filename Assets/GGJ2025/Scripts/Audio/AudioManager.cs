@@ -134,4 +134,8 @@ public static class AudioManager
             Debug.Log($"Updated background music volume to {newVolume}");
         }
     }
+
+    public static Dictionary<AudioCategory, float> GetAllVolumes() {
+        return new Dictionary<AudioCategory, float>(volumes);
+    }
 }
