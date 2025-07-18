@@ -42,65 +42,24 @@ public static class AudioManager
     };
 
     private static readonly Dictionary<EAudioCategory, float> volumes;
-    /* = new Dictionary<EAudioCategory, float> {
-        { EAudioCategory.Master, 1.0f },
-        { EAudioCategory.Bubbles, 1.0f },
-        { EAudioCategory.Tools, 1.0f },
-        { EAudioCategory.Other, 1.0f },
-        { EAudioCategory.Music, 1.0f },
-        { EAudioCategory.UI, 1.0f },
-        { EAudioCategory.Test, 1.0f }
-    };*/
-
-    /*static AudioManager() {
-        Debug.Log("AudioManager - static constructor called");
-        string destination = Application.persistentDataPath + "/save.fish";
-        FileStream file;
-        if (File.Exists(destination))
-            file = File.OpenRead(destination);
-        else {
-            //default volumes
-            Debug.Log("AudioManager - Save file not found default volumes 1");
-            volumes = new Dictionary<EAudioCategory, float> {
-                { EAudioCategory.Master, 1.0f },
-                { EAudioCategory.Bubbles, 1.0f },
-                { EAudioCategory.Tools, 1.0f },
-                { EAudioCategory.Other, 1.0f },
-                { EAudioCategory.Music, 1.0f },
-                { EAudioCategory.UI, 1.0f },
-                { EAudioCategory.Test, 1.0f }
-            };
-            return;
-        }
-        BinaryFormatter bf = new BinaryFormatter();
-        SaveData data = (SaveData)bf.Deserialize(file);
-        Debug.Log("AudioManager - Save file found, set volumes from save into dictionary");
-        volumes = data.volumes;
-        file.Close();
-    }*/
 
     static AudioManager() {
         Debug.Log("AudioManager - static constructor called");
-
-        string path = Application.persistentDataPath + "/save.json";
-
+        string path = Application.persistentDataPath + "/save.fish";
         if (!File.Exists(path)) {
             Debug.Log("AudioManager - Save file not found, using default volumes");
             volumes = GetDefaultVolumes();
             return;
         }
-
         try {
-            string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
-
+            using FileStream file = File.OpenRead(path);
+            BinaryFormatter bf = new BinaryFormatter();
+            SaveData data = (SaveData)bf.Deserialize(file);
             volumes = new Dictionary<EAudioCategory, float>();
-
             foreach (var entry in data.volumes) {
                 volumes[entry.category] = Mathf.Clamp01(entry.value);
             }
-
-            Debug.Log($"AudioManager - Loaded volumes from save: {volumes.Count} entries");
+            Debug.Log($"AudioManager - Loaded {volumes.Count} volume entries from save");
         } catch (Exception e) {
             Debug.LogError("AudioManager - Failed to load volumes, using default");
             Debug.LogException(e);
@@ -119,7 +78,6 @@ public static class AudioManager
             { EAudioCategory.Test, 1.0f }
         };
     }
-
 
     private static float GetEffectiveVolume(EAudioCategory category) {
         float masterVolume = volumes.GetValueOrDefault(EAudioCategory.Master, 1.0f);
