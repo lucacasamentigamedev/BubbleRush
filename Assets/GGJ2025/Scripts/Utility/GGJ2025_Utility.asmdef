@@ -2,8 +2,7 @@
     "name": "GGJ2025_Utility",
     "rootNamespace": "",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:91c57153a7f3d224c9557e2737df038b"
+        "GUID:75469ad4d38634e559750d17036d5f7c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

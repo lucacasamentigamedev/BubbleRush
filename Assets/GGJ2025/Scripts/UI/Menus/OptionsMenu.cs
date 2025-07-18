@@ -17,12 +17,12 @@ public class OptionsMenu : BaseUI {
         AudioManager.PlayOneShotSound("MenuOpen");
         Debug.Log("OptionsMenu - OnEnable called");
         // Initialize sliders with current volume settings
-        masterSlider.value = AudioManager.GetRawVolume(AudioCategory.Master);
-        bubblesSlider.value = AudioManager.GetRawVolume(AudioCategory.Bubbles);
-        toolsSlider.value = AudioManager.GetRawVolume(AudioCategory.Tools);
-        otherSlider.value = AudioManager.GetRawVolume(AudioCategory.Other);
-        musicSlider.value = AudioManager.GetRawVolume(AudioCategory.Music);
-        UISlider.value = AudioManager.GetRawVolume(AudioCategory.UI);
+        masterSlider.value = AudioManager.GetRawVolume(EAudioCategory.Master);
+        bubblesSlider.value = AudioManager.GetRawVolume(EAudioCategory.Bubbles);
+        toolsSlider.value = AudioManager.GetRawVolume(EAudioCategory.Tools);
+        otherSlider.value = AudioManager.GetRawVolume(EAudioCategory.Other);
+        musicSlider.value = AudioManager.GetRawVolume(EAudioCategory.Music);
+        UISlider.value = AudioManager.GetRawVolume(EAudioCategory.UI);
         applyButton.onClick.AddListener(OnApplyButtonClicked);
     }
 
@@ -33,12 +33,13 @@ public class OptionsMenu : BaseUI {
 
     private void OnApplyButtonClicked() {
         Debug.Log("OptionsMenu - Apply button clicked");
-        AudioManager.SetRawVolume(AudioCategory.Master, masterSlider.value);
-        AudioManager.SetRawVolume(AudioCategory.Bubbles, bubblesSlider.value);
-        AudioManager.SetRawVolume(AudioCategory.Tools, toolsSlider.value);
-        AudioManager.SetRawVolume(AudioCategory.Other, otherSlider.value);
-        AudioManager.SetRawVolume(AudioCategory.Music, musicSlider.value);
-        AudioManager.SetRawVolume(AudioCategory.UI, UISlider.value);
-        SaveSystem.SaveFile(LevelManager.Get().Level);
+        AudioManager.SetRawVolume(EAudioCategory.Master, masterSlider.value);
+        AudioManager.SetRawVolume(EAudioCategory.Bubbles, bubblesSlider.value);
+        AudioManager.SetRawVolume(EAudioCategory.Tools, toolsSlider.value);
+        AudioManager.SetRawVolume(EAudioCategory.Other, otherSlider.value);
+        AudioManager.SetRawVolume(EAudioCategory.Music, musicSlider.value);
+        AudioManager.SetRawVolume(EAudioCategory.UI, UISlider.value);
+        Debug.Log("OptionsMenu - Ora chiamo il SaveFile");
+        SaveSystem.SaveFile(LevelManager.Get().Level, AudioManager.GetAllRawVolumes());
     }
 }

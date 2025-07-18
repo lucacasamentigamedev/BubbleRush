@@ -50,7 +50,7 @@ public class UIController : MonoBehaviour
         //pass UIController to every button
         BRButton[] buttons = GetComponentsInChildren<BRButton>(true);
         foreach (BRButton button in buttons) {
-            Debug.Log("UICOntroller - assegno UICOntroller a " + button.gameObject.name);
+            //Debug.Log("UICOntroller - assegno UICOntroller a " + button.gameObject.name);
             button.Init(this);
         }
         //collect every UI into array
