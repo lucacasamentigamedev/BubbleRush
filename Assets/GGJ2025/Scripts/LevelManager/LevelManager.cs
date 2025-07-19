@@ -63,7 +63,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SaveSystem.LoadFile(out currentLevel);        
+        SaveSystem.LoadLevel(out currentLevel);        
         currentLevelUnlocked = currentLevel> defaultUnlockedLevels ? currentLevel : defaultUnlockedLevels;
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
         GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
@@ -73,7 +73,7 @@ public class LevelManager : MonoBehaviour
    
     void OnDestroy()
     {
-        SaveSystem.SaveFile(currentLevel);
+        SaveSystem.SaveFile(currentLevel, AudioManager.GetAllRawVolumes());
     }
 
     //Da convertire in coroutine

@@ -19,11 +19,11 @@ public class UIController : MonoBehaviour
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
     [SerializeField] private GameplayUIMenu gameplayMenuPrefab;
     [SerializeField] private LevelHubMenu levelHubMenuPrefab;
+    [SerializeField] private OptionsMenu optionsMenuPrefab;
     [SerializeField] private RectTransform weapon;
 
     //Other
     private BaseUI currentMenu;
-    private bool firstTime = false;
     public bool isPrevented = false;
     private Coroutine waitBeforeUIInteract;
     //Tutorials
@@ -63,7 +63,8 @@ public class UIController : MonoBehaviour
             endLevelWinMenuPrefab,
             endLevelLoseMenuPrefab,
             tutorialMenuPrefab,
-            gameplayMenuPrefab
+            gameplayMenuPrefab,
+            optionsMenuPrefab
         };
         //pause input
         InputManager.Player.TogglePause.performed += OnTogglePause;
@@ -126,6 +127,9 @@ public class UIController : MonoBehaviour
                 break;
             case EUIType.LevelHubMenu:
                 currentMenu = levelHubMenuPrefab;
+                break;
+            case EUIType.OptionsMenu:
+                currentMenu = optionsMenuPrefab;
                 break;
         }
         //open
@@ -224,6 +228,7 @@ public class UIController : MonoBehaviour
     public void OpenEndLevelWinMenu() => OpenMenu(EUIType.EndLevelWinMenu);
     public void OpenEndLevelLoseMenu() => OpenMenu(EUIType.EndLevelLoseMenu);
     public void OpenLevelHubMenu() => OpenMenu(EUIType.LevelHubMenu);
+    public void OpenOptionsMenu() => OpenMenu(EUIType.OptionsMenu);
 
     #endregion
 

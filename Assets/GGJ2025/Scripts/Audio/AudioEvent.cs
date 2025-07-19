@@ -1,20 +1,11 @@
 using FMOD.Studio;
 using FMODUnity;
 
-public enum AudioCategory {
-    Bubbles,
-    Tools,
-    Other,
-    Music,
-    UI,
-    Test
-}
-
 public class AudioEvent {
     public string Path { get; private set; }
-    public AudioCategory Category { get; private set; }
+    public EAudioCategory Category { get; private set; }
 
-    public AudioEvent(string path, AudioCategory category) {
+    public AudioEvent(string path, EAudioCategory category) {
         Path = path;
         Category = category;
     }
