@@ -545,11 +545,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1940745319453738372, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1940745319453738372, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1940745319453738372, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,7 +601,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7416837564952990179, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_Name
-      value: WeaponSelector (3)
+      value: ForwHide_WeaponSelector
+      objectReference: {fileID: 0}
+    - target: {fileID: 7416837564952990179, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8681716742257428759, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_Sprite
@@ -976,6 +980,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: WeaponSelectorArea
       objectReference: {fileID: 0}
+    - target: {fileID: 5936987817535192200, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692496709492613832, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6916384260452205622, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.807
@@ -1036,6 +1048,10 @@ PrefabInstance:
       propertyPath: weaponForwdHide
       value: 
       objectReference: {fileID: 1634817644}
+    - target: {fileID: 7486921762145548518, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -1062,11 +1078,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1940745319453738372, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1940745319453738372, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1940745319453738372, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1118,7 +1134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7416837564952990179, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_Name
-      value: WeaponSelector (4)
+      value: BackHide_WeaponSelector
+      objectReference: {fileID: 0}
+    - target: {fileID: 7416837564952990179, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8681716742257428759, guid: 222dd92b41a2d2048a8936b57a3d8a25, type: 3}
       propertyPath: m_Sprite

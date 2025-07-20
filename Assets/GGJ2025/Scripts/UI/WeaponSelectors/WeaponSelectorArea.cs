@@ -41,51 +41,52 @@ public class WeaponSelectorArea : MonoBehaviour
     }
     private void onChangeWeaponBackward(InputAction.CallbackContext context)
     {
-        Debug.Log("Backward selected");
-
-        /*
-        weaponBackward.Move(E_Move.MIDDLE);
-        weaponBackward.Resize(E_Resize.MAXIMIZE);
-
-        mainWeapon.Move(E_Move.DOWN);
-        mainWeapon.Resize(E_Resize.REDUCE);
-        
-        weaponForward.Move(E_Move.HIDE_DOWN);
-        weaponForward.Resize(E_Resize.MINIMIZE);
-        */
-
-        
-        
-        foreach (var weapon in weapons)
-        {
-            weapon.MoveDown();
-            weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_DOWN ? E_ICON_POSITION.HIDE_UP : weapon.Position + 1;
-        }
+        ChangeWeapon(-1);
     }
 
     private void onChangeWeaponForward(InputAction.CallbackContext context)
     {
-        Debug.Log("Forward selected");
-        /*
-        weaponBackward.Move(E_Move.HIDE_UP);
-        weaponBackward.Resize(E_Resize.MINIMIZE);
-
-        mainWeapon.Move(E_Move.UP);
-        mainWeapon.Resize(E_Resize.REDUCE);
-
-        weaponForward.Move(E_Move.MIDDLE);
-        weaponForward.Resize(E_Resize.MAXIMIZE);
-        */
-
-        foreach (var weapon in weapons)
-        {
-            weapon.MoveUp();
-            weapon.Position = weapon.Position== E_ICON_POSITION.HIDE_UP ? E_ICON_POSITION.HIDE_DOWN : weapon.Position-1;
-        }
+        ChangeWeapon(1);        
     }
 
     private void onChangeWeaponWheel(InputAction.CallbackContext context)
     {
-        Debug.Log("WHEEEEEEEEL!!");
+        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
+    }
+
+    private void ChangeWeapon(int forward)
+    {
+        if (!CanChangeWeapon()) return;
+        if (forward> 0)
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.MoveDown();
+                weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_DOWN ? E_ICON_POSITION.HIDE_UP : weapon.Position + 1;
+            }
+        }
+        else
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.MoveUp();
+                weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_UP ? E_ICON_POSITION.HIDE_DOWN : weapon.Position - 1;
+            }
+        }
+    }
+
+
+
+    
+
+    private bool CanChangeWeapon()
+    {
+        foreach (var weapon in weapons)
+        {
+            if(weapon.IsPrevented)
+                return false;
+        }
+        return true;
+        
     }
 }
