@@ -18,6 +18,11 @@ public class WeaponSelectorArea : MonoBehaviour
     [SerializeField]
     private WeaponSelector weaponForwdHide;
 
+
+    private bool isDragging = false;
+    private Vector2 startMousePos;
+    public float upwardThreshold = 50f;
+
     private WeaponSelector[] weapons;
     void Start()
     {
@@ -74,11 +79,7 @@ public class WeaponSelectorArea : MonoBehaviour
             }
         }
     }
-
-
-
     
-
     private bool CanChangeWeapon()
     {
         foreach (var weapon in weapons)
@@ -88,5 +89,26 @@ public class WeaponSelectorArea : MonoBehaviour
         }
         return true;
         
+    }
+
+    private void OnMouseDown()
+    {
+        isDragging = true;
+        startMousePos = Mouse.current.position.ReadValue();
+    }
+    private void OnMouseUp()
+    {
+        if (isDragging)
+        {
+            Vector2 endMousePos = Mouse.current.position.ReadValue();
+            float deltaY = endMousePos.y - startMousePos.y;
+
+            if (deltaY > upwardThreshold)
+            {
+                Debug.Log("Hai trascinato verso l'alto!");
+            }
+        }
+
+        isDragging = false;
     }
 }
