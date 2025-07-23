@@ -13,6 +13,9 @@ public enum E_ICON_POSITION
 
 public class WeaponSelector : MonoBehaviour
 {
+    [SerializeField]
+    private SpriteRenderer SpriteRenderer;
+
     public E_ICON_POSITION Position { get; set; }
 
     private Coroutine moveCoroutine;
@@ -199,6 +202,14 @@ public class WeaponSelector : MonoBehaviour
             case E_ICON_POSITION.HIDE_DOWN:
                 gameObject.transform.position = new Vector3(gameObject.transform.position.x, 1.6f, gameObject.transform.position.z);                
                 break;
+        }
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        if (sprite != null)
+        {
+            SpriteRenderer.sprite = sprite;
         }
     }
 }

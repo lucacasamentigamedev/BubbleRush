@@ -12,4 +12,9 @@ public class WeaponsDatabase : ScriptableObject {
         } 
         return new WeaponData();
     }
+
+    public WeaponData[] GetEntries()
+    {
+        return entries;
+    }
 }

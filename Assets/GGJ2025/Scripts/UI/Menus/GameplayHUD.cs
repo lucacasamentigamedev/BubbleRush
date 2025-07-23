@@ -8,6 +8,8 @@ public class GameplayHUD: BaseUI {
     private TextMeshProUGUI textMeshProText;
     [SerializeField]
     private GameObject timerUI;
+    [SerializeField]
+    WeaponSelectorArea weaponSelectorArea;
 
     public void Awake()
     {        
@@ -22,6 +24,7 @@ public class GameplayHUD: BaseUI {
 
     private void OnStartLevel(uint levelIndex)
     {
+        weaponSelectorArea.Init(levelIndex);
         if(LevelManager.Get().ActiveEntryData.is_Timer_Activate)
         {
             timerUI.SetActive(true);

@@ -985,6 +985,10 @@ PrefabInstance:
       propertyPath: weaponForwdHide
       value: 
       objectReference: {fileID: 1634817644}
+    - target: {fileID: 7418010366573762274, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
+      propertyPath: weaponsDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 96d263d27c9c60748b5a77bb995b3eaf, type: 2}
     - target: {fileID: 7486921762145548518, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1002,6 +1006,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
+--- !u!114 &1721955415 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7418010366573762274, guid: b90794ec3f6b02e41a02324644e900aa, type: 3}
+  m_PrefabInstance: {fileID: 1696459831}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4533ec314b08c0d4388c3e87bf86efa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1820727068 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4936722998276994707, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
@@ -2200,6 +2215,10 @@ PrefabInstance:
       propertyPath: timerUI
       value: 
       objectReference: {fileID: 1206229927}
+    - target: {fileID: 8675885845751467938, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
+      propertyPath: weaponSelectorArea
+      value: 
+      objectReference: {fileID: 1721955415}
     - target: {fileID: 8717318609011686451, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

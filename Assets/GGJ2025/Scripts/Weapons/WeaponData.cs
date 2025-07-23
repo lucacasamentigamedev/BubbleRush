@@ -9,5 +9,6 @@ public class WeaponData : ScriptableObject {
     public Vector2 area;
     public Sprite preInteract;
     public Sprite postInteract;
+    public Sprite UI_IconSelector;
 
 }

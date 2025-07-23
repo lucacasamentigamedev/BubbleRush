@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
         Vector3 screenPoint = InputManager.Player_Mouse_Position;
         screenPoint.z = 10;
         Vector2 inputPosition;
-      
+
 #if UNITY_ANDROID || UNITY_IOS
         if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
             return;
@@ -165,7 +165,6 @@ public class Player : MonoBehaviour
         inputPosition = Mouse.current.position.ReadValue();
 #endif
         
-
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(inputPosition);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null) {
