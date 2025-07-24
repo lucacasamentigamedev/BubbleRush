@@ -32,7 +32,8 @@ public class LevelManager : MonoBehaviour
         get 
         { 
             return currentLevel; 
-        } 
+        }
+        set { currentLevel = value; }
     }
 
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }
@@ -124,8 +125,6 @@ public class LevelManager : MonoBehaviour
         currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
         currentLevelUnlocked = defaultUnlockedLevels;
     }
-
-
 
     public LevelEntryStruct GetLevelEntryData(uint levelIndex)
     {

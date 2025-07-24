@@ -1,37 +1,62 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class HUBLevelButton : BRButton
-{
+public class HUBLevelButton : MonoBehaviour {
+
     [SerializeField]
     private uint levelIndex;
 
-    private TextMeshPro btnText;
+    private Button button;
+    private TextMeshProUGUI btnText;
+    private Image buttonImage;
+    private Sprite[] levelToDoSprites;
+    private Sprite levelFinishSprite;
+    uint currentLevel;
 
-    void Start()
-    {
-        if(LevelManager.Get().Level<levelIndex)
-        {
-            button.interactable = false;
-        }
-        else
-        {
-            button.interactable = true;
-        }
-        btnText = GetComponentInChildren<TextMeshPro>();
-        if(btnText != null )
-        {
-            btnText.text = "Level " + levelIndex.ToString();
-        }
+    private void Awake() {
+        levelToDoSprites = new Sprite[5];
+        levelToDoSprites[0] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage0_without_background");
+        levelToDoSprites[1] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage1_without_background");
+        levelToDoSprites[2] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage2_without_background");
+        levelToDoSprites[3] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage3_without_background");
+        levelToDoSprites[4] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage4_without_background");
+        levelFinishSprite = Resources.Load<Sprite>($"Sprites/Bubbles/Popped/bubble_popped_whitout_background");
+        btnText = GetComponentInChildren<TextMeshProUGUI>();
+        button = GetComponent<Button>();
+        buttonImage = GetComponent<Image>();
+        button.onClick.AddListener(OnClick);
     }
 
-    protected override void OnClick()
+    void OnEnable()
     {
-        if (UIController.isPrevented) return;
-        base.OnClick();
-        LevelManager.Get().StartLevel(levelIndex);
-        AudioManager.PlayBackgroundMusic("GameplayMusic");
+        currentLevel = LevelManager.Get().Level;
+        Debug.Log($"HUBLevelButton - OnEnable called, current level: {currentLevel}");
+
+        //image
+        if (currentLevel > levelIndex) {
+            buttonImage.sprite = levelFinishSprite;
+            if (ColorUtility.TryParseHtmlString("#BEBEBE", out Color parsedColor)) {
+                btnText.color = parsedColor;
+            }
+        } else{
+            int randomIndex = Random.Range(0, levelToDoSprites.Length);
+            buttonImage.sprite = levelToDoSprites[randomIndex];
+        }
+
+        //level number
+        btnText.text = levelIndex.ToString();
     }
 
+    private void OnClick() {
+        if (currentLevel >= levelIndex) {
+            AudioManager.PlayOneShotSound("BubblePop", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_POP_TYPE", 0.0f)
+                });
+            LevelManager.Get().StartLevel(levelIndex);
+            //AudioManager.PlayBackgroundMusic("GameplayMusic");
+        } else {
+            AudioManager.PlayOneShotSound("BubbleSimpleCLick");
+        }
+    }
 }

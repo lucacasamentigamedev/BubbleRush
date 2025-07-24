@@ -20,7 +20,7 @@ public static class SaveSystem
 {
     public static void SaveFile(uint level, Dictionary<EAudioCategory, float> volumesDict) {
         string path = Application.persistentDataPath + "/save.fish";
-        Debug.Log("SaveSystem - Save file at destination " + path);
+        Debug.Log("SaveSystem - Save file at destination " + path + "level " + level);
         SaveData data = new SaveData();
         data.level = level;
         foreach (var kvp in volumesDict) {

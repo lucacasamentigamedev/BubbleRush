@@ -64,7 +64,8 @@ public class UIController : MonoBehaviour
             endLevelLoseMenuPrefab,
             tutorialMenuPrefab,
             gameplayMenuPrefab,
-            optionsMenuPrefab
+            optionsMenuPrefab,
+            levelHubMenuPrefab
         };
         //pause input
         InputManager.Player.TogglePause.performed += OnTogglePause;

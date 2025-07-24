@@ -7,6 +7,8 @@ public class EndLevelWinMenu : BaseUI {
     private Image[] stars;
 
     private void OnEnable() {
+        LevelManager.Get().Level = LevelManager.Get().Level + 1;
+        SaveSystem.SaveFile(LevelManager.Get().Level, AudioManager.GetAllRawVolumes());
         AudioManager.PauseBackgroundMusic();
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                 new FMODParameter("WIN_LOSE", 0.0f)
