@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.EventSystems.EventTrigger;
 
-
-public class WeaponSelectorArea : MonoBehaviour
+public class WeaponSelectorArea : MonoBehaviour, IDraggable
 {
     [SerializeField]
     private WeaponSelector mainWeapon;
@@ -21,8 +17,9 @@ public class WeaponSelectorArea : MonoBehaviour
     [SerializeField]
     private WeaponsDatabase weaponsDatabase;
 
+    private int weaponCount;
+    private int lastMove;
     private WeaponSelector[] weapons;
-    
 
     //--test
     private bool isDragging = false;
@@ -38,6 +35,7 @@ public class WeaponSelectorArea : MonoBehaviour
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
     }
+
 
     private void OnDestroy()
     {
@@ -73,20 +71,23 @@ public class WeaponSelectorArea : MonoBehaviour
         {
             foreach (var weapon in weapons)
             {
+                if (!CanMove(forward)) return;
                 if(!weapon.isActiveAndEnabled) continue;
                 weapon.MoveDown();
                 weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_DOWN ? E_ICON_POSITION.HIDE_UP : weapon.Position + 1;
             }
         }
-        else               //Seleziona l'arma più in alto   
+        else               //Seleziona l'arma più in basso   
         {                   
             foreach (var weapon in weapons)
             {
+                if (!CanMove(forward)) return;
                 if (!weapon.isActiveAndEnabled) continue;
                 weapon.MoveUp();
                 weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_UP ? E_ICON_POSITION.HIDE_DOWN : weapon.Position - 1;
             }
         }
+        lastMove = forward;
     }
 
     // controlliamo che le coroutine di movimento delle icone siano tutte finite prima di poter eseguire nuovamente il cambio arma
@@ -98,6 +99,13 @@ public class WeaponSelectorArea : MonoBehaviour
                 return false;
         }
         return true;        
+    }
+
+    private bool CanMove(int forward)
+    {
+        if(weaponCount <2) return false;
+        if (weaponCount == 2 && lastMove == forward)  return false;        
+        return true;
     }
     #endregion Private methods
 
@@ -120,6 +128,7 @@ public class WeaponSelectorArea : MonoBehaviour
         weapons = new WeaponSelector[] { mainWeapon, weaponBackward, weaponForward, weaponBackwHide, weaponForwdHide };
 
         WeaponData[] entries = weaponsDatabase.GetEntries();
+        weaponCount = 0;
 
         for (int i = 0; i< entries.Length; i++)
         {
@@ -128,8 +137,10 @@ public class WeaponSelectorArea : MonoBehaviour
             {
                 weapons[i].SetSprite(weaponEntry.UI_IconSelector);
                 weapons[i].gameObject.SetActive(true);
+                weaponCount++;
             }
         }
+       
     }
     #endregion Public Methods
 
@@ -154,4 +165,15 @@ public class WeaponSelectorArea : MonoBehaviour
         isDragging = false;
     }
 
+    public void OnHoldAndRelease(bool up)
+    {
+        Debug.Log("HOLD AND RELEASE");
+        if (up)
+        {
+            ChangeWeapon(-1);
+        }else
+        { 
+            ChangeWeapon(1); 
+        }
+    }
 }

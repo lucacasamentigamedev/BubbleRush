@@ -80,6 +80,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Hold"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6beee08-5ef4-4e73-a415-7a3e8f156956"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -203,6 +212,28 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""ChangeWeaponWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cccd6db-3662-4fa9-a441-c95b4ca4d6ea"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65a0bcc0-6115-429f-98fd-d32343a5edfb"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hold"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -296,6 +327,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_ChangeWeaponForward = m_Player.FindAction("ChangeWeaponForward", throwIfNotFound: true);
         m_Player_ChangeWeaponBackward = m_Player.FindAction("ChangeWeaponBackward", throwIfNotFound: true);
         m_Player_ChangeWeaponWheel = m_Player.FindAction("ChangeWeaponWheel", throwIfNotFound: true);
+        m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_Interact = m_Menu.FindAction("Interact", throwIfNotFound: true);
@@ -374,6 +406,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChangeWeaponForward;
     private readonly InputAction m_Player_ChangeWeaponBackward;
     private readonly InputAction m_Player_ChangeWeaponWheel;
+    private readonly InputAction m_Player_Hold;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
@@ -384,6 +417,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @ChangeWeaponForward => m_Wrapper.m_Player_ChangeWeaponForward;
         public InputAction @ChangeWeaponBackward => m_Wrapper.m_Player_ChangeWeaponBackward;
         public InputAction @ChangeWeaponWheel => m_Wrapper.m_Player_ChangeWeaponWheel;
+        public InputAction @Hold => m_Wrapper.m_Player_Hold;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -411,6 +445,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @ChangeWeaponWheel.started += instance.OnChangeWeaponWheel;
             @ChangeWeaponWheel.performed += instance.OnChangeWeaponWheel;
             @ChangeWeaponWheel.canceled += instance.OnChangeWeaponWheel;
+            @Hold.started += instance.OnHold;
+            @Hold.performed += instance.OnHold;
+            @Hold.canceled += instance.OnHold;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -433,6 +470,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @ChangeWeaponWheel.started -= instance.OnChangeWeaponWheel;
             @ChangeWeaponWheel.performed -= instance.OnChangeWeaponWheel;
             @ChangeWeaponWheel.canceled -= instance.OnChangeWeaponWheel;
+            @Hold.started -= instance.OnHold;
+            @Hold.performed -= instance.OnHold;
+            @Hold.canceled -= instance.OnHold;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -520,6 +560,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnChangeWeaponForward(InputAction.CallbackContext context);
         void OnChangeWeaponBackward(InputAction.CallbackContext context);
         void OnChangeWeaponWheel(InputAction.CallbackContext context);
+        void OnHold(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

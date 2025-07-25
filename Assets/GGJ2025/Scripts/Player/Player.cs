@@ -17,6 +17,11 @@ public class Player : MonoBehaviour
     private Coroutine coroutineDeleay;
     #endregion
 
+
+    private bool holdActive = false;
+    private Vector2 startPointerPos;
+    private Vector2 endPointerPos;
+    IDraggable draggable;
     #region Mono
     private void Start() {
         //prepare first weapon
@@ -31,8 +36,52 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
+        InputManager.Player.Hold.started += OnHoldStarted;
+        InputManager.Player.Hold.canceled += OnHoldReleased;
         LevelManager.Get().OnStartLevel += onLevelManagerStart;
         GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
+    }
+
+    private void OnHoldStarted(InputAction.CallbackContext context)
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
+            return;
+
+        startPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();
+#else
+        if (Mouse.current == null)
+                return;
+        startPointerPos = Mouse.current.position.ReadValue();
+#endif
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(startPointerPos);
+        RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+        if (hit.collider != null)
+        {
+            draggable = hit.collider.GetComponent<IDraggable>();
+            if (draggable != null)
+            {
+                holdActive = true;
+            }
+        }
+    }
+    private void OnHoldReleased(InputAction.CallbackContext context)
+    {
+        if (!holdActive) return;
+#if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
+            return;
+
+        endPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();
+#else
+        if (Mouse.current == null)
+            return;
+        endPointerPos = Mouse.current.position.ReadValue();
+#endif
+
+        draggable.OnHoldAndRelease(endPointerPos.y > startPointerPos.y);
+        draggable = null;
+        holdActive = false;
     }
 
     private void Update() {
@@ -45,6 +94,8 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponForward.performed -= onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
+        InputManager.Player.Hold.performed -= OnHoldStarted;
+        InputManager.Player.Hold.canceled -= OnHoldReleased;
         GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
     }
 
