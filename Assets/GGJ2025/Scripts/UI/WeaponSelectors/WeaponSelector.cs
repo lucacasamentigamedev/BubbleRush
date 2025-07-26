@@ -23,9 +23,84 @@ public class WeaponSelector : MonoBehaviour
 
     public bool IsPrevented { get { return isCoroutineRunning; } }
 
-    private IEnumerator MoveUpWithDelay(E_ICON_POSITION _movePosition, bool up)
+    private IEnumerator MoveUpWithDelay(float limitY, float limitScale, Vector3 posYFactor, Vector3 resizeFactor,
+                                        Func<float, float, bool> _posCondition, Func<float, float, bool> _scaleCondition)
     {
-        isCoroutineRunning = true;
+        isCoroutineRunning = true;        
+        while (_posCondition(gameObject.transform.position.y, limitY) || _scaleCondition(gameObject.transform.localScale.x, limitScale))
+        {
+            if(_posCondition(gameObject.transform.position.y, limitY))
+                gameObject.transform.position += posYFactor;
+            if(_scaleCondition(gameObject.transform.localScale.x, limitScale))
+                gameObject.transform.localScale += resizeFactor;
+            yield return new WaitForEndOfFrame();
+        }
+        isCoroutineRunning = false;
+    }
+
+    public void MoveUp()
+    {
+        if(isCoroutineRunning) return;
+        
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+
+        switch (Position)
+        {
+            case E_ICON_POSITION.HIDE_UP:
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, -1.6f, gameObject.transform.position.z);
+                break;
+            case E_ICON_POSITION.UP:
+                PrepareAndStartCoroutine(E_ICON_POSITION.HIDE_UP, true);
+                break;
+            case E_ICON_POSITION.MIDDLE:
+                PrepareAndStartCoroutine(E_ICON_POSITION.UP, true);
+                break;
+            case E_ICON_POSITION.DOWN:
+                PrepareAndStartCoroutine(E_ICON_POSITION.MIDDLE, true);
+                break;
+            case E_ICON_POSITION.HIDE_DOWN:
+                PrepareAndStartCoroutine(E_ICON_POSITION.DOWN, true);
+                break;
+
+        }
+    }
+
+    
+
+    public void MoveDown()
+    {
+        if (isCoroutineRunning) return;
+
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        
+        switch (Position)
+        {
+            case E_ICON_POSITION.HIDE_UP:
+                PrepareAndStartCoroutine(E_ICON_POSITION.UP, false);
+                break;
+            case E_ICON_POSITION.UP:
+                PrepareAndStartCoroutine(E_ICON_POSITION.MIDDLE, false);
+                break;
+            case E_ICON_POSITION.MIDDLE:
+                PrepareAndStartCoroutine(E_ICON_POSITION.DOWN, false);
+                break;
+            case E_ICON_POSITION.DOWN:
+                PrepareAndStartCoroutine(E_ICON_POSITION.HIDE_DOWN, false);
+                break;
+            case E_ICON_POSITION.HIDE_DOWN:
+                gameObject.transform.position = new Vector3(gameObject.transform.position.x, 1.6f, gameObject.transform.position.z);                
+                break;
+        }
+    }
+
+    private void PrepareAndStartCoroutine(E_ICON_POSITION _movePosition, bool up)
+    {
         float limitY = 0.0f;
         float limitScale = 0;
 
@@ -34,7 +109,7 @@ public class WeaponSelector : MonoBehaviour
 
         Func<float, float, bool> _posCondition;
         Func<float, float, bool> _scaleCondition;
-        
+
         switch (_movePosition)
         {
             case E_ICON_POSITION.HIDE_UP:
@@ -45,7 +120,7 @@ public class WeaponSelector : MonoBehaviour
                 if (up)
                 {
                     resizeFactor *= -4;
-                    _scaleCondition = (x, y) => x > y;                    
+                    _scaleCondition = (x, y) => x > y;
                 }
                 else
                 {
@@ -55,7 +130,7 @@ public class WeaponSelector : MonoBehaviour
             case E_ICON_POSITION.UP:
                 limitY = 1.1f;
                 limitScale = 0.7f;
-                
+
                 if (up)
                 {
                     posYFactor *= 1;
@@ -87,13 +162,13 @@ public class WeaponSelector : MonoBehaviour
                 }
                 else
                 {
-                    posYFactor *= -1; 
+                    posYFactor *= -1;
                     _posCondition = (x, y) => x > y;
                 }
                 break;
             case E_ICON_POSITION.DOWN:
                 limitY = -1.1f;
-                limitScale = 0.7f;                
+                limitScale = 0.7f;
                 if (up)
                 {
                     posYFactor *= 1;
@@ -133,77 +208,10 @@ public class WeaponSelector : MonoBehaviour
                 _scaleCondition = (x, y) => false;
                 break;
         }
-
-
-        while (_posCondition(gameObject.transform.position.y, limitY) || _scaleCondition(gameObject.transform.localScale.x, limitScale))
-        {
-            if(_posCondition(gameObject.transform.position.y, limitY))
-                gameObject.transform.position += posYFactor;
-            if(_scaleCondition(gameObject.transform.localScale.x, limitScale))
-                gameObject.transform.localScale += resizeFactor;
-            yield return new WaitForEndOfFrame();
-        }
-        isCoroutineRunning = false;
-    }
-
-    public void MoveUp()
-    {
-        if(isCoroutineRunning) return;
         
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-        }
-
-        switch (Position)
-        {
-            case E_ICON_POSITION.HIDE_UP:
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x, -1.6f, gameObject.transform.position.z);
-                break;
-            case E_ICON_POSITION.UP:
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.HIDE_UP,true));
-                break;
-            case E_ICON_POSITION.MIDDLE:
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.UP, true));
-                break;
-            case E_ICON_POSITION.DOWN:
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.MIDDLE, true));
-                break;
-            case E_ICON_POSITION.HIDE_DOWN:                
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.DOWN, true));
-                break;
-
-        }
+        moveCoroutine = StartCoroutine(MoveUpWithDelay(limitY, limitScale, posYFactor, resizeFactor, _posCondition, _scaleCondition));
     }
 
-    public void MoveDown()
-    {
-        if (isCoroutineRunning) return;
-
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-        }
-        
-        switch (Position)
-        {
-            case E_ICON_POSITION.HIDE_UP:                
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.UP, false));
-                break;
-            case E_ICON_POSITION.UP:
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.MIDDLE, false));
-                break;
-            case E_ICON_POSITION.MIDDLE:
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.DOWN, false));
-                break;
-            case E_ICON_POSITION.DOWN:
-                moveCoroutine = StartCoroutine(MoveUpWithDelay(E_ICON_POSITION.HIDE_DOWN, false));
-                break;
-            case E_ICON_POSITION.HIDE_DOWN:
-                gameObject.transform.position = new Vector3(gameObject.transform.position.x, 1.6f, gameObject.transform.position.z);                
-                break;
-        }
-    }
 
     public void SetSprite(Sprite sprite)
     {
@@ -211,5 +219,9 @@ public class WeaponSelector : MonoBehaviour
         {
             SpriteRenderer.sprite = sprite;
         }
+    }
+    public Sprite GetSprite()
+    {
+        return SpriteRenderer.sprite;
     }
 }

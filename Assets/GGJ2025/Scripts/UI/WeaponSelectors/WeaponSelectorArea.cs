@@ -21,16 +21,10 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
     private int lastMove;
     private WeaponSelector[] weapons;
 
-    //--test
-    private bool isDragging = false;
-    private Vector2 startMousePos;
-    public float upwardThreshold = 50f;
-    //------
 
     #region MONO
     void Start()
-    {
-        
+    {        
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
@@ -75,6 +69,7 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
                 if(!weapon.isActiveAndEnabled) continue;
                 weapon.MoveDown();
                 weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_DOWN ? E_ICON_POSITION.HIDE_UP : weapon.Position + 1;
+               
             }
         }
         else               //Seleziona l'arma più in basso   
@@ -87,7 +82,40 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
                 weapon.Position = weapon.Position == E_ICON_POSITION.HIDE_UP ? E_ICON_POSITION.HIDE_DOWN : weapon.Position - 1;
             }
         }
+        SetHiddenIcons(forward);
         lastMove = forward;
+    }
+
+    private void SetHiddenIcons(int forward)
+    {
+        if (weaponCount < 3) return;
+        if (weaponCount == 3)
+        {
+            if (forward > 0)     //Seleziona l'arma più in alto
+            {
+                var weapon = GetWeaponSelector(E_ICON_POSITION.HIDE_UP);
+                weapon.SetSprite(GetWeaponSelector(E_ICON_POSITION.DOWN).GetSprite());
+            }else
+            {
+
+                var weapon = GetWeaponSelector(E_ICON_POSITION.HIDE_DOWN);
+                weapon.SetSprite(GetWeaponSelector(E_ICON_POSITION.UP).GetSprite());
+            }
+        }
+        if(weaponCount == 4)
+        {
+            if (forward > 0)     //Seleziona l'arma più in alto
+            {
+                var weapon = GetWeaponSelector(E_ICON_POSITION.HIDE_UP);
+                weapon.SetSprite(GetWeaponSelector(E_ICON_POSITION.HIDE_DOWN).GetSprite());
+            }
+            else
+            {
+
+                var weapon = GetWeaponSelector(E_ICON_POSITION.HIDE_DOWN);
+                weapon.SetSprite(GetWeaponSelector(E_ICON_POSITION.HIDE_UP).GetSprite());
+            }
+        }
     }
 
     // controlliamo che le coroutine di movimento delle icone siano tutte finite prima di poter eseguire nuovamente il cambio arma
@@ -106,6 +134,16 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
         if(weaponCount <2) return false;
         if (weaponCount == 2 && lastMove == forward)  return false;        
         return true;
+    }
+
+    private WeaponSelector GetWeaponSelector(E_ICON_POSITION position)
+    {
+        foreach (var weapon in weapons)
+        {
+            if (weapon.Position == position)
+                return weapon;
+        }
+        return null;
     }
     #endregion Private methods
 
@@ -140,30 +178,32 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
                 weaponCount++;
             }
         }
+
+        if (weaponCount > 2)
+        {
+            foreach (var weapon in weapons)
+            {
+                weapon.gameObject.SetActive(true);
+            }
+
+            //con tre armi disponibili, abbiamo che lo slot hide up è uguale allo slot down e lo slot hide down è uguale all'up
+            if(weaponCount == 3)
+            {
+                weaponForwdHide.SetSprite(weaponBackward.GetSprite());
+                weaponBackwHide.SetSprite(weaponForward.GetSprite());
+            }
+            if (weaponCount == 4)
+            {
+                weaponForwdHide.SetSprite(weaponBackwHide.GetSprite());
+            }
+        }
        
     }
     #endregion Public Methods
 
-    private void OnMouseDown()
-    {
-        isDragging = true;
-        startMousePos = Mouse.current.position.ReadValue();
-    }
-    private void OnMouseUp()
-    {
-        if (isDragging)
-        {
-            Vector2 endMousePos = Mouse.current.position.ReadValue();
-            float deltaY = endMousePos.y - startMousePos.y;
 
-            if (deltaY > upwardThreshold)
-            {
-                Debug.Log("Hai trascinato verso l'alto!");
-            }
-        }
 
-        isDragging = false;
-    }
+    #region Interface I_Draggable
 
     public void OnHoldAndRelease(bool up)
     {
@@ -176,4 +216,5 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
             ChangeWeapon(1); 
         }
     }
+    #endregion Interface I_Draggable
 }
