@@ -73,6 +73,7 @@ public class LevelManager : MonoBehaviour
    
     void OnDestroy()
     {
+        Debug.Log("Level Mng Destroy");
         SaveSystem.SaveFile(currentLevel, AudioManager.GetAllRawVolumes());
     }
 

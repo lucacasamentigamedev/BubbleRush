@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class WeaponSelectorArea : MonoBehaviour, IDraggable
 {
@@ -14,47 +13,41 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
     private WeaponSelector weaponBackwHide;
     [SerializeField]
     private WeaponSelector weaponForwdHide;
-    [SerializeField]
-    private WeaponsDatabase weaponsDatabase;
 
     private int weaponCount;
     private int lastMove;
-    private WeaponSelector[] weapons;
-
+    private WeaponSelector[] weaponIcons;
 
     #region MONO
-    void Start()
-    {        
-        InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
-        InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
-        InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
+    private void Awake()
+    {
+        weaponIcons = new WeaponSelector[] { mainWeapon, weaponBackward, weaponForward, weaponBackwHide, weaponForwdHide };
     }
 
+    void OnEnable()
+    {        
+        WeaponManager.Get().OnStartWeaponLevel += OnStartWeaponLevel;
+        WeaponManager.Get().OnChangeWeapon += OnChangeWeapon;
+    }
 
-    private void OnDestroy()
+    
+    private void OnDisable()
     {
-        InputManager.Player.ChangeWeaponForward.performed -= onChangeWeaponForward;
-        InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
-        InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
+        WeaponManager.Get().OnChangeWeapon -= OnChangeWeapon;
+        WeaponManager.Get().OnStartWeaponLevel -= OnStartWeaponLevel;
+    }
+
+    private void OnStartWeaponLevel()
+    {
+        Init();
     }
     #endregion MONO
 
     #region Input Callback
-    private void onChangeWeaponBackward(InputAction.CallbackContext context)
+    private void OnChangeWeapon(int forward)
     {
-        ChangeWeapon(-1);
+        ChangeWeapon(forward);
     }
-
-    private void onChangeWeaponForward(InputAction.CallbackContext context)
-    {
-        ChangeWeapon(1);        
-    }
-
-    private void onChangeWeaponWheel(InputAction.CallbackContext context)
-    {
-        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
-    }
-
     #endregion Input Callback
 
     #region Private methods
@@ -63,7 +56,7 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
         if (!CanChangeWeapon()) return;
         if (forward> 0)     //Seleziona l'arma più in alto
         {
-            foreach (var weapon in weapons)
+            foreach (var weapon in weaponIcons)
             {
                 if (!CanMove(forward)) return;
                 if(!weapon.isActiveAndEnabled) continue;
@@ -74,7 +67,7 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
         }
         else               //Seleziona l'arma più in basso   
         {                   
-            foreach (var weapon in weapons)
+            foreach (var weapon in weaponIcons)
             {
                 if (!CanMove(forward)) return;
                 if (!weapon.isActiveAndEnabled) continue;
@@ -121,7 +114,7 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
     // controlliamo che le coroutine di movimento delle icone siano tutte finite prima di poter eseguire nuovamente il cambio arma
     private bool CanChangeWeapon()
     {        
-        foreach (var weapon in weapons)
+        foreach (var weapon in weaponIcons)
         {
             if(weapon.IsPrevented)
                 return false;
@@ -138,7 +131,7 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
 
     private WeaponSelector GetWeaponSelector(E_ICON_POSITION position)
     {
-        foreach (var weapon in weapons)
+        foreach (var weapon in weaponIcons)
         {
             if (weapon.Position == position)
                 return weapon;
@@ -149,7 +142,7 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
 
 
     #region Public Methods
-    public void Init(uint levelIndex)
+    public void Init()
     {
         mainWeapon.gameObject.SetActive(false);
         weaponBackward.gameObject.SetActive(false);
@@ -163,41 +156,96 @@ public class WeaponSelectorArea : MonoBehaviour, IDraggable
         weaponForward.Position = E_ICON_POSITION.DOWN;
         weaponForwdHide.Position = E_ICON_POSITION.HIDE_DOWN;
 
-        weapons = new WeaponSelector[] { mainWeapon, weaponBackward, weaponForward, weaponBackwHide, weaponForwdHide };
 
-        WeaponData[] entries = weaponsDatabase.GetEntries();
-        weaponCount = 0;
+        Weapon[] unlockedWeapons = WeaponManager.Get().GetUnlockedWeapons();
+        weaponCount = unlockedWeapons.Length;
 
-        for (int i = 0; i< entries.Length; i++)
+        /*
+        switch(weaponCount)
         {
-            var weaponEntry = entries[i];
-            if (weaponEntry.levelToUnlock <= levelIndex)
-            {
-                weapons[i].SetSprite(weaponEntry.UI_IconSelector);
-                weapons[i].gameObject.SetActive(true);
-                weaponCount++;
-            }
-        }
+            case 0:
+                break;
+            case 1:
+                mainWeapon.SetSprite(unlockedWeapons[0].weaponData.UI_IconSelector);
+                mainWeapon.gameObject.SetActive(true);
+                break;
+            case 2:
+                mainWeapon.SetSprite(unlockedWeapons[0].weaponData.UI_IconSelector);
+                mainWeapon.gameObject.SetActive(true);
+                weaponBackward.SetSprite(unlockedWeapons[1].weaponData.UI_IconSelector);
+                weaponBackward.gameObject.SetActive(true);
+                break;
+            case 3:
+                mainWeapon.SetSprite(unlockedWeapons[0].weaponData.UI_IconSelector);
+                mainWeapon.gameObject.SetActive(true);
+                weaponForward.SetSprite(unlockedWeapons[1].weaponData.UI_IconSelector);
+                weaponForward.gameObject.SetActive(true);
+                weaponBackward.SetSprite(unlockedWeapons[2].weaponData.UI_IconSelector);
+                weaponBackward.gameObject.SetActive(true);
 
-        if (weaponCount > 2)
-        {
-            foreach (var weapon in weapons)
-            {
-                weapon.gameObject.SetActive(true);
-            }
-
-            //con tre armi disponibili, abbiamo che lo slot hide up è uguale allo slot down e lo slot hide down è uguale all'up
-            if(weaponCount == 3)
-            {
                 weaponForwdHide.SetSprite(weaponBackward.GetSprite());
                 weaponBackwHide.SetSprite(weaponForward.GetSprite());
-            }
-            if (weaponCount == 4)
-            {
-                weaponForwdHide.SetSprite(weaponBackwHide.GetSprite());
-            }
+                weaponForwdHide.gameObject.SetActive(true);
+                weaponBackwHide.gameObject.SetActive(true);
+
+                break;
+            case 4:
+                mainWeapon.SetSprite(unlockedWeapons[0].weaponData.UI_IconSelector);
+                mainWeapon.gameObject.SetActive(true);
+                weaponForward.SetSprite(unlockedWeapons[1].weaponData.UI_IconSelector);
+                weaponForward.gameObject.SetActive(true);
+                weaponBackward.SetSprite(unlockedWeapons[2].weaponData.UI_IconSelector);
+                weaponBackward.gameObject.SetActive(true);
+
+                weaponForwdHide.SetSprite(unlockedWeapons[3].weaponData.UI_IconSelector);
+                weaponBackwHide.SetSprite(unlockedWeapons[3].weaponData.UI_IconSelector);
+                weaponForwdHide.gameObject.SetActive(true);
+                weaponBackwHide.gameObject.SetActive(true);
+                break;
+            default:
+                mainWeapon.SetSprite(unlockedWeapons[0].weaponData.UI_IconSelector);
+                mainWeapon.gameObject.SetActive(true);
+                weaponForward.SetSprite(unlockedWeapons[1].weaponData.UI_IconSelector);
+                weaponForward.gameObject.SetActive(true);
+                weaponBackward.SetSprite(unlockedWeapons[2].weaponData.UI_IconSelector);
+                weaponBackward.gameObject.SetActive(true);
+                weaponForwdHide.SetSprite(unlockedWeapons[3].weaponData.UI_IconSelector);
+                weaponForwdHide.gameObject.SetActive(true);
+                weaponBackwHide.SetSprite(unlockedWeapons[4].weaponData.UI_IconSelector);
+                weaponBackwHide.gameObject.SetActive(true);
+                break;
+
         }
-       
+        */
+
+        Weapon[] wheelWeapons = WeaponManager.Get().GetWheelWeapons();
+        for (int i = 0; i< wheelWeapons.Length; i++)
+        {
+            weaponIcons[i].SetSprite(wheelWeapons[i].weaponData.UI_IconSelector);
+            weaponIcons[i].gameObject.SetActive(true);
+        }
+        switch (weaponCount)
+        {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                weaponForwdHide.SetSprite(weaponBackward.GetSprite());
+                weaponBackwHide.SetSprite(weaponForward.GetSprite());
+                weaponForwdHide.gameObject.SetActive(true);
+                weaponBackwHide.gameObject.SetActive(true);
+                break;
+            case 4:
+                weaponForwdHide.SetSprite(weaponBackwHide.GetSprite());
+                weaponForwdHide.gameObject.SetActive(true);
+                break;
+            default:
+                break;
+        }
+
     }
     #endregion Public Methods
 

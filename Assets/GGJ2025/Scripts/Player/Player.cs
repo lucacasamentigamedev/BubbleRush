@@ -6,8 +6,6 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
     #region weapon
-    private Weapon[] avaiableWeapons;
-    private int currentIndexWeapon = 0;
     private Weapon currentWeapon;
     [SerializeField]
     private WeaponsDatabase weaponDatabase;
@@ -20,17 +18,15 @@ public class Player : MonoBehaviour
 
     private bool holdActive = false;
     private Vector2 startPointerPos;
-    private Vector2 endPointerPos;
     IDraggable draggable;
+
+
+
+    private Vector2 currentPointerPos = Vector2.zero;
+
     #region Mono
     private void Start() {
-        //prepare first weapon
-        avaiableWeapons = new Weapon[(int)EWeaponType.LAST];
-        for (int i = 0; i < avaiableWeapons.Length; i++) {
-            avaiableWeapons[i] = new Weapon();
-            avaiableWeapons[i].prepareWeapon(weaponDatabase.GetWeaponData((EWeaponType)i));
-
-        }
+        
         //inputs bind
         InputManager.Player.Interact.performed += onInteract;
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
@@ -38,22 +34,45 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
         InputManager.Player.Hold.started += OnHoldStarted;
         InputManager.Player.Hold.canceled += OnHoldReleased;
-        LevelManager.Get().OnStartLevel += onLevelManagerStart;
+        
+        WeaponManager.Get().OnStartWeaponLevel +=OnStartWeaponLevel;
+        WeaponManager.Get().OnChangeWeapon += OnChangeWeapon;
+
         GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
+
     }
 
+    
+    private void Update()
+    {
+        MoveWeaponWithInput();
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("Player Disable");
+        WeaponManager.Get().OnStartWeaponLevel -= OnStartWeaponLevel;
+        WeaponManager.Get().OnChangeWeapon -= OnChangeWeapon;
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("Player Destroy");
+        InputManager.Player.Interact.performed -= onInteract;
+        InputManager.Player.ChangeWeaponForward.performed -= onChangeWeaponForward;
+        InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
+        InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
+        InputManager.Player.Hold.performed -= OnHoldStarted;
+        InputManager.Player.Hold.canceled -= OnHoldReleased;
+
+        GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
+    }
+    #endregion
+
+    #region CallbackInput
     private void OnHoldStarted(InputAction.CallbackContext context)
     {
-#if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
-            return;
-
-        startPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();
-#else
-        if (Mouse.current == null)
-                return;
-        startPointerPos = Mouse.current.position.ReadValue();
-#endif
+        startPointerPos = GetPointerPos();
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(startPointerPos);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null)
@@ -68,109 +87,41 @@ public class Player : MonoBehaviour
     private void OnHoldReleased(InputAction.CallbackContext context)
     {
         if (!holdActive) return;
-#if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
-            return;
+        Vector2 endPointerPos = GetPointerPos();
 
-        endPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();
-#else
-        if (Mouse.current == null)
-            return;
-        endPointerPos = Mouse.current.position.ReadValue();
-#endif
+        //draggable.OnHoldAndRelease(endPointerPos.y > startPointerPos.y);
 
-        draggable.OnHoldAndRelease(endPointerPos.y > startPointerPos.y);
+        ChangeWeapon(endPointerPos.y > startPointerPos.y ? -1 : 1);
+
         draggable = null;
         holdActive = false;
     }
-
-    private void Update() {
-        MoveWeaponWithInput();
+    private void onChangeWeaponWheel(InputAction.CallbackContext context) {
+        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
     }
-
-    private void OnDestroy()
-    {
-        InputManager.Player.Interact.performed -= onInteract;
-        InputManager.Player.ChangeWeaponForward.performed -= onChangeWeaponForward;
-        InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
-        InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
-        InputManager.Player.Hold.performed -= OnHoldStarted;
-        InputManager.Player.Hold.canceled -= OnHoldReleased;
-        GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
+    private void onChangeWeaponBackward(InputAction.CallbackContext context) {
+        ChangeWeapon(-1);
     }
-
-    private void MoveWeaponWithInput()
-    {
-        #if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
-            currentWeaponRectElem.position = touchPosition;
-        }
-        #else
-        if (Mouse.current != null)
-        {
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
-            currentWeaponRectElem.position = mousePosition;
-        }
-        #endif
+    private void onChangeWeaponForward(InputAction.CallbackContext context) {
+        ChangeWeapon(1);
     }
     #endregion
 
-    #region Internal Methods
+    #region Global event system
     private void OnChangeWeapon(EventArgs message)
     {
         EventArgsFactory.ChangeWeaponParser(message, out int forwardChange);
         ChangeWeapon(forwardChange);
     }
+    #endregion
 
-    private void onChangeWeaponWheel(InputAction.CallbackContext context) {
-        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
-    }
 
-    private void onLevelManagerStart(uint levelIndex) {
-        currentWeapon = avaiableWeapons[0];
+    #region Callbacks
+    private void OnStartWeaponLevel()
+    {
+        currentWeapon = WeaponManager.Get().CurrentWeapon;
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
-        foreach (Weapon weapon in avaiableWeapons) {
-            if(weapon.weaponData.levelToUnlock <= levelIndex && !weapon.weaponData.IsUnlocked) {
-                weapon.weaponData.IsUnlocked = true;
-            }
-        }
-    }
-
-    private void onChangeWeaponBackward(InputAction.CallbackContext context) {
-        ChangeWeapon(-1);
-    }
-
-    private void onChangeWeaponForward(InputAction.CallbackContext context) {
-        ChangeWeapon(1);
-    }
-
-    private void ChangeWeapon(int forward) {
-        currentIndexWeapon += forward;
-        if (currentIndexWeapon > avaiableWeapons.Length -1)
-            currentIndexWeapon = 0;
-        else if(currentIndexWeapon < 0)
-            currentIndexWeapon = avaiableWeapons.Length -1;
-        if (avaiableWeapons[currentIndexWeapon].weaponData != null 
-            && avaiableWeapons[currentIndexWeapon].weaponData.IsUnlocked) {
-
-            if(currentWeapon.weaponData == avaiableWeapons[currentIndexWeapon].weaponData) {
-                AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
-                    new FMODParameter("TOOL_CHANGE", 1.0f)
-                });
-            } else {
-                AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
-                    new FMODParameter("TOOL_CHANGE", 0.0f)
-                });
-            }
-
-            currentWeapon = avaiableWeapons[currentIndexWeapon];
-            currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
-            return;
-        }
-        ChangeWeapon(forward);
     }
 
     void onInteract(InputAction.CallbackContext cc)
@@ -202,21 +153,8 @@ public class Player : MonoBehaviour
 
         Vector3 screenPoint = InputManager.Player_Mouse_Position;
         screenPoint.z = 10;
-        Vector2 inputPosition;
-
-#if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
-            return;
-
-        inputPosition = Touchscreen.current.primaryTouch.position.ReadValue();
-#else
-        if (Mouse.current == null)
-            return;
-
-        inputPosition = Mouse.current.position.ReadValue();
-#endif
         
-        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(inputPosition);
+        Vector2 worldPoint = Camera.main.ScreenToWorldPoint(GetPointerPos());
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
         if (hit.collider != null) {
             IClickable clickable = hit.collider.GetComponent<IClickable>();
@@ -226,6 +164,38 @@ public class Player : MonoBehaviour
         }
     }
     #endregion
+
+    #region Private Methods
+    private void MoveWeaponWithInput()
+    {
+        currentWeaponRectElem.position = GetPointerPos();
+    }
+    private void ChangeWeapon(int forward) {
+        WeaponManager.Get().ChangeWeapon(forward);
+    }
+
+    private void OnChangeWeapon(int useless)
+    {
+        currentWeapon = WeaponManager.Get().CurrentWeapon;
+        currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
+        AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
+                    new FMODParameter("TOOL_CHANGE", 1.0f)
+                });
+    }
+    private Vector2 GetPointerPos()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)return currentPointerPos;
+         currentPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();        
+#else
+        if (Mouse.current == null) return currentPointerPos;
+        currentPointerPos = Mouse.current.position.ReadValue();
+#endif
+        return currentPointerPos;
+
+    }
+    #endregion
+
 
     #region Coroutine
     private IEnumerator ChangeSpriteWithDelay() {

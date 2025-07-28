@@ -24,7 +24,6 @@ public class GameplayHUD: BaseUI {
 
     private void OnStartLevel(uint levelIndex)
     {
-        weaponSelectorArea.Init(levelIndex);
         if(LevelManager.Get().ActiveEntryData.is_Timer_Activate)
         {
             timerUI.SetActive(true);
