@@ -1,8 +1,8 @@
 public class PlayButton : BRButton {
     protected override void OnClick() {
-        if (UIController.isPrevented) return;
+        /*if (UIController.isPrevented) return;
         base.OnClick();
-        LevelManager.Get().StartLevel(LevelManager.Get().Level);
-        AudioManager.PlayBackgroundMusic("GameplayMusic");
+        LevelManager.Get().StartLevel(LevelManager.Get().CurrentLevel);
+        AudioManager.PlayBackgroundMusic("GameplayMusic");*/
     }
 }

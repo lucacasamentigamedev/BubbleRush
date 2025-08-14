@@ -19,8 +19,8 @@ public class SaveData {
 public static class SaveSystem
 {
     public static void SaveFile(uint level, Dictionary<EAudioCategory, float> volumesDict) {
+        Debug.Log("SaveFile: level = " + level + ", volumesDict = " + volumesDict);
         string path = Application.persistentDataPath + "/save.fish";
-        Debug.Log("SaveSystem - Save file at destination " + path + "level " + level);
         SaveData data = new SaveData();
         data.level = level;
         foreach (var kvp in volumesDict) {
@@ -33,36 +33,43 @@ public static class SaveSystem
             using FileStream file = File.Create(path);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(file, data);
+            Debug.Log("SaveFile - Save OK");
         } catch (Exception e) {
-            Debug.LogError("SaveSystem - Failed to save file");
+            Debug.LogError("SaveFile - Failed to save file");
             Debug.LogException(e);
         }
     }
 
     public static void LoadLevel(out uint level) {
-        level = 1;
         string path = Application.persistentDataPath + "/save.fish";
-        if (!File.Exists(path)) return;
+        if (!File.Exists(path))
+        {
+            Debug.Log("LoadLevel - Save file does not exist, setting level to 1");
+            level = 1;
+            return;
+        };
         try {
             using FileStream file = File.OpenRead(path);
             BinaryFormatter bf = new BinaryFormatter();
             SaveData data = (SaveData)bf.Deserialize(file);
             level = data.level;
+            Debug.Log("LoadLevel - OK, loaded level = " + level);
         } catch (Exception e) {
-            Debug.LogError("SaveSystem - Failed to load level");
+            level = 1;
+            Debug.LogError("SaveSystem - Failed to load level, level set to 1");
             Debug.LogException(e);
         }
     }
 
-    public static uint RemoveFile()
+    public static uint DeleteSave()
     {
-        string destination = Application.persistentDataPath + "/save.json";
+        string destination = Application.persistentDataPath + "/save.fish";
         if (File.Exists(destination))
         {
             File.Delete(destination);
-            Debug.Log("SaveSystem - Delete save");
+            Debug.Log("RemoveFile - Delete save");
         } else {
-            Debug.Log("SaveSystem - Nothing to delete");
+            Debug.Log("RemoveFile - Nothing to delete");
         }
         return 1;
     }

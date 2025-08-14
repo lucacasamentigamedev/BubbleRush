@@ -192,7 +192,7 @@ public class UIController : MonoBehaviour
     }
 
     private bool OnCheckTutorial() {
-        uint currentLevel = LevelManager.Get().Level;
+        uint currentLevel = LevelManager.Get().CurrentLevel;
         if (levelToTutorialMap.TryGetValue(currentLevel, out EUITutorialType tutorialType)) {
             //Debug.Log($"UIController - Apro tutorial level {currentLevel}");
             tutorialMenuPrefab.prepareTutorial(tutorialType);

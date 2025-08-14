@@ -7,11 +7,17 @@ public class EndLevelWinMenu : BaseUI {
     private Image[] stars;
 
     private void OnEnable() {
-        LevelManager.Get().Level = LevelManager.Get().Level + 1;
-        SaveSystem.SaveFile(LevelManager.Get().Level, AudioManager.GetAllRawVolumes());
+        if (LevelManager.Get().CurrentLevel == LevelManager.Get().ReachedLevel)
+        {
+            //completed last unlocked level , so we increase the reached level
+            LevelManager.Get().ReachedLevel += 1;
+        }
+        //we set the current level to the next one
+        LevelManager.Get().CurrentLevel += 1;
+        SaveSystem.SaveFile(LevelManager.Get().ReachedLevel, AudioManager.GetAllRawVolumes());
         AudioManager.PauseBackgroundMusic();
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
-                new FMODParameter("WIN_LOSE", 0.0f)
+            new FMODParameter("WIN_LOSE", 0.0f)
         });
         HideAllStars();
     }
@@ -30,6 +36,4 @@ public class EndLevelWinMenu : BaseUI {
             stars[i].gameObject.SetActive(true);
         }
     }
-
-
 }

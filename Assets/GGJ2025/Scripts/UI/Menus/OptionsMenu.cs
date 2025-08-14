@@ -40,6 +40,6 @@ public class OptionsMenu : BaseUI {
         AudioManager.SetRawVolume(EAudioCategory.Music, musicSlider.value);
         AudioManager.SetRawVolume(EAudioCategory.UI, UISlider.value);
         Debug.Log("OptionsMenu - Ora chiamo il SaveFile");
-        SaveSystem.SaveFile(LevelManager.Get().Level, AudioManager.GetAllRawVolumes());
+        SaveSystem.SaveFile(LevelManager.Get().ReachedLevel, AudioManager.GetAllRawVolumes());
     }
 }

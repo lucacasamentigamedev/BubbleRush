@@ -3,6 +3,6 @@ public class NextLevelButton : BRButton {
         if (UIController.isPrevented) return;
         base.OnClick();
         AudioManager.ResumeBackgroundMusic();
-        LevelManager.Get().StartLevel(LevelManager.Get().Level);
+        LevelManager.Get().StartLevel(LevelManager.Get().CurrentLevel);
     }
 }

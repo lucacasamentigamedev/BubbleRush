@@ -30,16 +30,17 @@ public class HUBLevelButton : MonoBehaviour {
 
     void OnEnable()
     {
-        currentLevel = LevelManager.Get().Level;
-        Debug.Log($"HUBLevelButton - OnEnable called, current level: {currentLevel}");
+        currentLevel = LevelManager.Get().ReachedLevel;
 
         //image
         if (currentLevel > levelIndex) {
+            //Debug.Log($"HUBLevelButton {levelIndex} unlocked");
             buttonImage.sprite = levelFinishSprite;
             if (ColorUtility.TryParseHtmlString("#BEBEBE", out Color parsedColor)) {
                 btnText.color = parsedColor;
             }
         } else{
+            //Debug.Log($"HUBLevelButton {levelIndex} locked!!!");
             int randomIndex = Random.Range(0, levelToDoSprites.Length);
             buttonImage.sprite = levelToDoSprites[randomIndex];
         }

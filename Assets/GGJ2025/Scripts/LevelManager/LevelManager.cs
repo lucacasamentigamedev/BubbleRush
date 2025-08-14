@@ -6,16 +6,14 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField]
     private LevelDatabase LevelDatabase;
-    [SerializeField]
-    private uint defaultUnlockedLevels;
 
     #region PrivateVariable
-    private uint currentLevel;
+    private uint currentLevel; // playing level
+    private uint reachedLevel; // max reached level
     private LevelEntryStruct currentEntryData;
     private float currentLevelTime;
     private bool isTimerActive = false;
     private bool soundBeepExecuted = false;
-    private uint currentLevelUnlocked;
    
     private Dictionary<uint, uint> levelScores = new Dictionary<uint, uint>();  //Creiamo una variabile per salvare i punteggi effettuati nei vari livelli
 
@@ -28,12 +26,25 @@ public class LevelManager : MonoBehaviour
     public Action<float> OnUpdateTimer;
 
     #region Properties
-    public uint Level { 
+    public uint CurrentLevel { 
         get 
         { 
             return currentLevel; 
         }
-        set { currentLevel = value; }
+        set {
+            currentLevel = value;
+            Debug.Log($"Current Level set to: {currentLevel}");
+        }
+    }
+
+    public uint ReachedLevel {
+        get {
+            return reachedLevel;
+        }
+        set {
+            reachedLevel = value;
+            Debug.Log($"Reached Level set to: {reachedLevel}");
+        }
     }
 
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }
@@ -64,17 +75,17 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SaveSystem.LoadLevel(out currentLevel);        
-        currentLevelUnlocked = currentLevel> defaultUnlockedLevels ? currentLevel : defaultUnlockedLevels;
-        currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
+        SaveSystem.LoadLevel(out uint reachedLevelFromSave);
+        ReachedLevel = reachedLevelFromSave > 0 ? reachedLevelFromSave : 1;
+        Debug.Log($"Reached Level from Save: {ReachedLevel}");
+        //currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
         GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
     }
-
    
     void OnDestroy()
     {
-        SaveSystem.SaveFile(currentLevel, AudioManager.GetAllRawVolumes());
+        SaveSystem.SaveFile(ReachedLevel, AudioManager.GetAllRawVolumes());
     }
 
     //Da convertire in coroutine
@@ -114,22 +125,23 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel(uint levelIndex)
     {
-        currentLevel = levelIndex;
-        currentEntryData = LevelDatabase.GetCurrentEntry(levelIndex);
-        OnStartLevel?.Invoke(levelIndex);
+        CurrentLevel = levelIndex;
+        currentEntryData = LevelDatabase.GetCurrentEntry(CurrentLevel);
+        OnStartLevel?.Invoke(CurrentLevel);
     }
 
     public void OnDeleteSaves()
     {   
-        currentLevel = 1;
-        currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
-        currentLevelUnlocked = defaultUnlockedLevels;
+        ReachedLevel = 1;
+        CurrentLevel = 1;
+        //currentEntryData = LevelDatabase.GetCurrentEntry(CurrentLevel);
     }
 
     public LevelEntryStruct GetLevelEntryData(uint levelIndex)
     {
         return LevelDatabase.GetCurrentEntry(levelIndex);
     }
+
     public void WinLevel()
     {
         //Calcolo del punteggio finale del livello
@@ -148,7 +160,6 @@ public class LevelManager : MonoBehaviour
         }
     
         OnWinLevel?.Invoke(starNumbers);
-        UnlockNewLevel();
     }
     #endregion
 
@@ -157,15 +168,11 @@ public class LevelManager : MonoBehaviour
         currentLevelTime = currentEntryData.timer_for_level;
         isTimerActive = currentEntryData.is_Timer_Activate;
     }
+
     private void OnModulateTimer(EventArgs message)
     {
         EventArgsFactory.ModulateTimerParser(message, out float arg);
         currentLevelTime += arg;
-    }
-    private void UnlockNewLevel()
-    {
-        if (currentLevelUnlocked == currentLevel)
-            currentLevelUnlocked +=1;
     }
 
     private float GetTimerPercent()
