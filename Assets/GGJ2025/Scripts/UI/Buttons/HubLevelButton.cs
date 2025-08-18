@@ -9,6 +9,7 @@ public class HUBLevelButton : MonoBehaviour {
 
     private Button button;
     private TextMeshProUGUI btnText;
+    private TextMeshProUGUI scoreText;
     private Image buttonImage;
     private Sprite[] levelToDoSprites;
     private Sprite levelFinishSprite;
@@ -22,7 +23,8 @@ public class HUBLevelButton : MonoBehaviour {
         levelToDoSprites[3] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage3_without_background");
         levelToDoSprites[4] = Resources.Load<Sprite>("Sprites/Bubbles/Normal/bubble_normal_damage4_without_background");
         levelFinishSprite = Resources.Load<Sprite>($"Sprites/Bubbles/Popped/bubble_popped_whitout_background");
-        btnText = GetComponentInChildren<TextMeshProUGUI>();
+        btnText = transform.Find("LevelLabel").GetComponent<TextMeshProUGUI>();
+        scoreText = transform.Find("ScoreLabel").GetComponent<TextMeshProUGUI>();
         button = GetComponent<Button>();
         buttonImage = GetComponent<Image>();
         button.onClick.AddListener(OnClick);
@@ -47,6 +49,11 @@ public class HUBLevelButton : MonoBehaviour {
 
         //level number
         btnText.text = levelIndex.ToString();
+
+        //score
+        if (LevelManager.Get().LevelScores.TryGetValue(levelIndex, out uint savedStars)) {
+            scoreText.text = savedStars + " / 3";
+        }
     }
 
     private void OnClick() {

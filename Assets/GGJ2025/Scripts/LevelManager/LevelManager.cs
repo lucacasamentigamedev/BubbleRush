@@ -14,8 +14,7 @@ public class LevelManager : MonoBehaviour
     private float currentLevelTime;
     private bool isTimerActive = false;
     private bool soundBeepExecuted = false;
-   
-    private Dictionary<uint, uint> levelScores = new Dictionary<uint, uint>();  //Creiamo una variabile per salvare i punteggi effettuati nei vari livelli
+    private Dictionary<uint, uint> levelScores = new Dictionary<uint, uint>();
 
     #endregion
 
@@ -44,6 +43,15 @@ public class LevelManager : MonoBehaviour
         set {
             reachedLevel = value;
             Debug.Log($"Reached Level set to: {reachedLevel}");
+        }
+    }
+
+    public Dictionary<uint, uint> LevelScores {
+        get {
+            return levelScores;
+        }
+        set {
+            levelScores = value;
         }
     }
 
@@ -78,14 +86,15 @@ public class LevelManager : MonoBehaviour
         SaveSystem.LoadLevel(out uint reachedLevelFromSave);
         ReachedLevel = reachedLevelFromSave > 0 ? reachedLevelFromSave : 1;
         Debug.Log($"Reached Level from Save: {ReachedLevel}");
-        //currentEntryData = LevelDatabase.GetCurrentEntry(currentLevel);
+        SaveSystem.LoadLevelScores(out Dictionary<uint, uint> levelScoresFromSave);
+        LevelScores = levelScoresFromSave;
         GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
     }
    
     void OnDestroy()
     {
-        SaveSystem.SaveFile(ReachedLevel, AudioManager.GetAllRawVolumes());
+        SaveSystem.SaveFile(ReachedLevel, AudioManager.GetAllRawVolumes(), LevelScores);
     }
 
     //Da convertire in coroutine
@@ -134,6 +143,7 @@ public class LevelManager : MonoBehaviour
     {   
         ReachedLevel = 1;
         CurrentLevel = 1;
+        LevelScores.Clear();
         //currentEntryData = LevelDatabase.GetCurrentEntry(CurrentLevel);
     }
 
@@ -158,7 +168,11 @@ public class LevelManager : MonoBehaviour
                 break;
             }
         }
-    
+        Debug.Log($"Level {CurrentLevel} completed with {starNumbers} stars.");
+        //write level only if never writtren or if the new score is better
+        if (!LevelScores.ContainsKey(CurrentLevel) || starNumbers > LevelScores[CurrentLevel]) {
+            LevelScores[CurrentLevel] = (uint)starNumbers;
+        }
         OnWinLevel?.Invoke(starNumbers);
     }
     #endregion

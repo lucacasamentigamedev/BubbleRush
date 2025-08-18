@@ -89,11 +89,13 @@ public class UIController : MonoBehaviour
     {
         OpenMenu(EUIType.GameplayHUD);
     }
+
     private void OnWinLevel(int starNumbers)
     {
         OpenMenu(EUIType.EndLevelWinMenu);
         endLevelWinMenuPrefab.ShowRightStars(starNumbers);
     }
+
     private void OnLoseLevel()
     {
         OpenMenu(EUIType.EndLevelLoseMenu);

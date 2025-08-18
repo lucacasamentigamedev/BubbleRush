@@ -14,7 +14,6 @@ public class EndLevelWinMenu : BaseUI {
         }
         //we set the current level to the next one
         LevelManager.Get().CurrentLevel += 1;
-        SaveSystem.SaveFile(LevelManager.Get().ReachedLevel, AudioManager.GetAllRawVolumes());
         AudioManager.PauseBackgroundMusic();
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
             new FMODParameter("WIN_LOSE", 0.0f)
@@ -30,10 +29,13 @@ public class EndLevelWinMenu : BaseUI {
 
     public void ShowRightStars(int starNumbers) 
     {
-
         for (int i = 0; i < starNumbers; i++) {
-
             stars[i].gameObject.SetActive(true);
         }
+        SaveSystem.SaveFile(
+            LevelManager.Get().ReachedLevel,
+            AudioManager.GetAllRawVolumes(),
+            LevelManager.Get().LevelScores
+        );
     }
 }
