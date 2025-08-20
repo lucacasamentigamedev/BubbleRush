@@ -31,12 +31,12 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponForward.performed += onChangeWeaponForward;
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
-        LevelManager.Get().OnStartLevel += onLevelManagerStart;
+        LevelManager.Get().OnStartLevel += onStartLevel;
         GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
     }
 
     private void Update() {
-        MoveWeaponWithInput();
+        currentWeaponRectElem.position = GetPointerPosition();
     }
 
     private void OnDestroy()
@@ -48,36 +48,30 @@ public class Player : MonoBehaviour
         GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
     }
 
-    private void MoveWeaponWithInput()
+    #endregion
+
+    #region InputCallback
+    private void onChangeWeaponWheel(InputAction.CallbackContext context) {
+        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
+    }
+    private void onChangeWeaponBackward(InputAction.CallbackContext context) {
+        ChangeWeapon(-1);
+    }
+    private void onChangeWeaponForward(InputAction.CallbackContext context) {
+        ChangeWeapon(1);
+    }
+    private void onInteract(InputAction.CallbackContext cc)
     {
-        #if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
-            currentWeaponRectElem.position = touchPosition;
-        }
-        #else
-        if (Mouse.current != null)
-        {
-            Vector2 mousePosition = Mouse.current.position.ReadValue();
-            currentWeaponRectElem.position = mousePosition;
-        }
-        #endif
+        Interact();
     }
     #endregion
 
-    #region Internal Methods
     private void OnChangeWeapon(EventArgs message)
     {
         EventArgsFactory.ChangeWeaponParser(message, out int forwardChange);
         ChangeWeapon(forwardChange);
     }
-
-    private void onChangeWeaponWheel(InputAction.CallbackContext context) {
-        ChangeWeapon(context.ReadValue<Vector2>().y > 0 ? 1 : -1);
-    }
-
-    private void onLevelManagerStart(uint levelIndex) {
+    private void onStartLevel(uint levelIndex) {
         currentWeapon = avaiableWeapons[0];
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
@@ -88,14 +82,8 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void onChangeWeaponBackward(InputAction.CallbackContext context) {
-        ChangeWeapon(-1);
-    }
 
-    private void onChangeWeaponForward(InputAction.CallbackContext context) {
-        ChangeWeapon(1);
-    }
-
+    #region Internal Methods
     private void ChangeWeapon(int forward) {
         currentIndexWeapon += forward;
         if (currentIndexWeapon > avaiableWeapons.Length -1)
@@ -121,11 +109,11 @@ public class Player : MonoBehaviour
         }
         ChangeWeapon(forward);
     }
-
-    void onInteract(InputAction.CallbackContext cc)
+    private void Interact()
     {
         //Debug.Log("ON INTERACT CALLED " + currentWeapon.weaponData.weaponType.ToString());
-        switch (currentWeapon.weaponData.weaponType) {
+        switch (currentWeapon.weaponData.weaponType)
+        {
             case EWeaponType.Chisel:
                 AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
                     new FMODParameter("BUBBLE_TOOL", 1.0f)
@@ -149,31 +137,33 @@ public class Player : MonoBehaviour
         }
         coroutineDeleay = StartCoroutine(ChangeSpriteWithDelay());
 
-        Vector3 screenPoint = InputManager.Player_Mouse_Position;
-        screenPoint.z = 10;
-        Vector2 inputPosition;
-      
-#if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)
-            return;
-
-        inputPosition = Touchscreen.current.primaryTouch.position.ReadValue();
-#else
-        if (Mouse.current == null)
-            return;
-
-        inputPosition = Mouse.current.position.ReadValue();
-#endif
-        
-
+        Vector2 inputPosition = GetPointerPosition();
         Vector2 worldPoint = Camera.main.ScreenToWorldPoint(inputPosition);
         RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-        if (hit.collider != null) {
+        if (hit.collider != null)
+        {
             IClickable clickable = hit.collider.GetComponent<IClickable>();
-            if (clickable != null) {
+            if (clickable != null)
+            {
                 clickable.OnClick(worldPoint, currentWeapon.weaponData.weaponType, currentWeapon.weaponData.damage, currentWeapon.weaponData.area);
             }
         }
+    }
+    private Vector2 GetPointerPosition()
+    {
+    #if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+        {
+            return Touchscreen.current.primaryTouch.position.ReadValue();
+        }
+        return Vector2.zero;
+    #else
+        if (Mouse.current != null)
+        {
+            return Mouse.current.position.ReadValue();
+        }
+        return Vector2.zero;
+    #endif
     }
     #endregion
 
@@ -184,4 +174,5 @@ public class Player : MonoBehaviour
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
     }
     #endregion
+
 }
