@@ -14,8 +14,13 @@ public class UITimer : MonoBehaviour
 
     void Start()
     {
-        bar.localScale = Vector3.one;
-        scale = bar.localScale;
+        if (LevelManager.Get().EndlessMode)
+            bar.gameObject.SetActive(false);
+        else
+        {
+            bar.localScale = Vector3.one;
+            scale = bar.localScale;
+        }
 
         maxTime = LevelManager.Get().ActiveEntryData.timer_for_level;
 
@@ -27,6 +32,8 @@ public class UITimer : MonoBehaviour
     {        
         if (!gameObject.activeInHierarchy) return;
         text.text = string.Format(timer.ToString("00"));
-        bar.localScale = new Vector2(timer / maxTime, scale.y);
+        
+        if(bar.gameObject.activeInHierarchy)
+            bar.localScale = new Vector2(timer / maxTime, scale.y);
     }
 }

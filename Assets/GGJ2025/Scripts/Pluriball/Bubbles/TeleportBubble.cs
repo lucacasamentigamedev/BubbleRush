@@ -35,7 +35,6 @@ public class TeleportBubble : Bubble
         if (currentTimeAppeared <= 0)
         {
             TeleportEvent?.Invoke(this);
-            Debug.Log("TELEPORT!!");
             currentTimeAppeared = timeToDisappeared;
         }
     }

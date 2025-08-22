@@ -1,10 +1,10 @@
+using PlasticGui.WorkspaceWindow;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
+
 public class Pluriball : MonoBehaviour, IClickable
 {
-
     [SerializeField]
     private PoolData normalBubbles;
     [SerializeField]
@@ -17,10 +17,8 @@ public class Pluriball : MonoBehaviour, IClickable
     private PoolData teleportBubbles;
     [SerializeField]
     private BoxCollider2D _collider;
-
     [SerializeField]
     private CameraShake cameraShake;
-
     [SerializeField]
     private GameObject pluriballVisual;
     [SerializeField]
@@ -35,8 +33,6 @@ public class Pluriball : MonoBehaviour, IClickable
     private int rows, columns;
     private LevelManager levelManager;
 
-
-
     //private Vector3 colliderOriginalSize;
 
     Vector3 bubbleSizeMax12x5 = new Vector3(0.15f, 0.15f, 0.0f);
@@ -45,11 +41,13 @@ public class Pluriball : MonoBehaviour, IClickable
     Vector3 bubbleSizeMax17x8 = new Vector3(0.1f, 0.1f, 0.0f);
 
     Vector3 currentBubbleSize;
-
+    
+    #region Mono
     private void Start()
     {
         levelManager = LevelManager.Get();
-        levelManager.OnStartLevel += OnStart;
+        levelManager.OnStartLevel += OnStartLevel;
+        levelManager.OnStartEndlessLevel += OnStartEndlessLevel;
         levelManager.OnRetry += OnRetry;
         width = _collider.size.x * transform.localScale.x;   //da calcolare
         height = _collider.size.y * transform.localScale.y;
@@ -75,52 +73,17 @@ public class Pluriball : MonoBehaviour, IClickable
 
         levelManager.OnLoseLevel += OnLoseLevel;
     }
+    #endregion
 
-    private void OnStart(uint levelIndex)
+    #region LevelManagerCallback
+    private void OnStartEndlessLevel()
     {
-        
-        pluriballVisual.SetActive(true);
-        columns = (int)levelManager.GetLevelEntryData(levelIndex).grid_Size.x;
-        rows = (int)levelManager.GetLevelEntryData(levelIndex).grid_Size.y;
-        remainingBubbles = rows * columns;
-
-        if (columns > 14 || rows > 7)
-            currentBubbleSize = bubbleSizeMax17x8;
-        else if (columns > 13 || rows > 6)
-            currentBubbleSize = bubbleSizeMax14x7;
-        else if (columns > 12 || rows > 5)
-            currentBubbleSize = bubbleSizeMax13x6;
-        else
-            currentBubbleSize = bubbleSizeMax12x5;
-
-        Bubble b = Pooler.Instance.GetPooledObject(poolDataDictionary[EBubbleType.Normal]).GetComponent<Bubble>();
-        b.transform.localScale = currentBubbleSize;
-
-        InternalSetPluriballPosition(rows, columns, b.GetSize());
-        
-        bubbles = new Bubble[remainingBubbles];
-
-        GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());        
-        //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
-        Generate( levelManager.GetLevelEntryData(levelIndex) ); 
-
-        foreach(Bubble bubble in bubbles)
-        {
-            if (bubble is TeleportBubble)
-            {
-                (bubble as TeleportBubble).TeleportEvent +=  OnTeleportCall;
-            }
-        }
+        InternalStartLevel();
     }
-
-    private void InternalSetPluriballPosition(int rows, int columns, Vector2 bubbleSize)
+    private void OnStartLevel(uint levelIndex)
     {
-        float posx = columns * bubbleSize.x / 2;
-        float posy = rows * bubbleSize.y / 2;
-        Vector2 newPosition = new Vector2(-posx, posy);
-        gameObject.transform.position = newPosition;
+        InternalStartLevel();
     }
-
     private void OnRetry()
     {
         pluriballVisual.SetActive(true);
@@ -137,13 +100,85 @@ public class Pluriball : MonoBehaviour, IClickable
 
             if (bubble.BubbleType == EBubbleType.Bomb)
             {
-                ((BombBubble)bubble).OnExplode += ReduceGlobalTime;
+                ((BombBubble)bubble).OnExplode += OnBombExplode;
             }
                 
         }
         GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());
     }
-      
+    private void OnLoseLevel()
+    {
+        InternalEndLevel(false);
+    }
+    #endregion
+
+    #region BubblesCallback
+    private void OnBubbleDestroy()
+    {
+        remainingBubbles--;
+        //Debug.Log(remainingBubbles);
+        if (remainingBubbles <= 0) {
+            InternalEndLevel(true);    
+        } else {
+            int index = UnityEngine.Random.Range(0, popLocation.Length);
+            //CAMBIARE ASSOLUTAMENTE -> GESTIRLO TRAMITE POOLER
+            GameObject obj = Instantiate(asset, popLocation[index].transform.position, popLocation[index].transform.rotation);
+            obj.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-45, 46)));
+        }
+    }
+    private void OnCamerShake(float shakeMagnitude, float shakeDuration)
+    {
+        cameraShake.Shake(shakeMagnitude, shakeDuration);
+    }
+    private void OnTeleportCall(TeleportBubble bubble)
+    {
+        Bubble emptyBubble = GetRandomBubbleWithTotLife(0);     //prendi una bolla già scoppiata
+
+
+        SwitchBubblesPosition(bubble, emptyBubble);
+    }
+    private void OnBombExplode(float arg)
+    {
+        GlobalEventSystem.CastEvent(EventName.ModulateTimer, EventArgsFactory.ModulateTimerFactory(arg));
+    }
+    #endregion
+
+
+    private void InternalStartLevel()
+    {
+        pluriballVisual.SetActive(true);
+        columns = (int)levelManager.ActiveEntryData.grid_Size.x;
+        rows = (int)levelManager.ActiveEntryData.grid_Size.y;
+        remainingBubbles = rows * columns;
+
+        if (columns > 14 || rows > 7)
+            currentBubbleSize = bubbleSizeMax17x8;
+        else if (columns > 13 || rows > 6)
+            currentBubbleSize = bubbleSizeMax14x7;
+        else if (columns > 12 || rows > 5)
+            currentBubbleSize = bubbleSizeMax13x6;
+        else
+            currentBubbleSize = bubbleSizeMax12x5;
+
+        Bubble b = Pooler.Instance.GetPooledObject(poolDataDictionary[EBubbleType.Normal]).GetComponent<Bubble>();
+        b.transform.localScale = currentBubbleSize;
+
+        InternalSetPluriballPosition(rows, columns, b.GetSize());
+
+        bubbles = new Bubble[remainingBubbles];
+
+        GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());
+        //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
+        Generate(levelManager.ActiveEntryData);
+
+        foreach (Bubble bubble in bubbles)
+        {
+            if (bubble is TeleportBubble)
+            {
+                (bubble as TeleportBubble).TeleportEvent += OnTeleportCall;
+            }
+        }
+    }
     private void InternalEndLevel(bool win)
     {
         //Disattiviamo le bolle
@@ -152,7 +187,7 @@ public class Pluriball : MonoBehaviour, IClickable
             bubble.gameObject.SetActive(false);
             BombBubble bubbleCast = bubble as BombBubble;
             if (bubbleCast == null) continue;
-            bubbleCast.OnExplode -= ReduceGlobalTime;
+            bubbleCast.OnExplode -= OnBombExplode;
         }
         pluriballVisual.SetActive(false);
 
@@ -171,6 +206,15 @@ public class Pluriball : MonoBehaviour, IClickable
         }
 
     }
+    private void InternalSetPluriballPosition(int rows, int columns, Vector2 bubbleSize)
+    {
+        float posx = columns * bubbleSize.x / 2;
+        float posy = rows * bubbleSize.y / 2;
+        Vector2 newPosition = new Vector2(-posx, posy);
+        gameObject.transform.position = newPosition;
+    }
+
+      
 
     #region Interface OnClick
     public void OnClick(Vector2 point, EWeaponType weapon, int damage, Vector2 area)
@@ -180,19 +224,6 @@ public class Pluriball : MonoBehaviour, IClickable
         {
             b.InternalOnHit(damage, weapon);
         }
-    }
-    #endregion
-
-    #region TimerForBomb
-    
-    private void OnLoseLevel()
-    {
-        InternalEndLevel(false);
-    }
-    private void ReduceGlobalTime(float arg)
-    {
-        GlobalEventSystem.CastEvent(EventName.ModulateTimer, EventArgsFactory.ModulateTimerFactory(arg));
-        //timer.ReduceTimer(arg);
     }
     #endregion
 
@@ -245,19 +276,6 @@ public class Pluriball : MonoBehaviour, IClickable
         return index;
     }
 
-    private void OnBubbleDestroy()
-    {
-        remainingBubbles--;
-        //Debug.Log(remainingBubbles);
-        if (remainingBubbles <= 0) {
-            InternalEndLevel(true);    
-        } else {
-            int index = UnityEngine.Random.Range(0, popLocation.Length);
-            //CAMBIARE ASSOLUTAMENTE -> GESTIRLO TRAMITE POOLER
-            GameObject obj = Instantiate(asset, popLocation[index].transform.position, popLocation[index].transform.rotation);
-            obj.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-45, 46)));
-        }
-    }
     #endregion
 
     #region Procedural Generation
@@ -283,7 +301,7 @@ public class Pluriball : MonoBehaviour, IClickable
 
                 if (bubbles[index].BubbleType == EBubbleType.Bomb)
                 {
-                    ((BombBubble)bubbles[index]).OnExplode += ReduceGlobalTime;
+                    ((BombBubble)bubbles[index]).OnExplode += OnBombExplode;
                 }
 
                 if (bubbles[index].IsAlive)
@@ -303,12 +321,6 @@ public class Pluriball : MonoBehaviour, IClickable
         transform.localScale = new Vector3(width, height, 1);
     }
 
-    private void OnCamerShake(float shakeMagnitude, float shakeDuration)
-    {
-        cameraShake.Shake(shakeMagnitude, shakeDuration);
-    }
-
-    
     /// <summary>
     /// Istanzia tutte le bolle dall'object pooling corrispondente, poi ne mescola l'ordine e le mantiene disattive in scena
     /// </summary>
@@ -367,30 +379,50 @@ public class Pluriball : MonoBehaviour, IClickable
             array[r] = tmp;
         }
     }
+    #endregion
 
+    #region InternalMethods
+    private Bubble GetRandomBubbleWithTotLife(uint life)
+    {
+        List<Bubble> listBubbles = new List<Bubble>();
+        int bubblesCounter = 0;
+        foreach (Bubble b in bubbles)
+        {
+            if(b.CurrentLife == life)
+            {
+                listBubbles.Add(b);
+                bubblesCounter++;
+            }
+        }
+        if (bubblesCounter <= 0)
+            return null;
+        int rand = UnityEngine.Random.Range(0, bubblesCounter);
+        return listBubbles[rand];
+    }
 
     private Bubble GetRandomBubbleOfType(EBubbleType type)
     {
         List<Bubble> listBubbles = new List<Bubble>();
-        int emptyBubbles=0;
+        int bubblesCounter=0;
         foreach (Bubble b in bubbles)
         {
             if (b.BubbleType == type)
             {
                 listBubbles.Add(b);
-                emptyBubbles++;
+                bubblesCounter++;
             }
         }
-        if (emptyBubbles < 0)
+        if (bubblesCounter <= 0)
             return null;
 
-        int rand = UnityEngine.Random.Range(0, emptyBubbles);
+        int rand = UnityEngine.Random.Range(0, bubblesCounter);
 
         return listBubbles[rand];
     }
 
     private void SwitchBubblesPosition(Bubble a, Bubble b)
     {
+        if (a ==null || b==null) return;    
         int indexA = GetBubbleIndex(a);
         int indexB = GetBubbleIndex(b);
 
@@ -423,12 +455,4 @@ public class Pluriball : MonoBehaviour, IClickable
     }
     #endregion
 
-    #region Teleport Bubble
-    //Teletrasporta la bolla teleport nello slot di una bolla già scoppiata
-    private void OnTeleportCall(TeleportBubble bubble)
-    {
-        Bubble emptyBubble = GetRandomBubbleOfType(EBubbleType.AlredyPopped);
-        SwitchBubblesPosition(bubble, emptyBubble);
-    }
-    #endregion
 }

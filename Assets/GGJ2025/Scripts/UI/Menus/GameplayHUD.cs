@@ -18,6 +18,7 @@ public class GameplayHUD: BaseUI {
             canvas.worldCamera = FindAnyObjectByType<Camera>();
         }
         LevelManager.Get().OnStartLevel += OnStartLevel;
+        LevelManager.Get().OnStartEndlessLevel += OnStartEndlessLevel;
     }
 
     private void OnStartLevel(uint levelIndex)
@@ -31,5 +32,17 @@ public class GameplayHUD: BaseUI {
             timerUI.SetActive(false);
         }
         textMeshProText.text = "Level " + levelIndex;
+    }
+    private void OnStartEndlessLevel()
+    {
+        if (LevelManager.Get().ActiveEntryData.is_Timer_Activate)
+        {
+            timerUI.SetActive(true);
+        }
+        else
+        {
+            timerUI.SetActive(false);
+        }
+        textMeshProText.text = "Score ";
     }
 }

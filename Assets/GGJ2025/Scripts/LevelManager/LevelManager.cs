@@ -15,7 +15,10 @@ public class LevelManager : MonoBehaviour
     private bool isTimerActive = false;
     private bool soundBeepExecuted = false;
     private Dictionary<uint, uint> levelScores = new Dictionary<uint, uint>();
-
+    
+    private bool endlessMode = false;
+    private int endlessModeLevelReached;
+    private float endlessModeTime;
     #endregion
 
     public Action<uint> OnStartLevel;
@@ -23,6 +26,8 @@ public class LevelManager : MonoBehaviour
     public Action<int> OnWinLevel;
     public Action OnLoseLevel;
     public Action<float> OnUpdateTimer;
+
+    public Action OnStartEndlessLevel;
 
     #region Properties
     public uint CurrentLevel { 
@@ -35,7 +40,6 @@ public class LevelManager : MonoBehaviour
             Debug.Log($"Current Level set to: {currentLevel}");
         }
     }
-
     public uint ReachedLevel {
         get {
             return reachedLevel;
@@ -45,7 +49,17 @@ public class LevelManager : MonoBehaviour
             Debug.Log($"Reached Level set to: {reachedLevel}");
         }
     }
-
+    public bool EndlessMode
+    {
+        get
+        {
+            return endlessMode;
+        }
+        private set
+        {
+            endlessMode = value;
+        }
+    }
     public Dictionary<uint, uint> LevelScores {
         get {
             return levelScores;
@@ -54,7 +68,6 @@ public class LevelManager : MonoBehaviour
             levelScores = value;
         }
     }
-
     public LevelEntryStruct ActiveEntryData { get  { return currentEntryData; } }
     #endregion
 
@@ -90,6 +103,9 @@ public class LevelManager : MonoBehaviour
         LevelScores = levelScoresFromSave;
         GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
+
+        endlessModeTime = 0;
+        endlessModeLevelReached = 0;
     }
    
     void OnDestroy()
@@ -103,25 +119,33 @@ public class LevelManager : MonoBehaviour
         
         if (!isTimerActive) return;
 
-        //---------STO COSO � PER FARE CASINO
-        int t = (int)currentLevelTime;
-        if (((t <= 3 && t > 2) || (t <= 1 && t > 0)) && soundBeepExecuted)
+        if (!EndlessMode)
         {
-            AudioManager.PlayOneShotSound("TimeEndBeep");
-            soundBeepExecuted = false;
-        }
-        else if (((t <= 4 && t > 3) || (t <= 2 && t > 1) || t == 0) && !soundBeepExecuted)
+            //---------STO COSO � PER FARE CASINO
+            int t = (int)currentLevelTime;
+            if (((t <= 3 && t > 2) || (t <= 1 && t > 0)) && soundBeepExecuted)
+            {
+                AudioManager.PlayOneShotSound("TimeEndBeep");
+                soundBeepExecuted = false;
+            }
+            else if (((t <= 4 && t > 3) || (t <= 2 && t > 1) || t == 0) && !soundBeepExecuted)
+            {
+                AudioManager.PlayOneShotSound("TimeEndBeep");
+                soundBeepExecuted = true;
+            }
+            //----------------------------
+
+            currentLevelTime -= Time.deltaTime;
+            OnUpdateTimer?.Invoke(currentLevelTime);
+            if (currentLevelTime <= 0)
+            {
+                OnLoseLevel?.Invoke();
+                isTimerActive = false;
+            }
+        }else
         {
-            AudioManager.PlayOneShotSound("TimeEndBeep");
-            soundBeepExecuted = true;
-        }
-        //----------------------------
-        currentLevelTime -= Time.deltaTime;
-        OnUpdateTimer?.Invoke(currentLevelTime);
-        if(currentLevelTime <= 0) 
-        {
-            OnLoseLevel?.Invoke();
-            isTimerActive = false;
+            currentLevelTime += Time.deltaTime;
+            OnUpdateTimer?.Invoke(currentLevelTime);
         }
     }
     #endregion
@@ -134,10 +158,35 @@ public class LevelManager : MonoBehaviour
 
     public void StartLevel(uint levelIndex)
     {
+        EndlessMode = false;
         CurrentLevel = levelIndex;
         currentEntryData = LevelDatabase.GetCurrentEntry(CurrentLevel);
         OnStartLevel?.Invoke(CurrentLevel);
     }
+
+    //---TODO
+    public void StartEndlessMode()
+    {
+        EndlessMode = true;
+        CurrentLevel = 99;
+        currentEntryData = LevelDatabase.GetEndlessLevelEntry();
+        OnStartEndlessLevel?.Invoke();
+    }
+    public void StopEndlessMode()
+    {
+        isTimerActive = false;
+    }
+    public void ResumeEndlessMode()
+    {
+        isTimerActive = true;
+    }
+    public void WinEndlessModeLevel()
+    {
+        endlessModeTime = currentLevelTime;
+        endlessModeLevelReached++;
+        StartEndlessMode();
+    }
+    //---
 
     public void OnDeleteSaves()
     {   
@@ -147,33 +196,36 @@ public class LevelManager : MonoBehaviour
         //currentEntryData = LevelDatabase.GetCurrentEntry(CurrentLevel);
     }
 
-    public LevelEntryStruct GetLevelEntryData(uint levelIndex)
-    {
-        return LevelDatabase.GetCurrentEntry(levelIndex);
-    }
-
     public void WinLevel()
     {
-        //Calcolo del punteggio finale del livello
-        int starNumbers= 0;
-        float[] startsThreshold = ActiveEntryData.stars_for_level;
-        for (int i = 0; i < startsThreshold.Length; i++)
+        if (!EndlessMode)           //livelli normali
         {
-            if (startsThreshold[i] <= GetTimerPercent())
+            //Calcolo del punteggio finale del livello
+            int starNumbers = 0;
+            float[] startsThreshold = ActiveEntryData.stars_for_level;
+            for (int i = 0; i < startsThreshold.Length; i++)
             {
-                starNumbers++;
+                if (startsThreshold[i] <= GetTimerPercent())
+                {
+                    starNumbers++;
+                }
+                else
+                {
+                    break;
+                }
             }
-            else
+            Debug.Log($"Level {CurrentLevel} completed with {starNumbers} stars.");
+            //write level only if never writtren or if the new score is better
+            if (!LevelScores.ContainsKey(CurrentLevel) || starNumbers > LevelScores[CurrentLevel])
             {
-                break;
+                LevelScores[CurrentLevel] = (uint)starNumbers;
             }
+            OnWinLevel?.Invoke(starNumbers);
         }
-        Debug.Log($"Level {CurrentLevel} completed with {starNumbers} stars.");
-        //write level only if never writtren or if the new score is better
-        if (!LevelScores.ContainsKey(CurrentLevel) || starNumbers > LevelScores[CurrentLevel]) {
-            LevelScores[CurrentLevel] = (uint)starNumbers;
+        else
+        {                   //livelli della endless mode
+            WinEndlessModeLevel();
         }
-        OnWinLevel?.Invoke(starNumbers);
     }
     #endregion
 

@@ -41,6 +41,7 @@ public class UIController : MonoBehaviour
     #region Mono
     private void OnEnable() {
         LevelManager.Get().OnStartLevel += OnStartLevel;
+        LevelManager.Get().OnStartEndlessLevel += OnStartEndlessLevel;
         LevelManager.Get().OnWinLevel += OnWinLevel;
         LevelManager.Get().OnLoseLevel += OnLoseLevel;
     }
@@ -86,6 +87,10 @@ public class UIController : MonoBehaviour
 
     #region Callback Actions
     private void OnStartLevel(uint levelIndex)
+    {
+        OpenMenu(EUIType.GameplayHUD);
+    }
+    private void OnStartEndlessLevel()
     {
         OpenMenu(EUIType.GameplayHUD);
     }

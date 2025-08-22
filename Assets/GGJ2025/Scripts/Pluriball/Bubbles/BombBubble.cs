@@ -23,6 +23,8 @@ public class BombBubble : Bubble
 
     override protected void InternalOnAwake()
     {
+        noHitExplosionTimeReduction = LevelManager.Get().EndlessMode ? Math.Abs(noHitExplosionTimeReduction) : noHitExplosionTimeReduction;
+        wrongWeaponTimeReduction = LevelManager.Get().EndlessMode ? Math.Abs(wrongWeaponTimeReduction) : wrongWeaponTimeReduction;
         bubbleType = EBubbleType.Bomb;
         
         timeToSubtract = Time.time;
@@ -44,7 +46,6 @@ public class BombBubble : Bubble
             InternalOnHit(1, EWeaponType.LAST);   //se il timer finisce, la bomb prende danno. nella logica del danno c'è la discriminazione dell'arma
         }
     }
-
 
     public override void InternalOnHit(int damage, EWeaponType weaponType)
     {

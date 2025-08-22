@@ -20,6 +20,7 @@ public class Bubble : MonoBehaviour
 
     public bool IsAlive { get { return isAlive; } }
     public EBubbleType BubbleType { get { return bubbleType; } }
+    public int CurrentLife { get { return currentClickRemains; } }
 
     #region Protected Members
     protected EBubbleType bubbleType;

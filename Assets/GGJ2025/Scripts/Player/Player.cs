@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponBackward.performed += onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed += onChangeWeaponWheel;
         LevelManager.Get().OnStartLevel += onStartLevel;
+        LevelManager.Get().OnStartEndlessLevel += onStartEndlessLevel;
         GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
     }
 
@@ -46,6 +47,7 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
         GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
+
     }
 
     #endregion
@@ -81,6 +83,19 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    private void onStartEndlessLevel()
+    {
+        //Unlock all weapons 
+        currentWeapon = avaiableWeapons[0];
+        currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
+        currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
+        foreach (Weapon weapon in avaiableWeapons)
+        {
+            weapon.weaponData.IsUnlocked = true;
+        }
+    }
+
 
 
     #region Internal Methods
