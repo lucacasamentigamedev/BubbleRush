@@ -28,7 +28,8 @@ public class BRButton : MonoBehaviour {
         { ButtonType.Left, "left" },
         { ButtonType.Right, "right" },
         { ButtonType.Options, "options" },
-        { ButtonType.Apply, "apply" }
+        { ButtonType.Apply, "apply" },
+        { ButtonType.EndlessMode, "endlessmode" }
     };
     #endregion
 
@@ -68,7 +69,10 @@ public class BRButton : MonoBehaviour {
 
     #region Button behavior
     public void OnMouseEnter() {
+#if UNITY_STANDALONE || UNITY_EDITOR
+        //only for the desktop there is mouse hover sound
         AudioManager.PlayOneShotSound("MenuSelect");
+#endif
         buttonImage.sprite = highlightedSprite;
     }
 

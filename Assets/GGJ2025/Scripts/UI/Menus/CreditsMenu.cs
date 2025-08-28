@@ -1,9 +1,9 @@
 public class CreditsMenu : BaseUI {
     private void OnEnable() {
-        AudioManager.PlayOneShotSound("MenuOpen");
+        //AudioManager.PlayOneShotSound("MenuOpen");
     }
 
     private void OnDisable() {
-        AudioManager.PlayOneShotSound("MenuClose");
+        //AudioManager.PlayOneShotSound("MenuClose");
     }
 }

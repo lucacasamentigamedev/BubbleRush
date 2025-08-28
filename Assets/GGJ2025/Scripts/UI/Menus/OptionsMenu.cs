@@ -14,7 +14,7 @@ public class OptionsMenu : BaseUI {
     [SerializeField] private Button applyButton;
 
     private void OnEnable() {
-        AudioManager.PlayOneShotSound("MenuOpen");
+        //AudioManager.PlayOneShotSound("MenuOpen");
         Debug.Log("OptionsMenu - OnEnable called");
         // Initialize sliders with current volume settings
         masterSlider.value = AudioManager.GetRawVolume(EAudioCategory.Master);
@@ -27,7 +27,7 @@ public class OptionsMenu : BaseUI {
     }
 
     private void OnDisable() {
-        AudioManager.PlayOneShotSound("MenuClose");
+        //AudioManager.PlayOneShotSound("MenuClose");
         applyButton.onClick.RemoveListener(OnApplyButtonClicked);
     }
 

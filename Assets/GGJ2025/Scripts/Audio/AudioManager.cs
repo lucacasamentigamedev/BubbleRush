@@ -20,8 +20,8 @@ public static class AudioManager
     private static EventInstance currentBackgroundMusic;
 
     private static readonly Dictionary<string, AudioEvent> soundDictionary = new Dictionary<string, AudioEvent> {
-        { "Test", new AudioEvent("event:/Test/Test", EAudioCategory.Test) },
-        { "TestLoop", new AudioEvent("event:/Test/TestLoop", EAudioCategory.Test) },
+        /*{ "Test", new AudioEvent("event:/Test/Test", EAudioCategory.Test) },
+        { "TestLoop", new AudioEvent("event:/Test/TestLoop", EAudioCategory.Test) },*/
         { "BubblePop", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_POP", EAudioCategory.Bubbles) },
         { "BubbleTool", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL", EAudioCategory.Tools) },
         { "BubbleToolChange", new AudioEvent("event:/ACTION/BUBBLE/BUBBLE_TOOL_CHANGE", EAudioCategory.Tools) },
@@ -105,9 +105,9 @@ public static class AudioManager
             }
             instance.setVolume(categoryVolume);
             // play sound
-            //Debug.Log($"Play sound '{soundName}' at volume '{categoryVolume}'");
             instance.start();
             instance.release();
+            Debug.Log($"AudioManager - Played one-shot sound '{soundName}'");
         } else {
             Debug.LogWarning($"Sound '{soundName}' not found in the dictionary");
         }

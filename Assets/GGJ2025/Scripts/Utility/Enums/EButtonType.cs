@@ -12,5 +12,6 @@ public enum ButtonType {
     Left,
     Right,
     Options,
-    Apply
+    Apply,
+    EndlessMode
 }
