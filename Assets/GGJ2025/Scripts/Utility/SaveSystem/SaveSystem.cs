@@ -22,11 +22,12 @@ public class SaveData {
     public uint level;
     public List<SerializableVolumeEntry> volumes = new();
     public List<SerializableLevelScoreEntry> levelScores = new();
+    public uint endlessLevel;
 }
 
 public static class SaveSystem
 {
-    public static void SaveFile(uint level, Dictionary<EAudioCategory, float> volumesDict, Dictionary<uint, uint> levelScores) {
+    public static void SaveFile(uint level, Dictionary<EAudioCategory, float> volumesDict, Dictionary<uint, uint> levelScores, uint endlessLevel) {
         Debug.Log(
             "SaveFile level" + level +
             "Volumes: " + string.Join(", ", volumesDict.Select(kvp => $"{kvp.Key}:{kvp.Value}")) +
@@ -50,6 +51,7 @@ public static class SaveSystem
                 stars = lscore.Value
             });
         }
+        data.endlessLevel = endlessLevel;
         //save on file
         try {
             using FileStream file = File.Create(path);
@@ -60,6 +62,7 @@ public static class SaveSystem
             Debug.LogError("SaveFile - Failed to save file");
             Debug.LogException(e);
         }
+
     }
 
     public static void LoadLevel(out uint level) {
@@ -106,6 +109,33 @@ public static class SaveSystem
             Debug.LogException(e);
         }
     }
+
+    public static void LoadEndlessLevel(out uint endlessLevel)
+    {
+        string path = Application.persistentDataPath + "/save.fish";
+        if (!File.Exists(path))
+        {
+            Debug.Log("LoadLevel - Save file does not exist, setting level to 1");
+            endlessLevel = 0;
+            return;
+        };
+        try
+        {
+            using FileStream file = File.OpenRead(path);
+            BinaryFormatter bf = new BinaryFormatter();
+            SaveData data = (SaveData)bf.Deserialize(file);
+            endlessLevel = data.endlessLevel;
+            Debug.Log("LoadLevel - OK, loaded level = " + endlessLevel);
+        }
+        catch (Exception e)
+        {
+            endlessLevel = 1;
+            Debug.LogError("SaveSystem - Failed to load level, level set to 1");
+            Debug.LogException(e);
+        }
+    }
+
+
 
     public static uint DeleteSave()
     {

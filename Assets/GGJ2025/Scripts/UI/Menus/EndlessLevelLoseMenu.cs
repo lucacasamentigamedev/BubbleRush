@@ -13,5 +13,11 @@ public class EndlessLevelLoseMenu : BaseUI
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                 new FMODParameter("WIN_LOSE", 1.0f)
         });
+        SaveSystem.SaveFile(
+            LevelManager.Get().ReachedLevel,
+            AudioManager.GetAllRawVolumes(),
+            LevelManager.Get().LevelScores,
+            LevelManager.Get().EndlessReachedLevel
+        );
     }
 }

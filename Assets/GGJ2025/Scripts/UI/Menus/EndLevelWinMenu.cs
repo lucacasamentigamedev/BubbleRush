@@ -35,7 +35,8 @@ public class EndLevelWinMenu : BaseUI {
         SaveSystem.SaveFile(
             LevelManager.Get().ReachedLevel,
             AudioManager.GetAllRawVolumes(),
-            LevelManager.Get().LevelScores
+            LevelManager.Get().LevelScores,
+            LevelManager.Get().EndlessReachedLevel
         );
     }
 }
