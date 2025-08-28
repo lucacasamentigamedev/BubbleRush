@@ -1,4 +1,3 @@
-using PlasticGui.WorkspaceWindow;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -72,6 +71,7 @@ public class Pluriball : MonoBehaviour, IClickable
         #endregion
 
         levelManager.OnLoseLevel += OnLoseLevel;
+        levelManager.OnLoseEndlessLevel += OnLoseLevel;
     }
     #endregion
 
@@ -104,8 +104,9 @@ public class Pluriball : MonoBehaviour, IClickable
             }
                 
         }
-        GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());
+        levelManager.StartTiming();
     }
+
     private void OnLoseLevel()
     {
         InternalEndLevel(false);
@@ -167,7 +168,6 @@ public class Pluriball : MonoBehaviour, IClickable
 
         bubbles = new Bubble[remainingBubbles];
 
-        GlobalEventSystem.CastEvent(EventName.StartTimer, EventArgsFactory.StartTimerFactory());
         //timer.InitTimer(levelManager.ActiveEntryData.timer_for_level, levelManager.ActiveEntryData.is_Timer_Activate);
         Generate(levelManager.ActiveEntryData);
 
@@ -178,6 +178,7 @@ public class Pluriball : MonoBehaviour, IClickable
                 (bubble as TeleportBubble).TeleportEvent += OnTeleportCall;
             }
         }
+        levelManager.StartTiming();
     }
     private void InternalEndLevel(bool win)
     {

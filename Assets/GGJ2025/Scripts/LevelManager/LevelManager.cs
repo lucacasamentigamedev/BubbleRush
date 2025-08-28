@@ -28,6 +28,7 @@ public class LevelManager : MonoBehaviour
     public Action<float> OnUpdateTimer;
 
     public Action OnStartEndlessLevel;
+    public Action OnLoseEndlessLevel;
 
     #region Properties
     public uint CurrentLevel { 
@@ -58,6 +59,13 @@ public class LevelManager : MonoBehaviour
         private set
         {
             endlessMode = value;
+        }
+    }
+    public int EndlessReachedLevel
+    {
+        get
+        {
+            return endlessModeLevelReached;
         }
     }
     public Dictionary<uint, uint> LevelScores {
@@ -100,12 +108,10 @@ public class LevelManager : MonoBehaviour
         ReachedLevel = reachedLevelFromSave > 0 ? reachedLevelFromSave : 1;
         Debug.Log($"Reached Level from Save: {ReachedLevel}");
         SaveSystem.LoadLevelScores(out Dictionary<uint, uint> levelScoresFromSave);
-        LevelScores = levelScoresFromSave;
-        GlobalEventSystem.AddListener(EventName.StartTimer, OnStartLevelCallback);
+        LevelScores = levelScoresFromSave;        
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);
 
-        endlessModeTime = 0;
-        endlessModeLevelReached = 0;
+        ResetEndlessMode();
     }
    
     void OnDestroy()
@@ -144,8 +150,13 @@ public class LevelManager : MonoBehaviour
             }
         }else
         {
-            currentLevelTime += Time.deltaTime;
+            currentLevelTime -= Time.deltaTime;
             OnUpdateTimer?.Invoke(currentLevelTime);
+            if (currentLevelTime <= 0)
+            {
+                OnLoseEndlessLevel?.Invoke();
+                isTimerActive = false;
+            }
         }
     }
     #endregion
@@ -153,6 +164,10 @@ public class LevelManager : MonoBehaviour
     #region PublicMethods
     public void RetryLevel()
     {
+        if(endlessMode)
+        {
+            ResetEndlessMode();
+        }
         OnRetry?.Invoke();
     }
 
@@ -172,17 +187,16 @@ public class LevelManager : MonoBehaviour
         currentEntryData = LevelDatabase.GetEndlessLevelEntry();
         OnStartEndlessLevel?.Invoke();
     }
-    public void StopEndlessMode()
+    
+    public void ResetEndlessMode()
     {
-        isTimerActive = false;
+        endlessModeTime = 40;
+        endlessModeLevelReached = 0;
     }
-    public void ResumeEndlessMode()
-    {
-        isTimerActive = true;
-    }
+    
     public void WinEndlessModeLevel()
     {
-        endlessModeTime = currentLevelTime;
+        endlessModeTime = currentLevelTime + currentEntryData.timer_for_level;  //qui si guadagna il bonus tempo
         endlessModeLevelReached++;
         StartEndlessMode();
     }
@@ -229,10 +243,18 @@ public class LevelManager : MonoBehaviour
     }
     #endregion
 
-    private void OnStartLevelCallback(EventArgs message)
+    public void StartTiming()
     {
-        currentLevelTime = currentEntryData.timer_for_level;
-        isTimerActive = currentEntryData.is_Timer_Activate;
+        if (EndlessMode)
+        {
+            currentLevelTime = endlessModeTime;
+            isTimerActive = true;
+        }
+        else
+        {
+            currentLevelTime = currentEntryData.timer_for_level;
+            isTimerActive = currentEntryData.is_Timer_Activate;
+        }
     }
 
     private void OnModulateTimer(EventArgs message)

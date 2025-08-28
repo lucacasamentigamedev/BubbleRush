@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private BaseUI pauseMenuPrefab;
     [SerializeField] private EndLevelWinMenu endLevelWinMenuPrefab;
     [SerializeField] private EndLevelLoseMenu endLevelLoseMenuPrefab;
+    [SerializeField] private EndlessLevelLoseMenu endlessLevelLoseMenuPrefab;
     [SerializeField] private TutorialMenu tutorialMenuPrefab;
     [SerializeField] private GameplayUIMenu gameplayMenuPrefab;
     [SerializeField] private LevelHubMenu levelHubMenuPrefab;
@@ -44,6 +45,7 @@ public class UIController : MonoBehaviour
         LevelManager.Get().OnStartEndlessLevel += OnStartEndlessLevel;
         LevelManager.Get().OnWinLevel += OnWinLevel;
         LevelManager.Get().OnLoseLevel += OnLoseLevel;
+        LevelManager.Get().OnLoseEndlessLevel += OnLoseEndlessLevel;
     }
 
     private void Awake() {
@@ -63,6 +65,7 @@ public class UIController : MonoBehaviour
             pauseMenuPrefab,
             endLevelWinMenuPrefab,
             endLevelLoseMenuPrefab,
+            endlessLevelLoseMenuPrefab,
             tutorialMenuPrefab,
             gameplayMenuPrefab,
             optionsMenuPrefab,
@@ -105,6 +108,10 @@ public class UIController : MonoBehaviour
     {
         OpenMenu(EUIType.EndLevelLoseMenu);
     }
+    private void OnLoseEndlessLevel()
+    {
+        OpenMenu(EUIType.EndlessLevelLoseMenu);
+    }
     #endregion
 
     #region Internal Methods
@@ -132,6 +139,9 @@ public class UIController : MonoBehaviour
                 break;
             case EUIType.EndLevelLoseMenu:
                 currentMenu = endLevelLoseMenuPrefab;
+                break;
+            case EUIType.EndlessLevelLoseMenu:
+                currentMenu = endlessLevelLoseMenuPrefab;
                 break;
             case EUIType.LevelHubMenu:
                 currentMenu = levelHubMenuPrefab;

@@ -6,6 +6,7 @@ public enum EUIType
     PauseMenu,
     EndLevelWinMenu,
     EndLevelLoseMenu,
+    EndlessLevelLoseMenu,
     TutorialMenu,
     LevelHubMenu,
     OptionsMenu

@@ -23,8 +23,6 @@ public class BombBubble : Bubble
 
     override protected void InternalOnAwake()
     {
-        noHitExplosionTimeReduction = LevelManager.Get().EndlessMode ? Math.Abs(noHitExplosionTimeReduction) : noHitExplosionTimeReduction;
-        wrongWeaponTimeReduction = LevelManager.Get().EndlessMode ? Math.Abs(wrongWeaponTimeReduction) : wrongWeaponTimeReduction;
         bubbleType = EBubbleType.Bomb;
         
         timeToSubtract = Time.time;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Level_Databases", menuName = "LevlSystem/Level_Databases", order = 2)]
@@ -5,7 +6,8 @@ public class LevelDatabase : ScriptableObject
 {
     [SerializeField]
     private LevelEntry[] entries;
-
+    [SerializeField]
+    private LevelEntry[] endlessLvlEntries;
 
     public LevelEntryStruct GetCurrentEntry(uint level)
     {
@@ -22,19 +24,10 @@ public class LevelDatabase : ScriptableObject
 
     public LevelEntryStruct GetEndlessLevelEntry()
     {
-        LevelEntryStruct levelEntryStruct = new LevelEntryStruct();
-        levelEntryStruct.is_Timer_Activate = true;
-        levelEntryStruct.timer_for_level = 0.0f;
-        levelEntryStruct.stars_for_level = new float[]{ 0.0f, 0.0f, 0.0f };
-        levelEntryStruct.unlock_Lvl =99;
-        levelEntryStruct.grid_Size = new Vector2 (15,8);
-        BubbleToCreate bubble = new BubbleToCreate();
-        bubble.setFiller = true;
-        bubble.type = EBubbleType.Normal;
-        bubble.min_Pop = 1;
-        bubble.max_Pop = 2;
-        levelEntryStruct.bubbles= new BubbleToCreate[] { bubble };
+        if (endlessLvlEntries.Length == 0)
+            return new LevelEntryStruct();
 
-        return levelEntryStruct;
+        return endlessLvlEntries[UnityEngine.Random.Range(0, endlessLvlEntries.Length)].Data;
+
     }
 }
