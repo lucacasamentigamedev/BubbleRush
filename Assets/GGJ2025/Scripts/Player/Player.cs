@@ -6,17 +6,18 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
     #region weapon
-    private Weapon[] avaiableWeapons;
-    private int currentIndexWeapon = 0;
-    private Weapon currentWeapon;
     [SerializeField]
     private WeaponsDatabase weaponDatabase;
     [SerializeField]
     private RectTransform currentWeaponRectElem;
+
+    private Weapon[] avaiableWeapons;
+    private int currentIndexWeapon = 0;
+    private Weapon currentWeapon;
     private Image currentWeaponImage;
+    #endregion
     private Coroutine coroutineDeleay;
     private Vector2 currentPointerPos = Vector2.zero;
-    #endregion
 
     #region Mono
     private void Start() {
@@ -25,7 +26,6 @@ public class Player : MonoBehaviour
         for (int i = 0; i < avaiableWeapons.Length; i++) {
             avaiableWeapons[i] = new Weapon();
             avaiableWeapons[i].prepareWeapon(weaponDatabase.GetWeaponData((EWeaponType)i));
-
         }
         //inputs bind
         InputManager.Player.Interact.performed += onInteract;
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
         LevelManager.Get().OnStartLevel += onStartLevel;
         LevelManager.Get().OnStartEndlessLevel += onStartEndlessLevel;
         GlobalEventSystem.AddListener(EventName.ChangeWeapon, OnChangeWeapon);
+        GlobalEventSystem.AddListener(EventName.ChangeWeaponWithType, OnChangeWithType);
     }
 
     private void Update() {
@@ -48,8 +49,11 @@ public class Player : MonoBehaviour
         InputManager.Player.ChangeWeaponBackward.performed -= onChangeWeaponBackward;
         InputManager.Player.ChangeWeaponWheel.performed -= onChangeWeaponWheel;
         GlobalEventSystem.RemoveListener(EventName.ChangeWeapon, OnChangeWeapon);
+        GlobalEventSystem.RemoveListener(EventName.ChangeWeaponWithType, OnChangeWithType); ;
 
     }
+
+    
 
     #endregion
 
@@ -73,6 +77,11 @@ public class Player : MonoBehaviour
     {
         EventArgsFactory.ChangeWeaponParser(message, out int forwardChange);
         ChangeWeapon(forwardChange);
+    }
+    private void OnChangeWithType(EventArgs message)
+    {
+        EventArgsFactory.ChangeWeaponWithTypeParser(message, out EWeaponType weaponTypeToChange);
+        ChangeWeapon(weaponTypeToChange);
     }
     private void onStartLevel(uint levelIndex) {
         currentWeapon = avaiableWeapons[0];
@@ -124,6 +133,33 @@ public class Player : MonoBehaviour
             return;
         }
         ChangeWeapon(forward);
+    }
+    private void ChangeWeapon(EWeaponType weaponType)
+    {
+        for (int i = 0; i< avaiableWeapons.Length; i++)
+        {
+            if (avaiableWeapons[i].weaponData.weaponType != weaponType) continue;
+            if (avaiableWeapons[i].weaponData == null || avaiableWeapons[i].weaponData.IsUnlocked) return;
+            
+            
+            if (currentWeapon.weaponData == avaiableWeapons[i].weaponData)
+            {
+                AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
+                    new FMODParameter("TOOL_CHANGE", 1.0f)
+                });
+            }
+            else
+            {
+                AudioManager.PlayOneShotSound("BubbleToolChange", new FMODParameter[] {
+                    new FMODParameter("TOOL_CHANGE", 0.0f)
+                });
+            }
+
+            currentIndexWeapon = i;
+            currentWeapon = avaiableWeapons[currentIndexWeapon];
+            currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
+            return;
+        }
     }
     private void Interact()
     {

@@ -97,4 +97,18 @@ public static class EventArgsFactory
 
 
     #endregion
+
+    #region ChangeWeaponWithType
+    public static EventArgs ChangeWeaponWithTypeFactory(EWeaponType weaponType)
+    {
+        EventArgs message = new EventArgs();
+        message.variables = new object[1];
+        message.variables[0] = weaponType;
+        return message;
+    }
+    public static void ChangeWeaponWithTypeParser(EventArgs message, out EWeaponType weaponType)
+    {
+        weaponType = (EWeaponType)message.variables[0];
+    }
+    #endregion
 }

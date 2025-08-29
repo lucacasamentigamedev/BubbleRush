@@ -12,7 +12,8 @@ public enum EventName
     ChangeWeapon,
     StartTimer,
     ModulateTimer,
-    TimerEnded
+    TimerEnded,
+    ChangeWeaponWithType
 }
 
 public static class GlobalEventSystem
