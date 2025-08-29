@@ -8,6 +8,6 @@ public class MainMenu : BaseUI
 
     public void OnEnable()
     {
-        levelReachedText.text = "Level Reached: " + LevelManager.Get().EndlessReachedLevel;
+        levelReachedText.text = "Level Reached: " + LevelManager.Get().EndlessReachedLevel+"\nRecord: " + LevelManager.Get().EndlessRecordLevel;
     }
 }

@@ -23,11 +23,12 @@ public class SaveData {
     public List<SerializableVolumeEntry> volumes = new();
     public List<SerializableLevelScoreEntry> levelScores = new();
     public uint endlessLevel;
+    public uint endlessRecordLevel;
 }
 
 public static class SaveSystem
 {
-    public static void SaveFile(uint level, Dictionary<EAudioCategory, float> volumesDict, Dictionary<uint, uint> levelScores, uint endlessLevel) {
+    public static void SaveFile(uint level, Dictionary<EAudioCategory, float> volumesDict, Dictionary<uint, uint> levelScores, uint endlessLevel, uint endlessRecordLevel) {
         Debug.Log(
             "SaveFile level" + level +
             "Volumes: " + string.Join(", ", volumesDict.Select(kvp => $"{kvp.Key}:{kvp.Value}")) +
@@ -52,6 +53,7 @@ public static class SaveSystem
             });
         }
         data.endlessLevel = endlessLevel;
+        data.endlessRecordLevel = endlessRecordLevel;
         //save on file
         try {
             using FileStream file = File.Create(path);
@@ -110,13 +112,14 @@ public static class SaveSystem
         }
     }
 
-    public static void LoadEndlessLevel(out uint endlessLevel)
+    public static void LoadEndlessLevel(out uint endlessLevel, out uint endlessRecordLevel)
     {
         string path = Application.persistentDataPath + "/save.fish";
         if (!File.Exists(path))
         {
             Debug.Log("LoadLevel - Save file does not exist, setting level to 1");
             endlessLevel = 0;
+            endlessRecordLevel = 0;
             return;
         };
         try
@@ -125,11 +128,13 @@ public static class SaveSystem
             BinaryFormatter bf = new BinaryFormatter();
             SaveData data = (SaveData)bf.Deserialize(file);
             endlessLevel = data.endlessLevel;
+            endlessRecordLevel = data.endlessRecordLevel;
             Debug.Log("LoadLevel - OK, loaded level = " + endlessLevel);
         }
         catch (Exception e)
         {
-            endlessLevel = 1;
+            endlessLevel = 0;
+            endlessRecordLevel = 0;
             Debug.LogError("SaveSystem - Failed to load level, level set to 1");
             Debug.LogException(e);
         }

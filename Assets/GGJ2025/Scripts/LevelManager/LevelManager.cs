@@ -68,6 +68,8 @@ public class LevelManager : MonoBehaviour
             return endlessModeLevelReached;
         }
     }
+    public uint EndlessRecordLevel { get; private set; }
+
     public Dictionary<uint, uint> LevelScores {
         get {
             return levelScores;
@@ -105,9 +107,10 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         SaveSystem.LoadLevel(out uint reachedLevelFromSave);
-        SaveSystem.LoadEndlessLevel(out uint reachedEndlessLevelFromSave);
+        SaveSystem.LoadEndlessLevel(out uint reachedEndlessLevelFromSave, out uint reachedEndlessRecordLevelFromSave);
         ReachedLevel = reachedLevelFromSave > 0 ? reachedLevelFromSave : 1;
         endlessModeLevelReached = reachedEndlessLevelFromSave;
+        EndlessRecordLevel = reachedEndlessRecordLevelFromSave;
         Debug.Log($"Reached Level from Save: {ReachedLevel}");
         SaveSystem.LoadLevelScores(out Dictionary<uint, uint> levelScoresFromSave);
         LevelScores = levelScoresFromSave;        
@@ -118,7 +121,7 @@ public class LevelManager : MonoBehaviour
    
     void OnDestroy()
     {
-        SaveSystem.SaveFile(ReachedLevel, AudioManager.GetAllRawVolumes(), LevelScores, EndlessReachedLevel);
+        SaveSystem.SaveFile(ReachedLevel, AudioManager.GetAllRawVolumes(), LevelScores, EndlessReachedLevel, EndlessRecordLevel);
     }
 
     //Da convertire in coroutine
@@ -200,6 +203,8 @@ public class LevelManager : MonoBehaviour
     {
         endlessModeTime = currentLevelTime + currentEntryData.timer_for_level;  //qui si guadagna il bonus tempo
         endlessModeLevelReached++;
+        if (endlessModeLevelReached > EndlessRecordLevel)
+            EndlessRecordLevel = endlessModeLevelReached;
         StartEndlessMode();
     }
     //---

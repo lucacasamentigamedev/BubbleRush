@@ -36,7 +36,8 @@ public class EndLevelWinMenu : BaseUI {
             LevelManager.Get().ReachedLevel,
             AudioManager.GetAllRawVolumes(),
             LevelManager.Get().LevelScores,
-            LevelManager.Get().EndlessReachedLevel
+            LevelManager.Get().EndlessReachedLevel,
+            LevelManager.Get().EndlessRecordLevel
         );
     }
 }
