@@ -7,8 +7,9 @@ public class UIPop : MonoBehaviour
     private float timer;
     private float destructionTime;
     // Update is called once per frame
-    private void Awake()
+    private void OnEnable()
     {
+        timer = 0;
         destructionTime = Random.Range(0.2f, 0.7f);
     }
     void Update()
@@ -17,7 +18,7 @@ public class UIPop : MonoBehaviour
 
         if (timer > destructionTime)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

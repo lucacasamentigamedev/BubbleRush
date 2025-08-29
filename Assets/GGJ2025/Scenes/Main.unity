@@ -658,6 +658,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1245351054}
     - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
+      propertyPath: popEffect
+      value: 
+      objectReference: {fileID: 11400000, guid: 5ba865e3c0b38234f9daa06e46493806, type: 2}
+    - target: {fileID: 8894919730337199207, guid: f1cc0089a65fb3f42ac919ee4cafee4c, type: 3}
       propertyPath: uiBehavior
       value: 
       objectReference: {fileID: 0}

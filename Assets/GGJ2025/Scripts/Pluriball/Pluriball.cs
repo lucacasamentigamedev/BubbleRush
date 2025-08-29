@@ -15,6 +15,8 @@ public class Pluriball : MonoBehaviour, IClickable
     [SerializeField]
     private PoolData teleportBubbles;
     [SerializeField]
+    private PoolData popEffect;
+    [SerializeField]
     private BoxCollider2D _collider;
     [SerializeField]
     private CameraShake cameraShake;
@@ -22,8 +24,7 @@ public class Pluriball : MonoBehaviour, IClickable
     private GameObject pluriballVisual;
     [SerializeField]
     private Transform[] popLocation;
-    [SerializeField]
-    private GameObject asset;
+    
 
     private Dictionary<EBubbleType, PoolData> poolDataDictionary;
     private Bubble[] bubbles;
@@ -57,6 +58,7 @@ public class Pluriball : MonoBehaviour, IClickable
         Pooler.Instance.AddToPool(rockBubbles);
         Pooler.Instance.AddToPool(bombBubbles);
         Pooler.Instance.AddToPool(teleportBubbles);
+        Pooler.Instance.AddToPool(popEffect);
 
         //Creazione a MANAZZA del dizionario TipoBolla PoolData.  PS. S�, si potrebbe usare un array serializzato
         //di pool data e poi da ogni elemento risalire al tipo di bolla tramite il prefab associato, ma stica!
@@ -121,10 +123,14 @@ public class Pluriball : MonoBehaviour, IClickable
         if (remainingBubbles <= 0) {
             InternalEndLevel(true);    
         } else {
-            int index = UnityEngine.Random.Range(0, popLocation.Length);
-            //CAMBIARE ASSOLUTAMENTE -> GESTIRLO TRAMITE POOLER
-            GameObject obj = Instantiate(asset, popLocation[index].transform.position, popLocation[index].transform.rotation);
-            obj.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-45, 46)));
+            int index = UnityEngine.Random.Range(0, popLocation.Length);                        
+            GameObject obj = Pooler.Instance.GetPooledObject(popEffect);
+            if (obj != null)
+            {
+                obj.transform.position = popLocation[index].transform.position;
+                obj.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-45, 46)));
+                obj.SetActive(true);
+            }
         }
     }
     private void OnCamerShake(float shakeMagnitude, float shakeDuration)
