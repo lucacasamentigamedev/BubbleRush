@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private RectTransform currentWeaponRectElem;
     private Image currentWeaponImage;
     private Coroutine coroutineDeleay;
+    private Vector2 currentPointerPos = Vector2.zero;
     #endregion
 
     #region Mono
@@ -166,19 +167,15 @@ public class Player : MonoBehaviour
     }
     private Vector2 GetPointerPosition()
     {
-    #if UNITY_ANDROID || UNITY_IOS
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            return Touchscreen.current.primaryTouch.position.ReadValue();
-        }
-        return Vector2.zero;
-    #else
-        if (Mouse.current != null)
-        {
-            return Mouse.current.position.ReadValue();
-        }
-        return Vector2.zero;
-    #endif
+#if UNITY_ANDROID || UNITY_IOS
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed)return currentPointerPos;
+         currentPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();        
+#else
+        if (Mouse.current == null) return currentPointerPos;
+        currentPointerPos = Mouse.current.position.ReadValue();
+#endif
+        return currentPointerPos;
+
     }
     #endregion
 
