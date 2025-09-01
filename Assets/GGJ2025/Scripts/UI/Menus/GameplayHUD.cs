@@ -1,6 +1,8 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GameplayHUD: BaseUI {
 
@@ -8,6 +10,8 @@ public class GameplayHUD: BaseUI {
     private TextMeshProUGUI textMeshProText;
     [SerializeField]
     private GameObject timerUI;
+    [SerializeField]
+    private Image PCTutorialTip;
 
     public void Awake()
     {        
@@ -19,6 +23,10 @@ public class GameplayHUD: BaseUI {
         }
         LevelManager.Get().OnStartLevel += OnStartLevel;
         LevelManager.Get().OnStartEndlessLevel += OnStartEndlessLevel;
+
+#if UNITY_ANDROID || UNITY_IOS
+        PCTutorialTip.gameObject.SetActive(false);
+#endif
     }
 
     private void OnStartLevel(uint levelIndex)

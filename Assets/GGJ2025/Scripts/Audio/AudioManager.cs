@@ -44,10 +44,10 @@ public static class AudioManager
     private static readonly Dictionary<EAudioCategory, float> volumes;
 
     static AudioManager() {
-        Debug.Log("AudioManager - static constructor called");
+        //Debug.Log("AudioManager - static constructor called");
         string path = Application.persistentDataPath + "/save.fish";
         if (!File.Exists(path)) {
-            Debug.Log("AudioManager - Save file not found, using default volumes");
+            //Debug.Log("AudioManager - Save file not found, using default volumes");
             volumes = GetDefaultVolumes();
             return;
         }
@@ -59,7 +59,7 @@ public static class AudioManager
             foreach (var entry in data.volumes) {
                 volumes[entry.category] = Mathf.Clamp01(entry.value);
             }
-            Debug.Log($"AudioManager - Loaded {volumes.Count} volume entries from save");
+            //Debug.Log($"AudioManager - Loaded {volumes.Count} volume entries from save");
         } catch (Exception e) {
             Debug.LogError("AudioManager - Failed to load volumes, using default");
             Debug.LogException(e);
@@ -107,7 +107,7 @@ public static class AudioManager
             // play sound
             instance.start();
             instance.release();
-            Debug.Log($"AudioManager - Played one-shot sound '{soundName}'");
+            //Debug.Log($"AudioManager - Played one-shot sound '{soundName}'");
         } else {
             Debug.LogWarning($"Sound '{soundName}' not found in the dictionary");
         }
@@ -162,7 +162,7 @@ public static class AudioManager
         if (currentBackgroundMusic.isValid()) {
             float newVolume = GetEffectiveVolume(EAudioCategory.Music);
             currentBackgroundMusic.setVolume(newVolume);
-            Debug.Log($"Updated background music volume to {newVolume}");
+            //Debug.Log($"Updated background music volume to {newVolume}");
         }
     }
 

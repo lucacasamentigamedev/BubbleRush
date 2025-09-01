@@ -47,7 +47,7 @@ public class LevelManager : MonoBehaviour
         }
         set {
             reachedLevel = value;
-            Debug.Log($"Reached Level set to: {reachedLevel}");
+            //Debug.Log($"Reached Level set to: {reachedLevel}");
         }
     }
     public bool EndlessMode
@@ -111,7 +111,7 @@ public class LevelManager : MonoBehaviour
         ReachedLevel = reachedLevelFromSave > 0 ? reachedLevelFromSave : 1;
         endlessModeLevelReached = reachedEndlessLevelFromSave;
         EndlessRecordLevel = reachedEndlessRecordLevelFromSave;
-        Debug.Log($"Reached Level from Save: {ReachedLevel}");
+        
         SaveSystem.LoadLevelScores(out Dictionary<uint, uint> levelScoresFromSave);
         LevelScores = levelScoresFromSave;        
         GlobalEventSystem.AddListener(EventName.ModulateTimer, OnModulateTimer);

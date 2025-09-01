@@ -71,7 +71,7 @@ public static class SaveSystem
         string path = Application.persistentDataPath + "/save.fish";
         if (!File.Exists(path))
         {
-            Debug.Log("LoadLevel - Save file does not exist, setting level to 1");
+            
             level = 1;
             return;
         };
@@ -80,7 +80,6 @@ public static class SaveSystem
             BinaryFormatter bf = new BinaryFormatter();
             SaveData data = (SaveData)bf.Deserialize(file);
             level = data.level;
-            Debug.Log("LoadLevel - OK, loaded level = " + level);
         } catch (Exception e) {
             level = 1;
             Debug.LogError("SaveSystem - Failed to load level, level set to 1");
@@ -92,7 +91,6 @@ public static class SaveSystem
         string path = Application.persistentDataPath + "/save.fish";
         levelScores = new Dictionary<uint, uint>();
         if (!File.Exists(path)) {
-            Debug.Log("LoadLevelScores - Save file does not exist, returning empty dictionary");
             return;
         }
         try {
@@ -103,8 +101,6 @@ public static class SaveSystem
                 levelScores = data.levelScores
                     .ToDictionary(entry => entry.levelId, entry => entry.stars);
             }
-            Debug.Log("LoadLevelScores - OK, loaded " + levelScores.Count + " entries");
-            Debug.Log("LevelScores: " + string.Join(", ", levelScores.Select(kvp => $"{kvp.Key}:{kvp.Value}")));
         } catch (Exception e) {
             levelScores.Clear();
             Debug.LogError("SaveSystem - Failed to load level scores, returning empty dictionary");

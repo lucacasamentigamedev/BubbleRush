@@ -5,6 +5,8 @@ public class WeaponsDatabase : ScriptableObject {
     [SerializeField]
     private WeaponData[] entries;
 
+    public WeaponData[] WeaponData {  get { return entries; } }
+
     public WeaponData GetWeaponData(EWeaponType type) {
         foreach (WeaponData weapon in entries) {
             if(weapon.weaponType == type)

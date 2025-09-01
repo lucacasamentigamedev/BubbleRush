@@ -83,7 +83,8 @@ public class Player : MonoBehaviour
         EventArgsFactory.ChangeWeaponWithTypeParser(message, out EWeaponType weaponTypeToChange);
         ChangeWeapon(weaponTypeToChange);
     }
-    private void onStartLevel(uint levelIndex) {
+    private void onStartLevel(uint levelIndex) 
+    {
         currentWeapon = avaiableWeapons[0];
         currentWeaponImage = currentWeaponRectElem.GetComponent<Image>();
         currentWeaponImage.sprite = currentWeapon.weaponData.preInteract;
@@ -94,6 +95,7 @@ public class Player : MonoBehaviour
         }
     }
 
+   
     private void onStartEndlessLevel()
     {
         //Unlock all weapons 
@@ -115,6 +117,7 @@ public class Player : MonoBehaviour
             currentIndexWeapon = 0;
         else if(currentIndexWeapon < 0)
             currentIndexWeapon = avaiableWeapons.Length -1;
+
         if (avaiableWeapons[currentIndexWeapon].weaponData != null 
             && avaiableWeapons[currentIndexWeapon].weaponData.IsUnlocked) {
 
@@ -139,7 +142,7 @@ public class Player : MonoBehaviour
         for (int i = 0; i< avaiableWeapons.Length; i++)
         {
             if (avaiableWeapons[i].weaponData.weaponType != weaponType) continue;
-            if (avaiableWeapons[i].weaponData == null || avaiableWeapons[i].weaponData.IsUnlocked) return;
+            if (avaiableWeapons[i].weaponData == null || !avaiableWeapons[i].weaponData.IsUnlocked) continue;
             
             
             if (currentWeapon.weaponData == avaiableWeapons[i].weaponData)
