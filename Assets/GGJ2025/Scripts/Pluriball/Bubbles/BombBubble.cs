@@ -15,6 +15,10 @@ public class BombBubble : Bubble
     protected float shakeMagnitudeOnExplode;
     [SerializeField]
     protected float shakeDurationOnExplode;
+    [SerializeField]
+    protected GameObject displayTimer;
+    [SerializeField]
+    protected GameObject displayCountdownTimer;
 
     private float currentTimeForDisinnescation;
     private float timeToSubtract;
@@ -27,6 +31,8 @@ public class BombBubble : Bubble
         
         timeToSubtract = Time.time;
         currentTimeForDisinnescation = maxTimeForDisinnescation;
+        displayTimer.SetActive(true);
+        displayCountdownTimer.SetActive(true);
         base.InternalOnAwake();
     }
 
@@ -34,6 +40,8 @@ public class BombBubble : Bubble
     {
         if (!isAlive) return;
         ReduceInnerTimer(Time.time - timeToSubtract);
+        float currentYcached = displayCountdownTimer.gameObject.transform.localScale.y;
+        displayCountdownTimer.gameObject.transform.localScale = new Vector3(1, currentYcached - (Time.time - timeToSubtract)/maxTimeForDisinnescation, 1);
         timeToSubtract = Time.time;
     }
     private void ReduceInnerTimer(float time)
@@ -83,7 +91,9 @@ public class BombBubble : Bubble
             OnCamerShake?.Invoke(shakeMagnitude, shakeDuration);
         }        
         ChangeSprite(0);
-        isAlive = false;        
+        isAlive = false;
+        displayTimer.SetActive(false);
+        displayCountdownTimer.SetActive(false);
         OnDestroy?.Invoke();
     }
 
