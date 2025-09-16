@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 10
+    timer_for_level: 15
     stars_for_level: []
     unlock_Lvl: 99
     grid_Size: {x: 15, y: 8}

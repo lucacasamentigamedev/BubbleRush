@@ -19,18 +19,24 @@ MonoBehaviour:
     - 0
     - 0.3
     - 0.5
-    unlock_Lvl: 7
+    unlock_Lvl: 6
     grid_Size: {x: 10, y: 5}
     bubbles:
-    - type: 0
-      setFiller: 0
-      min_Spawn: 25
-      max_Spawn: 35
-      min_Pop: 2
-      max_Pop: 5
     - type: 3
       setFiller: 1
       min_Spawn: 15
       max_Spawn: 25
       min_Pop: 0
       max_Pop: 0
+    - type: 0
+      setFiller: 0
+      min_Spawn: 15
+      max_Spawn: 25
+      min_Pop: 2
+      max_Pop: 5
+    - type: 1
+      setFiller: 0
+      min_Spawn: 3
+      max_Spawn: 7
+      min_Pop: 2
+      max_Pop: 5
