@@ -10,6 +10,7 @@ public class TeleportBubble : Bubble
     private int maxTimeToDisappeared;
 
     public Action<TeleportBubble> TeleportEvent;
+    public Action<TeleportBubble> WrongWeapTeleportEvent;
 
     private float timeToDisappeared;
     private float currentTimeAppeared;
@@ -36,6 +37,28 @@ public class TeleportBubble : Bubble
         {
             TeleportEvent?.Invoke(this);
             currentTimeAppeared = timeToDisappeared;
+        }
+    }
+
+    public override void InternalOnHit(int damage, EWeaponType weaponType)
+    {
+        //Se sono morto
+        if (!isAlive) {            
+            AudioManager.PlayOneShotSound("BubbleTool", new FMODParameter[] {
+                    new FMODParameter("BUBBLE_TOOL", 0.0f)
+            });
+            return;
+        }
+
+        //quando mi colpiscono con l'arma corretta faccio il doppio del danno (default 2)
+        foreach (EWeaponType weapon in requiredWeapon)
+        {
+            if (weapon == weaponType)
+            {
+                TakeDamage(damage);
+                return;
+            }
+            WrongWeapTeleportEvent?.Invoke(this);
         }
     }
 
