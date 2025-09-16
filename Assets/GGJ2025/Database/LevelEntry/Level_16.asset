@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 33
+    timer_for_level: 30
     stars_for_level:
     - 0
-    - 0.2
-    - 0.4
+    - 0.3
+    - 0.5
     unlock_Lvl: 16
     grid_Size: {x: 14, y: 8}
     bubbles:
@@ -26,14 +26,14 @@ MonoBehaviour:
       setFiller: 0
       min_Spawn: 40
       max_Spawn: 45
-      min_Pop: 2
+      min_Pop: 1
       max_Pop: 5
     - type: 1
       setFiller: 0
       min_Spawn: 10
       max_Spawn: 15
       min_Pop: 1
-      max_Pop: 3
+      max_Pop: 5
     - type: 2
       setFiller: 0
       min_Spawn: 3

@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EndLevelWinMenu : BaseUI {
 
     [SerializeField]
     private Image[] stars;
+    [SerializeField]
+    private TextMeshProUGUI levelText;
 
     private void OnEnable() {
         if (LevelManager.Get().CurrentLevel == LevelManager.Get().ReachedLevel)
@@ -13,6 +16,7 @@ public class EndLevelWinMenu : BaseUI {
             LevelManager.Get().ReachedLevel += 1;
         }
         //we set the current level to the next one
+        levelText.text = "Level " + (LevelManager.Get().CurrentLevel).ToString();
         LevelManager.Get().CurrentLevel += 1;
         AudioManager.PauseBackgroundMusic();
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {

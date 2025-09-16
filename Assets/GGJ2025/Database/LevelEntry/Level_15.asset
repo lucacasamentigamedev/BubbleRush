@@ -17,8 +17,8 @@ MonoBehaviour:
     timer_for_level: 30
     stars_for_level:
     - 0
-    - 0.2
-    - 0.4
+    - 0.3
+    - 0.5
     unlock_Lvl: 15
     grid_Size: {x: 11, y: 7}
     bubbles:
@@ -26,7 +26,7 @@ MonoBehaviour:
       setFiller: 0
       min_Spawn: 25
       max_Spawn: 35
-      min_Pop: 2
+      min_Pop: 1
       max_Pop: 5
     - type: 3
       setFiller: 1
@@ -38,11 +38,11 @@ MonoBehaviour:
       setFiller: 0
       min_Spawn: 10
       max_Spawn: 15
-      min_Pop: 2
-      max_Pop: 3
+      min_Pop: 1
+      max_Pop: 5
     - type: 2
       setFiller: 0
       min_Spawn: 2
       max_Spawn: 4
-      min_Pop: 2
-      max_Pop: 3
+      min_Pop: 1
+      max_Pop: 1

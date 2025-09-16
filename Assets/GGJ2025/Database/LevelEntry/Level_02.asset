@@ -17,7 +17,7 @@ MonoBehaviour:
     timer_for_level: 30
     stars_for_level:
     - 0
-    - 0.2
+    - 0.3
     - 0.5
     unlock_Lvl: 2
     grid_Size: {x: 4, y: 3}
@@ -26,5 +26,5 @@ MonoBehaviour:
       setFiller: 1
       min_Spawn: 12
       max_Spawn: 12
-      min_Pop: 2
+      min_Pop: 1
       max_Pop: 5

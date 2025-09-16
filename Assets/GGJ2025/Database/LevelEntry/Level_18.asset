@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 40
+    timer_for_level: 30
     stars_for_level:
     - 0
     - 0.3
@@ -26,14 +26,14 @@ MonoBehaviour:
       setFiller: 0
       min_Spawn: 40
       max_Spawn: 45
-      min_Pop: 2
+      min_Pop: 1
       max_Pop: 5
     - type: 1
       setFiller: 0
       min_Spawn: 15
       max_Spawn: 20
       min_Pop: 1
-      max_Pop: 3
+      max_Pop: 5
     - type: 2
       setFiller: 0
       min_Spawn: 7
