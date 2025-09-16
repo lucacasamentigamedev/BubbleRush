@@ -144,6 +144,23 @@ public class Pluriball : MonoBehaviour, IClickable
 
         SwitchBubblesPosition(bubble, emptyBubble);
     }
+
+    private void OnWrongWeapTeleportCall(TeleportBubble bubble)
+    {
+        Bubble bombBubble = GetRandomBubbleOfType(EBubbleType.Bomb);
+        Bubble emptyBubble = GetRandomBubbleWithTotLife(0);     //prendi una bolla già scoppiata
+        Bubble[] targetsBubble = { emptyBubble, emptyBubble };
+
+        if (bombBubble)
+        {
+            targetsBubble[1] = bombBubble;
+        }
+
+        int rand = UnityEngine.Random.Range(0, 2);
+        print("TELETRASPORTO PER ARMA SBAGLIATA");
+        SwitchBubblesPosition(bubble, targetsBubble[rand]);
+    }
+
     private void OnBombExplode(float arg)
     {
         GlobalEventSystem.CastEvent(EventName.ModulateTimer, EventArgsFactory.ModulateTimerFactory(arg));
@@ -182,6 +199,7 @@ public class Pluriball : MonoBehaviour, IClickable
             if (bubble is TeleportBubble)
             {
                 (bubble as TeleportBubble).TeleportEvent += OnTeleportCall;
+                (bubble as TeleportBubble).WrongWeapTeleportEvent += OnWrongWeapTeleportCall;
             }
         }
         levelManager.StartTiming();
