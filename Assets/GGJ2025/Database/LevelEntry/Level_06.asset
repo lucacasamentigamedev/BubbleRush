@@ -30,8 +30,8 @@ MonoBehaviour:
       max_Pop: 0
     - type: 0
       setFiller: 0
-      min_Spawn: 15
-      max_Spawn: 25
+      min_Spawn: 20
+      max_Spawn: 30
       min_Pop: 1
       max_Pop: 5
     - type: 1

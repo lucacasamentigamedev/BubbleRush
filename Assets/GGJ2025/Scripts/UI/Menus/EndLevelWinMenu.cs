@@ -16,7 +16,7 @@ public class EndLevelWinMenu : BaseUI {
             LevelManager.Get().ReachedLevel += 1;
         }
         //we set the current level to the next one
-        levelText.text = "Level " + (LevelManager.Get().CurrentLevel).ToString();
+        levelText.text = (LevelManager.Get().CurrentLevel).ToString();
         LevelManager.Get().CurrentLevel += 1;
         AudioManager.PauseBackgroundMusic();
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {

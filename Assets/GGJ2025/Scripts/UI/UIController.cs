@@ -33,9 +33,9 @@ public class UIController : MonoBehaviour
         { 1, EUITutorialType.FingerSimple },
         { 2, EUITutorialType.FingerMultiple },
         { 3, EUITutorialType.TimeLimit },
-        { 5, EUITutorialType.Chisel },
-        { 7, EUITutorialType.ToyHammer },
-        { 10, EUITutorialType.WireCutter }
+        { 4, EUITutorialType.Chisel },
+        { 13, EUITutorialType.ToyHammer },
+        { 8, EUITutorialType.WireCutter }
     };
     #endregion
 

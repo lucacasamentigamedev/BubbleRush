@@ -13,5 +13,6 @@ public enum ButtonType {
     Right,
     Options,
     Apply,
-    EndlessMode
+    EndlessMode,
+    HubLevel
 }

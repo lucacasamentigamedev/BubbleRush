@@ -11,6 +11,6 @@ public class EndLevelLoseMenu : BaseUI {
         AudioManager.PlayOneShotSound("WinLose", new FMODParameter[] {
                 new FMODParameter("WIN_LOSE", 1.0f)
         });
-        levelText.text = "Level " + (LevelManager.Get().CurrentLevel).ToString();
+        levelText.text = (LevelManager.Get().CurrentLevel).ToString();
     }
 }

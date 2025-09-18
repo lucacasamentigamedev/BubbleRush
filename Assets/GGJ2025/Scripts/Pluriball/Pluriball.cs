@@ -88,6 +88,7 @@ public class Pluriball : MonoBehaviour, IClickable
     }
     private void OnRetry()
     {
+        Debug.Log("Retry Level");
         pluriballVisual.SetActive(true);
         remainingBubbles = rows * columns;
         //reset all bubbles

@@ -29,7 +29,8 @@ public class BRButton : MonoBehaviour {
         { ButtonType.Right, "right" },
         { ButtonType.Options, "options" },
         { ButtonType.Apply, "apply" },
-        { ButtonType.EndlessMode, "endlessmode" }
+        { ButtonType.EndlessMode, "endlessmode" },
+        { ButtonType.HubLevel, "hublevel" }
     };
     #endregion
 

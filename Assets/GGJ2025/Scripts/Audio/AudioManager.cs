@@ -130,6 +130,7 @@ public static class AudioManager
     }
 
     public static void PauseBackgroundMusic() {
+        Debug.Log("AudioManager - Pausing background music");
         if (currentBackgroundMusic.isValid()) {
             currentBackgroundMusic.setPaused(true); // Pausa l'istanza
         } else {
@@ -138,6 +139,7 @@ public static class AudioManager
     }
 
     public static void ResumeBackgroundMusic() {
+        Debug.Log("AudioManager - Resuming background music");
         if (currentBackgroundMusic.isValid()) {
             currentBackgroundMusic.setPaused(false); // Riprendi l'istanza
         } else {
