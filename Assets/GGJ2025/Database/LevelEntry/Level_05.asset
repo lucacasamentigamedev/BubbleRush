@@ -24,14 +24,14 @@ MonoBehaviour:
     bubbles:
     - type: 0
       setFiller: 0
-      min_Spawn: 20
-      max_Spawn: 25
+      min_Spawn: 15
+      max_Spawn: 20
       min_Pop: 1
       max_Pop: 5
     - type: 1
       setFiller: 0
-      min_Spawn: 6
-      max_Spawn: 8
+      min_Spawn: 4
+      max_Spawn: 6
       min_Pop: 1
       max_Pop: 5
     - type: 3
