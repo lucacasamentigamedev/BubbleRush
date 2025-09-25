@@ -33,6 +33,7 @@ public class BombBubble : Bubble
         currentTimeForDisinnescation = maxTimeForDisinnescation;
         displayTimer.SetActive(true);
         displayCountdownTimer.SetActive(true);
+        displayCountdownTimer.gameObject.transform.localScale = Vector3.one;
         base.InternalOnAwake();
     }
 
