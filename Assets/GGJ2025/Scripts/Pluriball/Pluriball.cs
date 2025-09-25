@@ -215,7 +215,9 @@ public class Pluriball : MonoBehaviour, IClickable
             if (bubbleCast == null) continue;
             bubbleCast.OnExplode -= OnBombExplode;
         }
+        cameraShake.StopShake();
         pluriballVisual.SetActive(false);
+
 
         if (win)
         {

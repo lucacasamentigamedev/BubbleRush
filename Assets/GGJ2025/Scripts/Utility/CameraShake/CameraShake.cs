@@ -18,6 +18,12 @@ public class CameraShake : MonoBehaviour
         StartCoroutine(ShakeCoroutine(shakeMagnitude, shakeDuration));
     }
 
+    public void StopShake()
+    {
+        StopAllCoroutines();
+        transform.position = originalPosition;
+    }
+
     private IEnumerator ShakeCoroutine(float shakeMagnitude, float shakeDuration)
     {
         float elapsed = 0f;

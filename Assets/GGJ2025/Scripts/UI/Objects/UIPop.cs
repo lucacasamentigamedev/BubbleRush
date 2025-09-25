@@ -11,6 +11,9 @@ public class UIPop : MonoBehaviour
     {
         timer = 0;
         destructionTime = Random.Range(0.2f, 0.7f);
+        LevelManager.Get().OnWinLevel += OnEndLevel;
+        LevelManager.Get().OnLoseLevel += OnEndLevel;
+        LevelManager.Get().OnLoseEndlessLevel += OnEndLevel;
     }
     void Update()
     {
@@ -20,5 +23,13 @@ public class UIPop : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+    void OnEndLevel(int i)
+    {
+        gameObject.SetActive(false);
+    }
+    void OnEndLevel()
+    {
+        gameObject.SetActive(false);
     }
 }
