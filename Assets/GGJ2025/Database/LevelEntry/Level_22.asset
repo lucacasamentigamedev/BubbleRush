@@ -51,4 +51,4 @@ MonoBehaviour:
       min_Spawn: 3
       max_Spawn: 5
       min_Pop: 1
-      max_Pop: 5
+      max_Pop: 1
