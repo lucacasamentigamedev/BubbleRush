@@ -74,17 +74,6 @@
                 },
                 {
                     "name": "",
-                    "id": "626eb669-b3d9-4c4e-ad0c-488343ed6883",
-                    "path": "<Pointer>/press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ae43fffb-894b-4f71-8b27-e8c53a64222e",
                     "path": "<Touchscreen>/primaryTouch/tap",
                     "interactions": "",
