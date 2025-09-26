@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8787273509092979821
 RectTransform:
   m_ObjectHideFlags: 0
@@ -338,6 +338,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChangeWeaponDown
       objectReference: {fileID: 0}
+    - target: {fileID: 1254556159764105495, guid: 9e941dfb07723f149b2aefc1514aefba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2932981152526199060, guid: 9e941dfb07723f149b2aefc1514aefba, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -543,6 +547,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseButton Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6594505775556924436, guid: c2bdaa0a86337d243a5fd5e10e523d33, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -564,6 +572,10 @@ PrefabInstance:
     - target: {fileID: 1254556159764105495, guid: 9e941dfb07723f149b2aefc1514aefba, type: 3}
       propertyPath: m_Name
       value: ChangeWeaponUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254556159764105495, guid: 9e941dfb07723f149b2aefc1514aefba, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4542928787230457477, guid: 9e941dfb07723f149b2aefc1514aefba, type: 3}
       propertyPath: m_Pivot.x

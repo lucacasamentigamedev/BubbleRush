@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2168411558560273990}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 205.65854, y: 176.20604, z: 2.572456}
+  m_LocalPosition: {x: 205.65854, y: 176.20604, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52,9 +52,13 @@ MonoBehaviour:
   pauseMenuPrefab: {fileID: 1687338412756685389}
   endLevelWinMenuPrefab: {fileID: 2461117814370103897}
   endLevelLoseMenuPrefab: {fileID: 2828602201569767772}
+  endlessLevelLoseMenuPrefab: {fileID: 0}
   tutorialMenuPrefab: {fileID: 1834834682761628848}
-  isPrevented: 0
+  gameplayMenuPrefab: {fileID: 0}
+  levelHubMenuPrefab: {fileID: 0}
+  optionsMenuPrefab: {fileID: 0}
   weapon: {fileID: 0}
+  isPrevented: 0
 --- !u!1001 &2336363221557807225
 PrefabInstance:
   m_ObjectHideFlags: 0

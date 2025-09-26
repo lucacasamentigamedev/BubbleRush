@@ -23,8 +23,15 @@ public class GameplayUIMenu : BaseUI
         availablesWeapon = new List<Weapon>();
         weaponButtonUp.OnButtonClick += OnClickUpperWeapon;
         weaponButtonDown.OnButtonClick += OnClickDownerWeapon;
+#if UNITY_ANDROID || UNITY_IOS
+        weaponButtonUp.gameObject.SetActive(true);
+        weaponButtonDown.gameObject.SetActive(true);
+        weaponImageCenter.gameObject.SetActive(true);
+#endif
+
     }
 
+#if UNITY_ANDROID || UNITY_IOS
     public void OnEnable()
     {
         foreach (WeaponData weaponData in weaponDatabase.WeaponData)
@@ -51,9 +58,9 @@ public class GameplayUIMenu : BaseUI
             weaponButtonDown.gameObject.SetActive(true);            
             currentIndexWeapon = 0;
             SetUpperAndDownerButtons();
-        }
-
+        }        
     }
+#endif
 
     public void OnClickUpperWeapon()
     {

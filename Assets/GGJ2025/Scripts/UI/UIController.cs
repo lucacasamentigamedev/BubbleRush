@@ -182,9 +182,7 @@ public class UIController : MonoBehaviour
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
         Time.timeScale = 1f;
-        #if UNITY_ANDROID || UNITY_IOS
         gameplayMenuPrefab.Show();  
-        #endif
         if (weapon != null) {
             weapon.gameObject.SetActive(true);
         }
@@ -206,9 +204,7 @@ public class UIController : MonoBehaviour
             return;
         };
         currentMenu.Hide();
-        #if UNITY_ANDROID || UNITY_IOS
         gameplayMenuPrefab.Hide();  // Disattivo i tre bottoni Pause Left e Right TIPO SEMPRE, BELLA SCHIFEZZ
-        #endif
         currentMenu = null;
     }
 
