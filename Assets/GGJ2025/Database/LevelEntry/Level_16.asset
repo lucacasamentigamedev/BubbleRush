@@ -17,8 +17,8 @@ MonoBehaviour:
     timer_for_level: 30
     stars_for_level:
     - 0
-    - 0.3
-    - 0.5
+    - 0.2
+    - 0.4
     unlock_Lvl: 16
     grid_Size: {x: 14, y: 8}
     bubbles:
