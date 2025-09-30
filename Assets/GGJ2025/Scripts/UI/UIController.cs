@@ -182,7 +182,9 @@ public class UIController : MonoBehaviour
         InputManager.Player.Enable();
         InputManager.Menu.Disable();
         Time.timeScale = 1f;
+        // #if UNITY_ANDROID || UNITY_IOS
         gameplayMenuPrefab.Show();  
+        // #endif
         if (weapon != null) {
             weapon.gameObject.SetActive(true);
         }

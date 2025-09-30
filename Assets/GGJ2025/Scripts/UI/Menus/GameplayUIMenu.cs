@@ -13,6 +13,8 @@ public class GameplayUIMenu : BaseUI
     private ChangeWeaponButton weaponButtonDown;
     [SerializeField]
     private Image weaponImageCenter;
+    [SerializeField]
+    private Animator anim;
 
     private List<Weapon> availablesWeapon;
     private int currentIndexWeapon;
@@ -23,25 +25,26 @@ public class GameplayUIMenu : BaseUI
         availablesWeapon = new List<Weapon>();
         weaponButtonUp.OnButtonClick += OnClickUpperWeapon;
         weaponButtonDown.OnButtonClick += OnClickDownerWeapon;
-#if UNITY_ANDROID || UNITY_IOS
+// #if UNITY_ANDROID || UNITY_IOS
         weaponButtonUp.gameObject.SetActive(true);
         weaponButtonDown.gameObject.SetActive(true);
         weaponImageCenter.gameObject.SetActive(true);
-#endif
+// #endif
 
     }
 
-#if UNITY_ANDROID || UNITY_IOS
+// #if UNITY_ANDROID || UNITY_IOS
     public void OnEnable()
     {
         foreach (WeaponData weaponData in weaponDatabase.WeaponData)
         {
-            if(weaponData.levelToUnlock<= LevelManager.Get().CurrentLevel)
+            if (weaponData.levelToUnlock <= LevelManager.Get().CurrentLevel)
             {
-                Weapon weapon= new Weapon();
+                Weapon weapon = new Weapon();
                 weapon.weaponData = weaponData;
                 availablesWeapon.Add(weapon);
             }
+            
         }
         Debug.Log("Armi sbloccate  = "+ availablesWeapon.Count);
 
@@ -60,21 +63,21 @@ public class GameplayUIMenu : BaseUI
             SetUpperAndDownerButtons();
         }        
     }
-#endif
+// #endif
 
     public void OnClickUpperWeapon()
     {
-        currentIndexWeapon = currentIndexWeapon == 0 ? availablesWeapon.Count-1 : currentIndexWeapon - 1;
+        currentIndexWeapon = currentIndexWeapon == 0 ? availablesWeapon.Count - 1 : currentIndexWeapon - 1;
+        anim.Play("UIScroll");
 
-        SetUpperAndDownerButtons();
+        // SetUpperAndDownerButtons();
 
     }
 
     public void OnClickDownerWeapon()
     {
         currentIndexWeapon = (currentIndexWeapon + 1)% availablesWeapon.Count;
-
-        SetUpperAndDownerButtons();
+        anim.Play("UIScroll");
     }
 
     private void SetUpperAndDownerButtons()
@@ -107,4 +110,10 @@ public class GameplayUIMenu : BaseUI
     {
         availablesWeapon.Clear();
     }
+
+    public void SwitchWeaponResourcesButtons()
+    {
+        SetUpperAndDownerButtons();
+    }
+
 }
