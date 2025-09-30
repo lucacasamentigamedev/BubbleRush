@@ -62,6 +62,7 @@ public class GameplayUIMenu : BaseUI
             currentIndexWeapon = 0;
             SetUpperAndDownerButtons();
         }        
+        LevelManager.Get().OnStartLevel += ResetButtonsIcons;
     }
 // #endif
 
@@ -114,6 +115,11 @@ public class GameplayUIMenu : BaseUI
     public void SwitchWeaponResourcesButtons()
     {
         SetUpperAndDownerButtons();
+    }
+
+    public void ResetButtonsIcons(uint _useless)
+    {
+        anim.StopPlayback();
     }
 
 }
