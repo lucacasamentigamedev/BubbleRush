@@ -1713,8 +1713,16 @@ PrefabInstance:
       value: 4278255606
       objectReference: {fileID: 0}
     - target: {fileID: 1748307059916937734, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1748307059916937734, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1748307059916937734, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.751831
+      value: 1.752
       objectReference: {fileID: 0}
     - target: {fileID: 1755794385276770336, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_AnchorMax.x
