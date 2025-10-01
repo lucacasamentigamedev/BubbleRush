@@ -25,17 +25,17 @@ public class GameplayUIMenu : BaseUI
         availablesWeapon = new List<Weapon>();
         weaponButtonUp.OnButtonClick += OnClickUpperWeapon;
         weaponButtonDown.OnButtonClick += OnClickDownerWeapon;
-// #if UNITY_ANDROID || UNITY_IOS
+#if UNITY_ANDROID || UNITY_IOS
         weaponButtonUp.gameObject.SetActive(true);
         weaponButtonDown.gameObject.SetActive(true);
         weaponImageCenter.gameObject.SetActive(true);
-// #endif
+#endif
 
     }
 
-// #if UNITY_ANDROID || UNITY_IOS
     public void OnEnable()
     {
+#if UNITY_ANDROID || UNITY_IOS
         foreach (WeaponData weaponData in weaponDatabase.WeaponData)
         {
             if (weaponData.levelToUnlock <= LevelManager.Get().CurrentLevel)
@@ -61,10 +61,10 @@ public class GameplayUIMenu : BaseUI
             weaponButtonDown.gameObject.SetActive(true);            
             currentIndexWeapon = 0;
             SetUpperAndDownerButtons();
-        }        
-        LevelManager.Get().OnStartLevel += ResetButtonsIcons;
+        }
+#endif
+        GlobalEventSystem.CastEvent(EventName.ChangeWeaponWithType, EventArgsFactory.ChangeWeaponWithTypeFactory(EWeaponType.Finger));
     }
-// #endif
 
     public void OnClickUpperWeapon()
     {
@@ -117,9 +117,5 @@ public class GameplayUIMenu : BaseUI
         SetUpperAndDownerButtons();
     }
 
-    public void ResetButtonsIcons(uint _useless)
-    {
-        anim.StopPlayback();
-    }
-
+ 
 }
