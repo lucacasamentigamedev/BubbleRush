@@ -36,7 +36,8 @@ public class UIController : MonoBehaviour
         { 3, EUITutorialType.TimeLimit },
         { 4, EUITutorialType.Chisel },
         { 13, EUITutorialType.ToyHammer },
-        { 8, EUITutorialType.WireCutter }
+        { 8, EUITutorialType.WireCutter },
+        { 19, EUITutorialType.TeleportBubble }
     };
     #endregion
 
@@ -217,13 +218,15 @@ public class UIController : MonoBehaviour
     private bool OnCheckTutorial() {
         uint currentLevel = LevelManager.Get().CurrentLevel;
         if (levelToTutorialMap.TryGetValue(currentLevel, out EUITutorialType tutorialType)) {
-            //Debug.Log($"UIController - Apro tutorial level {currentLevel}");
-            tutorialMenuPrefab.prepareTutorial(tutorialType);
+            if (Application.isMobilePlatform) {
+                tutorialMenuPrefab.prepareTutorialMobile(tutorialType);
+            } else {
+                tutorialMenuPrefab.prepareTutorial(tutorialType);
+            }
             tutorialMenuPrefab.Show();
             AudioManager.PlayOneShotSound("MenuOpen");
             return true;
         } else {
-            //Debug.Log($"UIController - No tutorial associated with level {currentLevel}");
             return false;
         }
     }

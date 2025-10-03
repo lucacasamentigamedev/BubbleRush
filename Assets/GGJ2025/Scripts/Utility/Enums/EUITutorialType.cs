@@ -4,5 +4,6 @@ public enum EUITutorialType {
     TimeLimit,
     Chisel,
     ToyHammer,
-    WireCutter
+    WireCutter,
+    TeleportBubble
 }

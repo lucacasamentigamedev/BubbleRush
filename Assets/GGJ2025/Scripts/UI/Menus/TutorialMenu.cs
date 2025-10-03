@@ -6,9 +6,15 @@ public class TutorialMenu : BaseUI
     [SerializeField]
     private Sprite[] tutorialsImage;
     [SerializeField]
+    private Sprite[] tutorialsImageMobile;
+    [SerializeField]
     private Image backgroundRef;
 
     public void prepareTutorial(EUITutorialType UITutorialType) {
         backgroundRef.sprite = tutorialsImage[(int)UITutorialType];
+    }
+
+    public void prepareTutorialMobile(EUITutorialType UITutorialType) {
+        backgroundRef.sprite = tutorialsImageMobile[(int)UITutorialType];
     }
 }
