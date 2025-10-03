@@ -14,5 +14,6 @@ public enum ButtonType {
     Options,
     Apply,
     EndlessMode,
-    HubLevel
+    HubLevel,
+    GGJCredits
 }

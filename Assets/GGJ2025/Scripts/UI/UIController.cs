@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     private BaseUI[] uiPrefabs;
     [SerializeField] private BaseUI mainMenuPrefab;
     [SerializeField] private BaseUI creditsMenuPrefab;
+    [SerializeField] private BaseUI ggjCreditsMenuPrefab;
     [SerializeField] private GameplayHUD gameplayHUDPrefab;
     [SerializeField] private BaseUI pauseMenuPrefab;
     [SerializeField] private EndLevelWinMenu endLevelWinMenuPrefab;
@@ -128,6 +129,9 @@ public class UIController : MonoBehaviour
             case EUIType.CreditsMenu:
                 currentMenu = creditsMenuPrefab;
                 break;
+            case EUIType.GgjCreditsMenu:
+                currentMenu = ggjCreditsMenuPrefab;
+                break;
             case EUIType.GameplayHUD:
                 currentMenu = gameplayHUDPrefab;                
                 break;
@@ -243,6 +247,7 @@ public class UIController : MonoBehaviour
     #region Wrapper menus methods
     public void OpenMainMenu() => OpenMenu(EUIType.MainMenu);
     public void OpenCreditsMenu() => OpenMenu(EUIType.CreditsMenu);
+    public void OpenGgjCreditsMenu() => OpenMenu(EUIType.GgjCreditsMenu);
     public void OpenGameplayMenu() => OpenMenu(EUIType.GameplayHUD);
     public void OpenPauseMenu() => OpenMenu(EUIType.PauseMenu);
     public void OpenEndLevelWinMenu() => OpenMenu(EUIType.EndLevelWinMenu);

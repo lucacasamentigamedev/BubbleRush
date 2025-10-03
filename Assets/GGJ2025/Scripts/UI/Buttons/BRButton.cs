@@ -30,7 +30,8 @@ public class BRButton : MonoBehaviour {
         { ButtonType.Options, "options" },
         { ButtonType.Apply, "apply" },
         { ButtonType.EndlessMode, "endlessmode" },
-        { ButtonType.HubLevel, "hublevel" }
+        { ButtonType.HubLevel, "hublevel" },
+        { ButtonType.GGJCredits, "ggjcredits" }
     };
     #endregion
 

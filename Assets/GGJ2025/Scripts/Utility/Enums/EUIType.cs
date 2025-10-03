@@ -9,5 +9,6 @@ public enum EUIType
     EndlessLevelLoseMenu,
     TutorialMenu,
     LevelHubMenu,
-    OptionsMenu
+    OptionsMenu,
+    GgjCreditsMenu
 }
