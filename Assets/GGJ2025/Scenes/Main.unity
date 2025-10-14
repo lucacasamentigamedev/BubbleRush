@@ -1866,7 +1866,7 @@ PrefabInstance:
     - target: {fileID: 1834834682761628848, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: tutorialsImage.Array.data[6]
       value: 
-      objectReference: {fileID: 21300000, guid: fafc64b469d8eda4e895cbd3ee03d737, type: 3}
+      objectReference: {fileID: 21300000, guid: b09a0440d29d75f46b033fc411188be2, type: 3}
     - target: {fileID: 1834834682761628848, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: tutorialsImageMobile.Array.size
       value: 7
@@ -4849,7 +4849,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9193107346786036058, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -4.8980713
+      value: -4.898041
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5777268707586648896, guid: 09c387061c8df9b4e992508b3e4af86c, type: 3}
