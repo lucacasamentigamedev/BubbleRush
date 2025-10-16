@@ -70,4 +70,10 @@ public class UISuperMain : MonoBehaviour
         }
     
     }
+
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene("Main");
+    }
+
 }

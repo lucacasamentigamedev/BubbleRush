@@ -20,7 +20,7 @@ MonoBehaviour:
     - 0.2
     - 0.4
     unlock_Lvl: 29
-    grid_Size: {x: 12, y: 8}
+    grid_Size: {x: 14, y: 7}
     bubbles:
     - type: 0
       setFiller: 0
