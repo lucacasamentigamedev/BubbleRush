@@ -8,28 +8,29 @@ public class BubbleToCreateDrawer : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        // Indentazione
+        // Foldout per espandere/comprimere l’elemento
         Rect foldoutRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-        property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, label);
+        property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, label, true);
 
         if (property.isExpanded)
         {
             EditorGUI.indentLevel++;
 
+            // Riferimenti ai campi
             SerializedProperty type = property.FindPropertyRelative("type");
             SerializedProperty setFiller = property.FindPropertyRelative("setFiller");
             SerializedProperty minSpawn = property.FindPropertyRelative("min_Spawn");
             SerializedProperty maxSpawn = property.FindPropertyRelative("max_Spawn");
             SerializedProperty minPop = property.FindPropertyRelative("min_Pop");
             SerializedProperty maxPop = property.FindPropertyRelative("max_Pop");
+            SerializedProperty minTeleport = property.FindPropertyRelative("min_Teleport_Time");
+            SerializedProperty maxTeleport = property.FindPropertyRelative("max_Teleport_Time");
 
-            // Mostra le proprietà base
+            // Calcolo dinamico dell’altezza per ogni riga
             position.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), type);
 
             position.y += EditorGUIUtility.singleLineHeight;
-
-            // Blocchiamo il check su altri elementi se uno è attivo
             EditorGUI.BeginChangeCheck();
             bool newSetFiller = EditorGUI.Toggle(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), "Set Filler", setFiller.boolValue);
             if (EditorGUI.EndChangeCheck() && newSetFiller)
@@ -38,7 +39,7 @@ public class BubbleToCreateDrawer : PropertyDrawer
                 setFiller.boolValue = true;
             }
 
-            // Se setFiller è FALSE, mostra min/maxSpawn
+            // Mostra min/maxSpawn solo se non è un filler
             if (!setFiller.boolValue)
             {
                 position.y += EditorGUIUtility.singleLineHeight;
@@ -48,6 +49,17 @@ public class BubbleToCreateDrawer : PropertyDrawer
                 EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), maxSpawn);
             }
 
+            // Mostra i tempi di teletrasporto solo per tipo TeleportBubble
+            if (type.enumValueIndex == (int)EBubbleType.Teleport)
+            {
+                position.y += EditorGUIUtility.singleLineHeight;
+                EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), minTeleport);
+
+                position.y += EditorGUIUtility.singleLineHeight;
+                EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), maxTeleport);
+            }
+
+            // Pop fields
             position.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.PropertyField(new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight), minPop);
 
@@ -62,14 +74,19 @@ public class BubbleToCreateDrawer : PropertyDrawer
 
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        float height = EditorGUIUtility.singleLineHeight;
+        float height = EditorGUIUtility.singleLineHeight; // Foldout
 
         if (property.isExpanded)
         {
             height += EditorGUIUtility.singleLineHeight * 2; // type, setFiller
+
             if (!property.FindPropertyRelative("setFiller").boolValue)
-                height += EditorGUIUtility.singleLineHeight * 2; // min/max Spawn
-            height += EditorGUIUtility.singleLineHeight * 2; // min/max Pop
+                height += EditorGUIUtility.singleLineHeight * 2; // min/max spawn
+
+            if (property.FindPropertyRelative("type").enumValueIndex == (int)EBubbleType.Teleport)
+                height += EditorGUIUtility.singleLineHeight * 2; // min/max teleport
+
+            height += EditorGUIUtility.singleLineHeight * 2; // min/max pop
         }
 
         return height;
@@ -85,9 +102,7 @@ public class BubbleToCreateDrawer : PropertyDrawer
             SerializedProperty setFiller = element.FindPropertyRelative("setFiller");
 
             if (element.propertyPath != property.propertyPath)
-            {
                 setFiller.boolValue = false;
-            }
         }
 
         property.serializedObject.ApplyModifiedProperties();

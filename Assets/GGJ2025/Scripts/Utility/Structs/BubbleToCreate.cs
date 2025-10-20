@@ -9,4 +9,6 @@ public struct BubbleToCreate
     public uint max_Spawn;
     public uint min_Pop;
     public uint max_Pop;
+    public float min_Teleport_Time;
+    public float max_Teleport_Time;
 }

@@ -68,6 +68,8 @@ public class Bubble : MonoBehaviour
         InternalOnAwake();
     }
 
+    public virtual void SetTimerDisappeared(float minTimeToDisappeared, float maxTimeToDisappeared) { }
+
     protected void ChangeSprite(int indexLife)
     {
         spriteRenderer.sprite = arraySprite[indexLife];

@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class TeleportBubble : Bubble
 {
-    [SerializeField]
-    private int minTimeToDisappeared;
-    [SerializeField]
-    private int maxTimeToDisappeared;
+    private float minTimeToDisappeared = 2.0f;      //Default Value
+    private float maxTimeToDisappeared = 5.0f;
 
     public Action<TeleportBubble> TeleportEvent;
     public Action<TeleportBubble> WrongWeapTeleportEvent;
@@ -20,8 +18,6 @@ public class TeleportBubble : Bubble
         bubbleType = EBubbleType.Teleport;
         base.InternalOnAwake();
         timeToSubtract = Time.time;
-        timeToDisappeared = (float)UnityEngine.Random.Range(minTimeToDisappeared, maxTimeToDisappeared);
-        currentTimeAppeared = timeToDisappeared;
     }
 
     void Update()
@@ -36,9 +32,26 @@ public class TeleportBubble : Bubble
         if (currentTimeAppeared <= 0)
         {
             TeleportEvent?.Invoke(this);
-            currentTimeAppeared = timeToDisappeared;
+            ResetTimer();
         }
     }
+
+    private void ResetTimer()
+    {
+        timeToDisappeared = UnityEngine.Random.Range(minTimeToDisappeared, maxTimeToDisappeared);
+        currentTimeAppeared = timeToDisappeared;
+    }
+
+
+    public override void SetTimerDisappeared( float minTimeToDisappeared, float maxTimeToDisappeared )
+    {
+        if (minTimeToDisappeared * maxTimeToDisappeared <= 0.0f) return;
+        this.minTimeToDisappeared = minTimeToDisappeared;
+        this.maxTimeToDisappeared = maxTimeToDisappeared;
+        ResetTimer();
+    }
+
+
 
     public override void InternalOnHit(int damage, EWeaponType weaponType)
     {

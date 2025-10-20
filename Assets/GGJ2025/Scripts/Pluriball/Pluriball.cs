@@ -379,6 +379,12 @@ public class Pluriball : MonoBehaviour, IClickable
                 bubbles[indexB].gameObject.SetActive(true);
                 int life = UnityEngine.Random.Range((int)bubbleType.min_Pop, (int)bubbleType.max_Pop + 1);
                 bubbles[indexB].ResetBubble(life);
+                
+                //-----TeleportTimer
+                if(bubbleType.type == EBubbleType.Teleport)
+                {
+                    bubbles[indexB].SetTimerDisappeared(bubbleType.min_Teleport_Time, bubbleType.max_Teleport_Time);
+                }                
                 indexB++;
             }
         }
