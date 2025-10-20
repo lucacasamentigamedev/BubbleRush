@@ -195,7 +195,7 @@ public class LevelManager : MonoBehaviour
     
     public void ResetEndlessMode()
     {
-        endlessModeTime = 40;
+        endlessModeTime = 60;
         endlessModeLevelReached = 0;
     }
     

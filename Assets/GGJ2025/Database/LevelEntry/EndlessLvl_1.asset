@@ -49,8 +49,8 @@ MonoBehaviour:
       max_Spawn: 20
       min_Pop: 1
       max_Pop: 1
-      min_Teleport_Time: 1
-      max_Teleport_Time: 2
+      min_Teleport_Time: 2
+      max_Teleport_Time: 5
     - type: 3
       setFiller: 1
       min_Spawn: 5

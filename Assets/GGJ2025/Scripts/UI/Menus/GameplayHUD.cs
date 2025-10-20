@@ -51,6 +51,6 @@ public class GameplayHUD: BaseUI {
         {
             timerUI.SetActive(false);
         }
-        textMeshProText.text = "Score ";
+        textMeshProText.text = "Score " + LevelManager.Get().EndlessReachedLevel;
     }
 }
