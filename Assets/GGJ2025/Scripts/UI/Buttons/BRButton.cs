@@ -13,6 +13,9 @@ public class BRButton : MonoBehaviour {
     public Sprite defaultSprite;
     public Sprite highlightedSprite;
     protected UIController UIController;
+    [SerializeField]
+    private bool autoLoadButtonSprite = true;
+
     private static readonly Dictionary<ButtonType, string> buttonTypeToFileName = new Dictionary<ButtonType, string>
     {
         { ButtonType.Play, "play" },
@@ -40,8 +43,10 @@ public class BRButton : MonoBehaviour {
         button = GetComponent<Button>();
         buttonImage = GetComponent<Image>();
         button.onClick.AddListener(OnClick);
-        LoadButtonSprites();
-        SetupButton();
+        if(autoLoadButtonSprite) {
+            LoadButtonSprites();
+            SetupButton();
+        }
     }
     #endregion
 
@@ -75,15 +80,21 @@ public class BRButton : MonoBehaviour {
         //only for the desktop there is mouse hover sound
         AudioManager.PlayOneShotSound("MenuSelect");
 #endif
-        buttonImage.sprite = highlightedSprite;
+        if(autoLoadButtonSprite) {
+            buttonImage.sprite = highlightedSprite;
+        }
     }
 
     public void OnMouseExit() {
-        buttonImage.sprite = defaultSprite;
+        if (autoLoadButtonSprite) {
+            buttonImage.sprite = defaultSprite;
+        }
     }
 
     protected virtual void OnClick() {
-        buttonImage.sprite = defaultSprite;
+        if (autoLoadButtonSprite) {
+            buttonImage.sprite = defaultSprite;
+        }
         AudioManager.PlayOneShotSound("MenuConfirm");
     }
     #endregion
