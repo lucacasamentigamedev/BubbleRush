@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 20
+    timer_for_level: 30
     stars_for_level: []
     unlock_Lvl: 99
     grid_Size: {x: 16, y: 8}
@@ -25,27 +25,37 @@ MonoBehaviour:
       max_Spawn: 30
       min_Pop: 1
       max_Pop: 4
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
     - type: 0
       setFiller: 0
       min_Spawn: 20
       max_Spawn: 50
       min_Pop: 1
       max_Pop: 5
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
     - type: 2
       setFiller: 0
       min_Spawn: 5
       max_Spawn: 10
       min_Pop: 1
       max_Pop: 1
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
     - type: 4
       setFiller: 0
       min_Spawn: 10
       max_Spawn: 20
       min_Pop: 1
       max_Pop: 1
+      min_Teleport_Time: 0.5
+      max_Teleport_Time: 2
     - type: 3
       setFiller: 1
       min_Spawn: 5
       max_Spawn: 20
       min_Pop: 0
       max_Pop: 0
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0

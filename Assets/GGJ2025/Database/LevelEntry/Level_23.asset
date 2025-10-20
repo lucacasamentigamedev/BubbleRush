@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
     is_Timer_Activate: 1
-    timer_for_level: 30
+    timer_for_level: 50
     stars_for_level:
     - 0
     - 0.3
@@ -23,32 +23,42 @@ MonoBehaviour:
     grid_Size: {x: 14, y: 7}
     bubbles:
     - type: 0
-      setFiller: 0
-      min_Spawn: 15
-      max_Spawn: 25
+      setFiller: 1
+      min_Spawn: 0
+      max_Spawn: 30
       min_Pop: 1
       max_Pop: 5
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
     - type: 3
-      setFiller: 1
-      min_Spawn: 7
-      max_Spawn: 7
+      setFiller: 0
+      min_Spawn: 30
+      max_Spawn: 35
       min_Pop: 0
       max_Pop: 0
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
     - type: 4
       setFiller: 0
-      min_Spawn: 4
-      max_Spawn: 5
+      min_Spawn: 6
+      max_Spawn: 10
       min_Pop: 1
       max_Pop: 1
+      min_Teleport_Time: 1.5
+      max_Teleport_Time: 3
     - type: 1
       setFiller: 0
-      min_Spawn: 4
-      max_Spawn: 7
+      min_Spawn: 6
+      max_Spawn: 10
       min_Pop: 1
       max_Pop: 5
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
     - type: 2
       setFiller: 0
       min_Spawn: 4
-      max_Spawn: 6
+      max_Spawn: 8
       min_Pop: 1
       max_Pop: 1
+      min_Teleport_Time: 0
+      max_Teleport_Time: 0
