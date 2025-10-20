@@ -26,10 +26,7 @@ public class UISuperMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(InputManager.Menu_Skip_Intro_Held)
-        {
-            SceneManager.LoadScene("Main");
-        }
+        
 
         // Aumenta il timer con il tempo trascorso ogni frame
         timer += Time.deltaTime;
